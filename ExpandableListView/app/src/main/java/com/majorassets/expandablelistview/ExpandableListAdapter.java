@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * Created by Eric on 10/7/15.
+ * TODO: Figure out how to move the expand/collapse icon to the right side
+ * TODO: Figure out how to make the dividers show up when an item is expanded and hide otherwise
  */
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 

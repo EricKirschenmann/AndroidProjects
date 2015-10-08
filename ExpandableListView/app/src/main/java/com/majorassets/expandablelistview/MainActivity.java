@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
     /*
     * Preparing the list data
+    * TODO: Move into it's own class file to make it more modular and get it out of the main Activity
     */
     private void prepareListData() {
         listDataHeader = new ArrayList<String>();
