@@ -88,6 +88,16 @@ public class MainActivity extends AppCompatActivity {
             return true;
         } else if(id == R.id.action_login) {
             openLogin();
+
+            return true;
+        } else if(id == R.id.action_logout) {
+            SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, 0);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("login", false);
+            editor.commit();
+
+            openLogin();
+
             return true;
         }
 
