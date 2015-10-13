@@ -1,5 +1,7 @@
 package com.majorassets.expandablelistview;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListView expListView;
     List<String> listDataHeader = new ArrayList<>();
     HashMap<String, List<String>> listDataChild = new HashMap<>();
+    public static final String PREFS_NAME = "MyPrefsFile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         createExpandList();
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        boolean login = settings.getBoolean("login", false);
+
+        if(!login) {
+            openLogin();
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -77,8 +86,16 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if(id == R.id.action_login) {
+            openLogin();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openLogin() {
+        Intent intent = new Intent(this,LoginActivity.class);
+        startActivity(intent);
     }
 }
