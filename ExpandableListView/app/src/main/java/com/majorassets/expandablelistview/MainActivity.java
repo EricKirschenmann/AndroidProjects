@@ -32,12 +32,13 @@ public class MainActivity extends AppCompatActivity {
         expListView = (ExpandableListView) findViewById(R.id.lvExp);
 
         // preparing list data
-        //prepareListData();
         CreateList createList = new CreateList();
 
+        //getting the list data
         listDataHeader = createList.getListDataHeader();
         listDataChild = createList.getHashMap();
 
+        //setting the adapter
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
 
         // setting list adapter
