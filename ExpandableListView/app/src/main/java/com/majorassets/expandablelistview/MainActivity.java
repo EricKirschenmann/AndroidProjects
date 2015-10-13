@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
-    List<String> listDataHeader = new ArrayList<String>();;
-    HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();;
+    List<String> listDataHeader = new ArrayList<>();
+    HashMap<String, List<String>> listDataChild = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
