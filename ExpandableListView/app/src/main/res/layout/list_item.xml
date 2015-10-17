@@ -12,6 +12,4 @@
         android:paddingBottom="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
         android:gravity="center_vertical"/>
-
-
 </LinearLayout>
