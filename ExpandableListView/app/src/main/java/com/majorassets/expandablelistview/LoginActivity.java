@@ -4,7 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.content.SharedPreferences;
+=======
+>>>>>>> master
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -68,7 +71,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+<<<<<<< HEAD
         setupActionBar();
+=======
+>>>>>>> master
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -88,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
+<<<<<<< HEAD
             public void onClick(View view) {
 
                 SharedPreferences settings = getSharedPreferences(MainActivity.PREFS_NAME,0);
@@ -96,6 +103,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 editor.commit();
 
                 openMain();
+=======
+            public void onClick(View view)
+            {
+                Intent startIntent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(startIntent);
+>>>>>>> master
                 //attemptLogin();
             }
         });
@@ -147,6 +160,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+<<<<<<< HEAD
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
@@ -157,6 +171,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
+=======
+>>>>>>> master
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -310,11 +326,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailView.setAdapter(adapter);
     }
 
+<<<<<<< HEAD
     private void openMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
+=======
+>>>>>>> master
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
