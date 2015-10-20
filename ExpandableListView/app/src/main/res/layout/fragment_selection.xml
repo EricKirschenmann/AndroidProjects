@@ -7,8 +7,5 @@
     tools:showIn="@layout/activity_selection"
     tools:context="com.majorassets.expandablelistview.SelectionActivityFragment">
 
-<<<<<<< HEAD
-=======
 
->>>>>>> LoginActivity
 </RelativeLayout>
