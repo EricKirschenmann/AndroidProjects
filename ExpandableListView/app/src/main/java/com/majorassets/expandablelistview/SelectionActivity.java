@@ -1,5 +1,9 @@
 package com.majorassets.expandablelistview;
 
+<<<<<<< HEAD
+=======
+import android.content.Intent;
+>>>>>>> LoginActivity
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +28,13 @@ public class SelectionActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+<<<<<<< HEAD
+=======
+
+        Intent i = getIntent();
+        String title = i.getStringExtra("TITLE");
+        setTitle(title);
+>>>>>>> LoginActivity
     }
 
 }

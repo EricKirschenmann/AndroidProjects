@@ -17,11 +17,11 @@ public class CreateList {
         prepareListData();
     }
 
-    public HashMap<String, List<String>> getHashMap() {
+    public HashMap<String, List<String>> getListChildData() {
         return listDataChild;
     }
 
-    public List<String> getListDataHeader() {
+    public List<String> getListHeaderData() {
         return listDataHeader;
     }
 

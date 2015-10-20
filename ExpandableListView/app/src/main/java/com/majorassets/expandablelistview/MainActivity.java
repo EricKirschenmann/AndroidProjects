@@ -50,6 +50,22 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
+            {
+                Intent selectionIntent = new Intent(getApplicationContext(), SelectionActivity.class);
+
+                Object child = listAdapter.getChild(groupPosition, childPosition);
+                String title = child.toString();
+
+                selectionIntent.putExtra("TITLE", title);
+                startActivity(selectionIntent);
+                return false;
+            }
+        });
+
     }
 
     public void createExpandList() {
@@ -61,8 +77,8 @@ public class MainActivity extends AppCompatActivity {
         CreateList createList = new CreateList();
 
         //getting the list data
-        listDataHeader = createList.getListDataHeader();
-        listDataChild = createList.getHashMap();
+        listDataHeader = createList.getListHeaderData();
+        listDataChild = createList.getListChildData();
 
         //setting the adapter
         listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
@@ -97,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, 0);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("login", false);
-            editor.commit();
+            editor.apply();
 
             openLogin();
 

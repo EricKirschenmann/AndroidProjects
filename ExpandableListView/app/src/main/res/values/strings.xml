@@ -16,7 +16,11 @@
         completions."
     </string>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     <string name="title_activity_selection">SelectionActivity</string>
 >>>>>>> master
+=======
+    <string name="title_activity_selection">SelectionActivity</string>
+>>>>>>> LoginActivity
 </resources>
