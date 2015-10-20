@@ -53,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id)
             {
                 Intent selectionIntent = new Intent(getApplicationContext(), SelectionActivity.class);
+
+                Object child = listAdapter.getChild(groupPosition, childPosition);
+                String title = child.toString();
+
+                selectionIntent.putExtra("TITLE", title);
                 startActivity(selectionIntent);
                 return false;
             }
