@@ -1,17 +1,53 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".HomeActivityFragment"
-    tools:showIn="@layout/activity_home">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingBottom="@dimen/activity_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:backgroundTint="@color/generalBackground"
+              tools:context="com.majorassets.betterhalf.HomeActivityFragment"
+              tools:showIn="@layout/activity_home">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="Entertainment"
+        android:textColor="@color/entertainmentPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        android:id="@+id/entertainment_button"
+        android:drawableLeft="@mipmap/ic_entertainment"
+        android:backgroundTint="@color/buttonBackground"/>
 
-</RelativeLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fashion"
+        android:textColor="@color/fashionPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        android:id="@+id/fashion_button"
+        android:drawableLeft="@mipmap/ic_fashion"
+        android:backgroundTint="@color/buttonBackground">
+    </Button>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Food"
+        android:textColor="@color/foodPrimary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        android:id="@+id/food_button"
+        android:drawableLeft="@mipmap/ic_food"
+        android:backgroundTint="@color/buttonBackground">
+    </Button>
+
+</LinearLayout>
