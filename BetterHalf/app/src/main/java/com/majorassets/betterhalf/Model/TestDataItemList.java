@@ -15,12 +15,12 @@ import java.util.UUID;
  */
 public class TestDataItemList
 {
-	private List<DataItem> mItemList;
+	private List<BaseDataItem> mItemList;
 	private static TestDataItemList mTestList;
 
 
 	private TestDataItemList(){
-		mItemList = new ArrayList<DataItem>();
+		mItemList = new ArrayList<BaseDataItem>();
 		populateList();
 	}
 
@@ -51,19 +51,19 @@ public class TestDataItemList
 	 * @param id - the ID we are looking for
 	 * @return The item with the associated id
 	 */
-	public DataItem getItem(UUID id)
+	public BaseDataItem getItem(UUID id)
 	{
-		for(DataItem item : mItemList)
+		for(BaseDataItem item : mItemList)
 			if(item.getID().equals(id))
 				return item;
 		return null;
 	}
 
-	public List<DataItem> getItemList() {
+	public List<BaseDataItem> getItemList() {
 		return mItemList;
 	}
 
-	public void setItemList(List<DataItem> itemList) {
+	public void setItemList(List<BaseDataItem> itemList) {
 		mItemList = itemList;
 	}
 }

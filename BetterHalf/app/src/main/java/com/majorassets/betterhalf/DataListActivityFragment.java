@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.majorassets.betterhalf.Model.DataItem;
+import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.TestDataItemList;
 
 import java.util.List;
@@ -39,9 +39,9 @@ public class DataListActivityFragment extends Fragment {
 
 	private class DataItemAdapter extends RecyclerView.Adapter<DataItemHolder>
 	{
-		public List<DataItem> mItemList;
+		public List<BaseDataItem> mItemList;
 
-		public DataItemAdapter(List<DataItem> items){
+		public DataItemAdapter(List<BaseDataItem> items){
 			mItemList = items;
 		}
 
@@ -54,7 +54,7 @@ public class DataListActivityFragment extends Fragment {
 
 		public void onBindViewHolder(DataItemHolder holder, int pos)
 		{
-			DataItem item = mItemList.get(pos);
+			BaseDataItem item = mItemList.get(pos);
 			holder.mLabelTextView.setText(item.getLabel());
 			holder.mValueTextView.setText(item.getValue());
 		}
@@ -67,7 +67,7 @@ public class DataListActivityFragment extends Fragment {
 	public void updateUI()
 	{
 		TestDataItemList itemListObject = TestDataItemList.get(getActivity());
-		List<DataItem> itemList = itemListObject.getItemList();
+		List<BaseDataItem> itemList = itemListObject.getItemList();
 
 		mAdapter = new DataItemAdapter(itemList);
 		mRecyclerView.setAdapter(mAdapter);
