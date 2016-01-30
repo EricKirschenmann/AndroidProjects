@@ -44,23 +44,4 @@ public abstract class DataItem implements IDataItem
 	public void setValue(String value) {
 		mValue = value;
 	}
-
-	@Override
-	/** Override object equals method to compare on the item's labels and values
-	 *
-	 * @param o - the object you are comparing against
-	 * @returns - true if the labels and values are the same; false otherwise
-	 */
-	public boolean equals(Object o)
-	{
-		if(!(o.getClass().isInstance(this)))
-			return false;
-		else{
-			DataItem item = (DataItem)o;
-			if(item.mID.equals(this.mID))
-				return true;
-			else
-				return false;
-		}
-	}
 }
