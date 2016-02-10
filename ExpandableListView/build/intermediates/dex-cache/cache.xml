@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/justinbowman/AndroidProjects/ExpandableListView/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="/Users/justinbowman/AndroidProjects/ExpandableListView/app/build/intermediates/pre-dexed/debug/classes-be0d6dba74a64ca609c6d9f6b6fc4ba28e86076b.jar" />
+    </item>
+    <item
+        jar="/Users/justinbowman/AndroidProjects/ExpandableListView/app/build/intermediates/exploded-aar/com.android.support/design/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e5c61a3169221a89654ffcaaed47bba51cf071ad">
+        <dex dex="/Users/justinbowman/AndroidProjects/ExpandableListView/app/build/intermediates/pre-dexed/debug/classes-d259d677a6b09635724092a0ed50f37ec15e1621.jar" />
+    </item>
+    <item
+        jar="/Users/justinbowman/AndroidProjects/ExpandableListView/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/libs/internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="/Users/justinbowman/AndroidProjects/ExpandableListView/app/build/intermediates/pre-dexed/debug/internal_impl-23.0.1-941b42cdc0f53cdc18888304cf3e3c059e71d649.jar" />
+    </item>
+    <item
+        jar="/Users/justinbowman/AndroidProjects/ExpandableListView/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="/Users/justinbowman/AndroidProjects/ExpandableListView/app/build/intermediates/pre-dexed/debug/classes-9c9cade0382f2bd2cf355b657487b80045c1033d.jar" />
+    </item>
+    <item
+        jar="/Users/justinbowman/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.0.1/support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="/Users/justinbowman/AndroidProjects/ExpandableListView/app/build/intermediates/pre-dexed/debug/support-annotations-23.0.1-650bf0e4db1d47492b22a66cb5dcadc4733da653.jar" />
+    </item>
+
+</items>
