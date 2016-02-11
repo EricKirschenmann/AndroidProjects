@@ -16,26 +16,12 @@ import com.majorassets.betterhalf.Database.*;
  */
 public class HomeActivityFragment extends Fragment {
 
-	private Button mEntertainmentButton;
-
 	public HomeActivityFragment() {
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
-		View view =  inflater.inflate(R.layout.fragment_home, container, false);
-
-		mEntertainmentButton = (Button)(getActivity().findViewById(R.id.entertainment_button));
-		mEntertainmentButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//Intent intent = new Intent(getActivity(), DataListActivityFragment.class);
-				//startActivity(intent);
-                new EndpointsAsyncTask().execute(new Pair<Context, String>(getActivity(), "Manfred"));
-            }
-		});
-
-		return view;
+							 Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_home, container, false);
 	}
 }
