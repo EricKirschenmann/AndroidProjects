@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -8,9 +8,20 @@
               android:paddingTop="@dimen/activity_vertical_margin"
               android:orientation="vertical"
               android:gravity="center"
-              android:backgroundTint="@color/generalBackground"
               tools:context="com.majorassets.betterhalf.HomeActivityFragment"
               tools:showIn="@layout/activity_home">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+
+        android:background="#ffffff"
+        android:padding="10dp"/>
 
     <Button
         android:layout_width="match_parent"
@@ -19,10 +30,10 @@
         android:textColor="@color/entertainmentPrimary"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:typeface="monospace"
         android:id="@+id/entertainment_button"
-        android:drawableLeft="@mipmap/ic_entertainment"
-        android:backgroundTint="@color/buttonBackground"/>
+        android:drawableLeft="@mipmap/ic_launcher"
+        android:background="#ffffff"
+        android:padding="10dp"/>
 
     <Button
         android:layout_width="match_parent"
@@ -31,10 +42,10 @@
         android:textColor="@color/fashionPrimary"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:typeface="monospace"
         android:id="@+id/fashion_button"
-        android:drawableLeft="@mipmap/ic_fashion"
-        android:backgroundTint="@color/buttonBackground">
+        android:drawableLeft="@mipmap/ic_launcher"
+        android:background="#ffffff"
+        android:padding="10dp">
     </Button>
 
     <Button
@@ -44,10 +55,12 @@
         android:textColor="@color/foodPrimary"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:typeface="monospace"
         android:id="@+id/food_button"
-        android:drawableLeft="@mipmap/ic_food"
-        android:backgroundTint="@color/buttonBackground">
+        android:drawableLeft="@mipmap/ic_launcher"
+        android:background="#ffffff"
+        android:padding="10dp">
     </Button>
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
