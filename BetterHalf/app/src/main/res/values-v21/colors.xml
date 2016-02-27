@@ -12,4 +12,7 @@
 
     <color name="buttonBackground">#FFFFFF</color>
     <color name="generalBackground">#FFFFFF</color>
+
+    <color name="errorText">#FF0000</color>
+    <color name="fadedText">#888888</color>
 </resources>

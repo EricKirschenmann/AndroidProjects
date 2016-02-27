@@ -1,14 +1,19 @@
 package com.majorassets.betterhalf;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 /**
  * Created by dgbla on 12/14/2015.
  */
-public abstract class SingleFragmentActivity extends FragmentActivity
+public abstract class SingleFragmentActivity extends AppCompatActivity
 {
 	protected abstract Fragment createFragment();
 
@@ -17,6 +22,10 @@ public abstract class SingleFragmentActivity extends FragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fragment);
+
+		//TODO: have toolbar not cover up content on underlying fragment
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
 
 		FragmentManager fm = getSupportFragmentManager();
 
@@ -28,6 +37,29 @@ public abstract class SingleFragmentActivity extends FragmentActivity
 		if(fragment == null){
 			fragment = createFragment();
 			fm.beginTransaction().add(R.id.fragment_container, fragment).commit();
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_data_list, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		Intent intent;
+		switch(item.getItemId())
+		{
+			case R.id.action_add_item:
+				intent = new Intent(SingleFragmentActivity.this, SingleItemEditActivity.class);
+				startActivity(intent);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 }

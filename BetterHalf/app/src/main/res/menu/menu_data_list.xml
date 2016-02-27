@@ -3,9 +3,16 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="androidapp.dillon.betterhalf_v2.DataListActivity"
       xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         app:showAsAction="never"
         android:title="@string/action_settings"/>
+
+    <item
+        android:id="@+id/action_add_item"
+        app:showAsAction="always"
+        android:title="New Item"
+        android:icon="@mipmap/ic_add_item"/>
 </menu>

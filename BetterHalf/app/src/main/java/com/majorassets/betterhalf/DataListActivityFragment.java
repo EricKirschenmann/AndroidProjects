@@ -1,6 +1,7 @@
 package com.majorassets.betterhalf;
 
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +20,8 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DataListActivityFragment extends Fragment {
+public class DataListActivityFragment extends Fragment
+{
 
 	private RecyclerView mRecyclerView;
 	private DataItemAdapter mAdapter;
@@ -75,7 +77,7 @@ public class DataListActivityFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	                         Bundle savedInstanceState) {
+							 Bundle savedInstanceState) {
 		View view =  inflater.inflate(R.layout.fragment_data_list, container, false);
 
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.list_recycler_view);
