@@ -19,35 +19,23 @@ public class DataProvider
     //singleton firebase reference
     private DataProvider()
     {
-            instance = new Firebase(FIREBASE_URL);
-    }
-
-    //get the firebase reference for the user of the app
-    private DataProvider(String username)
-    {
-        userInstance = new Firebase(FIREBASE_URL + "users/username");
+        instance = new Firebase(FIREBASE_URL);
     }
 
     public Firebase getFirebaseInstance()
     {
         return instance;
     }
-    public Firebase getUserInstance()
+
+    public Firebase getUserInstance(String username)
     {
-        return userInstance;
+        return new Firebase(FIREBASE_URL + "users/" + username);
     }
 
     public static DataProvider getDataProvider()
     {
         if(sDataProvider == null)
             return new DataProvider();
-        return sDataProvider;
-    }
-
-    public static DataProvider getDataProvider(String node)
-    {
-        if(sDataProvider == null)
-            return new DataProvider(node);
         return sDataProvider;
     }
 }

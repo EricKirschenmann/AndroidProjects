@@ -5,5 +5,5 @@ package com.majorassets.betterhalf;
  */
 public class GlobalResources
 {
-    public static String userID;
+    public static String Username;
 }
