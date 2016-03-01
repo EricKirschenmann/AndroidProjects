@@ -10,11 +10,12 @@ public enum Subcategory
     GAME,
     THEATER,
     BOOK,
-    TV_SHOW;
+    TV_SHOW,
+    INVALID;
 
     public static Subcategory getTypeFromString(String subcategory)
     {
-        Subcategory sub = null;
+        Subcategory sub = INVALID;
         switch(subcategory.toLowerCase())
         {
             case "movies":

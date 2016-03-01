@@ -10,7 +10,7 @@ import java.util.UUID;
  * For example, a label may be "Star Wars" with a value of "Empire Strikes Back"
  * signifying a user favorite (or least favorite) Star Wars movie or soundtrack
  */
-public class BaseDataItem implements IDataItem
+public abstract class BaseDataItem implements IDataItem
 {
 	protected UUID mID;
 	protected String mLabel;

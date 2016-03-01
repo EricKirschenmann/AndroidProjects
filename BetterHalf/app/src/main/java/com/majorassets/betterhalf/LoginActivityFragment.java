@@ -18,12 +18,12 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.Database.DataProvider;
 import com.majorassets.betterhalf.Model.BaseDataItem;
-import com.majorassets.betterhalf.Model.DataItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
-import com.majorassets.betterhalf.Model.LikeableItem;
 import com.majorassets.betterhalf.Model.Subcategory;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,11 +41,13 @@ public class LoginActivityFragment extends Fragment {
     private ProgressBar mLoginProgressBar;
 
     private DataProvider db;
-    private Firebase ref;
+    private Firebase mRootRef;
+    private Firebase mUserRef;
+    private Firebase mUserDataRef;
     private String mEmail;
     private String mPassword;
 
-    private Map<Subcategory, Object> userDataList;
+    private Map<Subcategory, List<BaseDataItem>> userDataList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -73,6 +75,8 @@ public class LoginActivityFragment extends Fragment {
         mPasswordEdit = (EditText) view.findViewById(R.id.password_edit);
         mUsernameEdit = (EditText) view.findViewById(R.id.username_edit);
         mLoginButton = (Button) view.findViewById(R.id.login_btn);
+
+        userDataList = new HashMap<>();
     }
 
     private void createAndControlEvents()
@@ -125,7 +129,7 @@ public class LoginActivityFragment extends Fragment {
 
     private void attemptLogin()
     {
-        ref = db.getFirebaseInstance();
+        mRootRef = db.getFirebaseInstance();
 
         mEmail = mEmailEdit.getText().toString();
         mPassword = mPasswordEdit.getText().toString();
@@ -141,15 +145,17 @@ public class LoginActivityFragment extends Fragment {
     //use Firebase user authentication with an email and password
     private void LoginWithPassword(String email, String password)
     {
-        ref.authWithPassword(email, password, new Firebase.AuthResultHandler()
+        mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler()
         {
             @Override
             public void onAuthenticated(AuthData authData) {
                 GlobalResources.Username = mUsernameEdit.getText().toString();
 
                 //get the reference for this user
-                ref = db.getUserInstance(GlobalResources.Username);
-                GetUserData(ref);
+                mUserRef = db.getUserInstance(GlobalResources.Username);
+                //TODO: create User object from reference
+                mUserDataRef = db.getUserDataInstance();
+                GetUserData(mUserDataRef);
 
                 //start the home activity
                 Intent homeIntent = new Intent(getContext(), HomeActivity.class);
@@ -167,7 +173,7 @@ public class LoginActivityFragment extends Fragment {
     private void CreateNewAccount(final String email, final String password)
     {
         //Attempt to create a new user
-        ref.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>()
+        mRootRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>()
         {
             @Override
             public void onSuccess(Map<String, Object> result)
@@ -193,25 +199,64 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot)
             {
-                String parent = "";
+                String parent;
+                DataSnapshot next;
+                BaseDataItem item;
+                List<BaseDataItem> list;
                 //"drill down" to leaf nodes
                 while(dataSnapshot.hasChildren())
                 {
                     parent = dataSnapshot.getKey();
-                    dataSnapshot = dataSnapshot.getChildren().iterator().next();
+                    next = dataSnapshot.getChildren().iterator().next();
+                    switch (Subcategory.getTypeFromString(parent))
+                    {
+                        //TODO: parse out datasnapshot into separate objects
+                        //TODO: restructure model hierarchy
+                        case MOVIE:
+                            item = new MovieItem(next.getKey(), next.getValue().toString());
+
+                            //if there are no entries for a movie then the list will be null
+                            if(userDataList.get(Subcategory.MOVIE) == null)
+                            {
+                                list = new ArrayList<>(); // use an empty list
+                                list.add(item);
+                                userDataList.put(Subcategory.MOVIE, list); //create new entry for movies
+                            }
+                            else //add to an already define list
+                            {
+                                list = userDataList.get(Subcategory.MOVIE);
+                                list.add(item);
+                            }
+
+                            dataSnapshot = next;
+                            break;
+                        case MUSIC:
+                            dataSnapshot = next;
+                            break;
+                        default:
+                            dataSnapshot = next; //parent was some other folder; keep going
+                            break; //error check here
+                    }
                 }
 
-                //maybe create new reference from parent
-                BaseDataItem item;
-                //TODO: parse out datasnapshot into separate objects
-                switch (Subcategory.getTypeFromString(parent))
-                {
-                    case MOVIE:
-                        item = new MovieItem(dataSnapshot.getKey(), dataSnapshot.getValue().toString());
-                        break;
-                    default:
-                        break; //error check here
-                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError)
+            {
+
+            }
+        });
+    }
+
+    private void GetMovieData(Firebase ref)
+    {
+        ref.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+
             }
 
             @Override

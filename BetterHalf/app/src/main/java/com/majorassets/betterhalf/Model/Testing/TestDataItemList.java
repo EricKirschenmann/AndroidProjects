@@ -1,7 +1,8 @@
-package com.majorassets.betterhalf.Model;
+package com.majorassets.betterhalf.Model.Testing;
 
 import android.content.Context;
 
+import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
 
 import java.util.ArrayList;

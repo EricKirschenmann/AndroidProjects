@@ -15,6 +15,8 @@ public class DataProvider
     public static final String FIREBASE_URL = "https://betterhalf.firebaseio.com/";
     private Firebase instance;
     private Firebase userInstance;
+    private Firebase userDataInstance;
+    private Firebase subcategoryInstance;
 
     //singleton firebase reference
     private DataProvider()
@@ -29,7 +31,20 @@ public class DataProvider
 
     public Firebase getUserInstance(String username)
     {
-        return new Firebase(FIREBASE_URL + "users/" + username);
+        userInstance = new Firebase(FIREBASE_URL + "users/" + username);
+        return userInstance;
+    }
+
+    public Firebase getUserDataInstance()
+    {
+        userDataInstance = new Firebase(userInstance.getRef().toString() + "/" + "data");
+        return userDataInstance;
+    }
+
+    public Firebase getSubcategoryInstance(String subcategory)
+    {
+        subcategoryInstance = new Firebase(FIREBASE_URL + "subCategories/" + subcategory);
+        return subcategoryInstance;
     }
 
     public static DataProvider getDataProvider()
