@@ -1,9 +1,11 @@
 package com.majorassets.betterhalf.Database;
 
 import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.Subcategory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -13,12 +15,10 @@ import java.util.UUID;
 public class DataItemRepository
 {
     private static DataItemRepository sDataItemRepository;
-    private List<BaseDataItem> mDataItems;
+    private Map<Subcategory, List<BaseDataItem>> mDataItems;
 
     private DataItemRepository()
-    {
-        mDataItems = new ArrayList<>();
-    }
+    {}
 
     public static DataItemRepository getDataItemRepository()
     {
@@ -27,17 +27,8 @@ public class DataItemRepository
         return sDataItemRepository;
     }
 
-    public List<BaseDataItem> getDataItems()
+    public Map<Subcategory, List<BaseDataItem>> getDataItems()
     {
         return mDataItems;
-    }
-
-    public BaseDataItem getSingleDataItem(UUID itemID)
-    {
-        for(BaseDataItem item : mDataItems)
-            if(item.getID().equals(itemID))
-                return item;
-
-        return null;
     }
 }
