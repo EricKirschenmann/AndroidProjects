@@ -31,13 +31,13 @@ public class DataProvider
 
     public Firebase getUserInstance(String username)
     {
-        userInstance = new Firebase(FIREBASE_URL + "users/" + username);
+        userInstance = new Firebase(FIREBASE_URL + "users/" + username + "/info");
         return userInstance;
     }
 
-    public Firebase getUserDataInstance()
+    public Firebase getUserDataInstance(String username)
     {
-        userDataInstance = new Firebase(userInstance.getRef().toString() + "/" + "data");
+        userDataInstance = new Firebase(FIREBASE_URL + "users/" + username + "/data");
         return userDataInstance;
     }
 

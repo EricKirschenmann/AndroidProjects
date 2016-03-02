@@ -151,10 +151,8 @@ public class LoginActivityFragment extends Fragment {
             public void onAuthenticated(AuthData authData) {
                 GlobalResources.Username = mUsernameEdit.getText().toString();
 
-                //get the reference for this user
-                mUserRef = db.getUserInstance(GlobalResources.Username);
-                //TODO: create User object from reference
-                mUserDataRef = db.getUserDataInstance();
+                //get the reference for a user's data and parse it out into HashMap
+                mUserDataRef = db.getUserDataInstance(GlobalResources.Username);
                 GetUserData(mUserDataRef);
 
                 //start the home activity
@@ -201,33 +199,20 @@ public class LoginActivityFragment extends Fragment {
             {
                 String parent;
                 DataSnapshot next;
+                Subcategory subcategory;
                 BaseDataItem item;
-                List<BaseDataItem> list;
                 //"drill down" to leaf nodes
                 while(dataSnapshot.hasChildren())
                 {
                     parent = dataSnapshot.getKey();
                     next = dataSnapshot.getChildren().iterator().next();
-                    switch (Subcategory.getTypeFromString(parent))
+                    subcategory = Subcategory.getTypeFromString(parent);
+                    switch (subcategory)
                     {
                         //TODO: parse out datasnapshot into separate objects
-                        //TODO: restructure model hierarchy
                         case MOVIE:
                             item = new MovieItem(next.getKey(), next.getValue().toString());
-
-                            //if there are no entries for a movie then the list will be null
-                            if(userDataList.get(Subcategory.MOVIE) == null)
-                            {
-                                list = new ArrayList<>(); // use an empty list
-                                list.add(item);
-                                userDataList.put(Subcategory.MOVIE, list); //create new entry for movies
-                            }
-                            else //add to an already define list
-                            {
-                                list = userDataList.get(Subcategory.MOVIE);
-                                list.add(item);
-                            }
-
+                            AddDataItem(subcategory, item);
                             dataSnapshot = next;
                             break;
                         case MUSIC:
@@ -238,7 +223,6 @@ public class LoginActivityFragment extends Fragment {
                             break; //error check here
                     }
                 }
-
             }
 
             @Override
@@ -249,21 +233,20 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void GetMovieData(Firebase ref)
+    private void AddDataItem(Subcategory subcategory, BaseDataItem item)
     {
-        ref.addListenerForSingleValueEvent(new ValueEventListener()
+        List<BaseDataItem> list;
+        //if there are no entries for a movie then the list will be null
+        if(userDataList.get(subcategory) == null)
         {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError)
-            {
-
-            }
-        });
+            list = new ArrayList<>(); // use an empty list
+            list.add(item);
+            userDataList.put(subcategory, list); //create new entry for movies
+        }
+        else //add to an already define list
+        {
+            list = userDataList.get(subcategory);
+            list.add(item);
+        }
     }
 }
