@@ -20,6 +20,7 @@
     <!--strings for LoginActivity-->
     <string name="email_prompt">Email:</string>
     <string name="password_prompt">Password:</string>
+    <string name="username_prompt">Username:</string>
     <string name="login_txt">Login</string>
     <string name="newuser_txt">New User?</string>
     <string name="signup_txt">Sign Up</string>

@@ -1,12 +1,12 @@
 package com.majorassets.betterhalf.Model.Entertainment;
 
 
-import com.majorassets.betterhalf.Model.LikeableItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 
 /**
  * Created by dgbla on 12/13/2015.
  */
-public class EntertainmentItem extends LikeableItem
+public class EntertainmentItem extends BaseLikeableItem
 {
 	public EntertainmentItem(String label, String value) {
 		super(label, value);
