@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.majorassets.betterhalf.Model.BaseDataItem;
-import com.majorassets.betterhalf.Model.TestDataItemList;
+import com.majorassets.betterhalf.Model.Testing.TestDataItemList;
 
 import java.util.List;
 

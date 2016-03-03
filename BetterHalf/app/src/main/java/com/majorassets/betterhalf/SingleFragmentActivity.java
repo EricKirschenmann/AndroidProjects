@@ -2,6 +2,7 @@ package com.majorassets.betterhalf;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,12 +10,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 /**
  * Created by dgbla on 12/14/2015.
  */
 public abstract class SingleFragmentActivity extends AppCompatActivity
 {
+	private FloatingActionButton mAddItemFab;
+
 	protected abstract Fragment createFragment();
 
 	@Override
@@ -26,6 +30,19 @@ public abstract class SingleFragmentActivity extends AppCompatActivity
 		//TODO: have toolbar not cover up content on underlying fragment
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
+		//get reference to floating action button in bottom right of screen
+		mAddItemFab = (FloatingActionButton) findViewById(R.id.fab_add_item);
+		mAddItemFab.setOnClickListener(new View.OnClickListener()
+		{
+			//have the click start the edit screen for a single item
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent = new Intent(SingleFragmentActivity.this, SingleItemEditActivity.class);
+				startActivity(intent);
+			}
+		});
 
 		FragmentManager fm = getSupportFragmentManager();
 
@@ -48,7 +65,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
 		Intent intent;
@@ -61,5 +78,5 @@ public abstract class SingleFragmentActivity extends AppCompatActivity
 			default:
 				return super.onOptionsItemSelected(item);
 		}
-	}
+	}*/
 }

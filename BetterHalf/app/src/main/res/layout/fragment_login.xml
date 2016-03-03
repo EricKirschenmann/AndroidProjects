@@ -25,6 +25,12 @@
         android:hint="@string/password_prompt"
         android:inputType="textPassword"/>
 
+    <EditText
+        android:id="@+id/username_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/username_prompt"/>
+
     <Button
         android:id="@+id/login_btn"
         android:layout_width="match_parent"

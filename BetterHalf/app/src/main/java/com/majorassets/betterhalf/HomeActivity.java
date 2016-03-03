@@ -2,14 +2,12 @@ package com.majorassets.betterhalf;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -17,7 +15,7 @@ import com.majorassets.betterhalf.Database.DataProvider;
 
 public class HomeActivity extends AppCompatActivity
 {
-	private DataProvider db = new DataProvider();
+	private DataProvider db = DataProvider.getDataProvider();
 	private Firebase ref;
 
 	@Override
@@ -28,17 +26,7 @@ public class HomeActivity extends AppCompatActivity
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-		fab.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View view) {
-				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-						.setAction("Action", null).show();
-			}
-		});
-
-		ref = db.getInstance();
+		ref = db.getFirebaseInstance();
 
 		ref.addAuthStateListener(new Firebase.AuthStateListener()
 		{
