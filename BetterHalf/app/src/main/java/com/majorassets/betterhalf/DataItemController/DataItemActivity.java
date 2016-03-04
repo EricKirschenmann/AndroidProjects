@@ -29,7 +29,6 @@ public class DataItemActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fragment);
 
-		//TODO: have toolbar not cover up content on underlying fragment
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
@@ -49,7 +48,7 @@ public class DataItemActivity extends AppCompatActivity
 		mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
 		setTitle(mTitle);
 
-		setUpTabPages();
+		setUpTabPageComponents();
 	}
 
 	@Override
@@ -60,7 +59,7 @@ public class DataItemActivity extends AppCompatActivity
 		return true;
 	}
 
-	private void setUpTabPages()
+	private void setUpTabPageComponents()
 	{
 		mDataItemPagerAdapter = new DataItemPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);

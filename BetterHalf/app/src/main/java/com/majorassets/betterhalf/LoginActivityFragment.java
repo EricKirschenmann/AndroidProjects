@@ -21,7 +21,7 @@ import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.DataProvider;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
-import com.majorassets.betterhalf.Model.Subcategory;
+import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
 
@@ -50,7 +50,7 @@ public class LoginActivityFragment extends Fragment {
     private String mPassword;
     private String mUsername;
 
-    private Map<Subcategory, List<BaseDataItem>> userDataList;
+    private Map<SubcategoryType, List<BaseDataItem>> userDataList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -205,14 +205,14 @@ public class LoginActivityFragment extends Fragment {
             {
                 String parent;
                 DataSnapshot next;
-                Subcategory subcategory;
+                SubcategoryType subcategory;
                 BaseDataItem item;
                 //"drill down" to leaf nodes
                 while(dataSnapshot.hasChildren())
                 {
                     parent = dataSnapshot.getKey();
                     next = dataSnapshot.getChildren().iterator().next();
-                    subcategory = Subcategory.GetTypeFromString(parent);
+                    subcategory = SubcategoryType.GetTypeFromString(parent);
                     switch (subcategory)
                     {
                         //TODO: parse out datasnapshot into separate objects
@@ -239,7 +239,7 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void AddDataItem(Subcategory subcategory, BaseDataItem item)
+    private void AddDataItem(SubcategoryType subcategory, BaseDataItem item)
     {
         List<BaseDataItem> list;
         //if there are no entries for a movie then the list will be null

@@ -3,7 +3,7 @@ package com.majorassets.betterhalf.Model;
 /**
  * Created by dgbla on 2/28/2016.
  */
-public enum Subcategory
+public enum SubcategoryType
 {
     MOVIE,
     MUSIC,
@@ -13,9 +13,9 @@ public enum Subcategory
     TV_SHOW,
     INVALID;
 
-    public static Subcategory GetTypeFromString(String subcategory)
+    public static SubcategoryType GetTypeFromString(String subcategory)
     {
-        Subcategory sub = INVALID;
+        SubcategoryType sub = INVALID;
         switch(subcategory.toLowerCase())
         {
             case "movies":
@@ -42,7 +42,7 @@ public enum Subcategory
         return sub;
     }
 
-    public static String GetStringFromType(MainCategory main, Subcategory sub)
+    public static String GetStringFromType(MainCategoryType main, SubcategoryType sub)
     {
         String strType = "invalid";
         switch (main)
@@ -62,7 +62,7 @@ public enum Subcategory
         return strType;
     }
 
-    private static String GetEntertainmentString(Subcategory sub)
+    private static String GetEntertainmentString(SubcategoryType sub)
     {
         String strType = "invalid";
         switch (sub)

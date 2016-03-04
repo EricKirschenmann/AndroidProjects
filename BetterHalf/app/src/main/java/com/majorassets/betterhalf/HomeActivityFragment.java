@@ -14,8 +14,10 @@ import android.widget.Button;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Model.BaseDataItem;
-import com.majorassets.betterhalf.Model.Subcategory;
+import com.majorassets.betterhalf.Model.MainCategory;
+import com.majorassets.betterhalf.Model.SubcategoryType;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public class HomeActivityFragment extends Fragment
 	private Button mHobbyButton;
 	private Button mMedicalButton;
 
-	private Map<Subcategory, List<BaseDataItem>> userDataItems;
+	private Map<SubcategoryType, List<BaseDataItem>> userDataItems;
 
 	public static final String TITLE_EXTRA = "com.majorassets.betterhalf.title";
 
@@ -49,7 +51,7 @@ public class HomeActivityFragment extends Fragment
 			public void onClick(View v) {
 				//TODO: putExtra() data with Intent to determine title of DataItemActivity (i.e., press Food button, "Food" would be title
 				String title = mEntertainmentButton.getText().toString();
-				Intent intent = newIntent(title);
+				Intent intent = newIntent(new MainCategory(title));
 				startActivity(intent);
 			}
 		});
@@ -62,7 +64,7 @@ public class HomeActivityFragment extends Fragment
 			{
 				//TODO: putExtra() for all category buttons
 				String title = mFashionButton.getText().toString();
-				Intent intent = newIntent(title);
+				Intent intent = newIntent(new MainCategory(title));
 				startActivity(intent);
 			}
 		});
@@ -74,7 +76,7 @@ public class HomeActivityFragment extends Fragment
 			public void onClick(View v)
 			{
 				String title = mFoodButton.getText().toString();
-				Intent intent = newIntent(title);
+				Intent intent = newIntent(new MainCategory(title));
 				startActivity(intent);
 			}
 		});
@@ -86,7 +88,7 @@ public class HomeActivityFragment extends Fragment
 			public void onClick(View v)
 			{
 				String title = mHobbyButton.getText().toString();
-				Intent intent = newIntent(title);
+				Intent intent = newIntent(new MainCategory(title));
 				startActivity(intent);
 			}
 		});
@@ -98,7 +100,7 @@ public class HomeActivityFragment extends Fragment
 			public void onClick(View v)
 			{
 				String title = mMedicalButton.getText().toString();
-				Intent intent = newIntent(title);
+				Intent intent = newIntent(new MainCategory(title));
 				startActivity(intent);
 			}
 		});
@@ -117,10 +119,12 @@ public class HomeActivityFragment extends Fragment
 		userDataItems = DataItemRepository.getDataItemRepository().getDataItems();
 	}
 
-	private Intent newIntent(String title)
+	private Intent newIntent(MainCategory mainCategory)
 	{
+		Bundle args = new Bundle();
 		Intent intent = new Intent(getContext(), DataItemActivity.class);
-		intent.putExtra(TITLE_EXTRA, title);
+		args.putSerializable(TITLE_EXTRA, (Serializable)mainCategory);
+		intent.putExtras(args);
 		return intent;
 	}
 }
