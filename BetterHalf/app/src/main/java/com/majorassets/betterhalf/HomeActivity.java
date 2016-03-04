@@ -2,7 +2,6 @@ package com.majorassets.betterhalf;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,7 +14,7 @@ import com.majorassets.betterhalf.Database.DataProvider;
 
 public class HomeActivity extends AppCompatActivity
 {
-	private DataProvider db = DataProvider.getDataProvider();
+	private DataProvider db = new DataProvider();
 	private Firebase ref;
 
 	@Override
@@ -26,7 +25,7 @@ public class HomeActivity extends AppCompatActivity
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		ref = db.getFirebaseInstance();
+		ref = db.getInstance();
 
 		ref.addAuthStateListener(new Firebase.AuthStateListener()
 		{
