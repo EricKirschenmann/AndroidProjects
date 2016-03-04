@@ -3,7 +3,7 @@ package com.majorassets.betterhalf.Model;
 /**
  * Created by dgbla on 1/29/2016.
  */
-public class BaseLikeableItem extends BaseDataItem
+public abstract class BaseLikeableItem extends BaseDataItem
 {
 	protected boolean mIsFavorite;
 	protected boolean mIsLeastFavorite;
