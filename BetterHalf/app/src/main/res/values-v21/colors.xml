@@ -9,11 +9,11 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
-    <color name="entertainmentPrimary">#FF0000</color>
-    <color name="fashionPrimary">#FF4900</color>
-    <color name="otherPrimary">#0007FF</color>
-    <color name="foodPrimary">#00EA0B</color>
-    <color name="medicalPrimary">#FFFF00</color>
+    <color name="entertainmentPrimary">#098276</color>
+    <color name="fashionPrimary">#098276</color>
+    <color name="otherPrimary">#098276</color>
+    <color name="foodPrimary">#098276</color>
+    <color name="medicalPrimary">#098276</color>
 
     <color name="buttonBackground">#FFFFFF</color>
     <color name="generalBackground">#FFFFFF</color>

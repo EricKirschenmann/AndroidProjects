@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.majorassets.betterhalf.DataItemController.DataItemActivity;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.Subcategory;
@@ -32,6 +33,8 @@ public class HomeActivityFragment extends Fragment
 
 	private Map<Subcategory, List<BaseDataItem>> userDataItems;
 
+	public static final String TITLE_EXTRA = "com.majorassets.betterhalf.title";
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
@@ -44,8 +47,10 @@ public class HomeActivityFragment extends Fragment
 		{
 			@Override
 			public void onClick(View v) {
-				//TODO: putExtra() data with Intent to determine title of DataListActivity (i.e., press Food button, "Food" would be title
-				GoToDataListActivity();
+				//TODO: putExtra() data with Intent to determine title of DataItemActivity (i.e., press Food button, "Food" would be title
+				String title = mEntertainmentButton.getText().toString();
+				Intent intent = newIntent(title);
+				startActivity(intent);
 			}
 		});
 
@@ -56,7 +61,9 @@ public class HomeActivityFragment extends Fragment
 			public void onClick(View v)
 			{
 				//TODO: putExtra() for all category buttons
-				GoToDataListActivity();
+				String title = mFashionButton.getText().toString();
+				Intent intent = newIntent(title);
+				startActivity(intent);
 			}
 		});
 
@@ -66,7 +73,9 @@ public class HomeActivityFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				GoToDataListActivity();
+				String title = mFoodButton.getText().toString();
+				Intent intent = newIntent(title);
+				startActivity(intent);
 			}
 		});
 
@@ -76,7 +85,9 @@ public class HomeActivityFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				GoToDataListActivity();
+				String title = mHobbyButton.getText().toString();
+				Intent intent = newIntent(title);
+				startActivity(intent);
 			}
 		});
 
@@ -86,7 +97,9 @@ public class HomeActivityFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				GoToDataListActivity();
+				String title = mMedicalButton.getText().toString();
+				Intent intent = newIntent(title);
+				startActivity(intent);
 			}
 		});
 
@@ -104,9 +117,10 @@ public class HomeActivityFragment extends Fragment
 		userDataItems = DataItemRepository.getDataItemRepository().getDataItems();
 	}
 
-	private void GoToDataListActivity()
+	private Intent newIntent(String title)
 	{
-		Intent intent = new Intent(getContext(), DataListActivity.class);
-		startActivity(intent);
+		Intent intent = new Intent(getContext(), DataItemActivity.class);
+		intent.putExtra(TITLE_EXTRA, title);
+		return intent;
 	}
 }

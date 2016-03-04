@@ -1,9 +1,8 @@
-package com.majorassets.betterhalf;
+package com.majorassets.betterhalf.DataItemController;
 
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.Testing.TestDataItemList;
+import com.majorassets.betterhalf.R;
 
 import java.util.List;
 
@@ -20,11 +20,23 @@ import java.util.List;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DataListActivityFragment extends Fragment
+public class DataItemActivityFragment extends Fragment
 {
-
 	private RecyclerView mRecyclerView;
+	private TextView mTestTextView;
 	private DataItemAdapter mAdapter;
+
+	public static final String ARG_PAGE = "com.majorassets.betterhalf.page";
+
+	//create a new instance of the fragment identifying it by an int argument
+	public static DataItemActivityFragment newInstance(int page)
+	{
+		Bundle args = new Bundle();
+		args.putInt(ARG_PAGE, page);
+		DataItemActivityFragment fragment = new DataItemActivityFragment();
+		fragment.setArguments(args);
+		return fragment;
+	}
 
 	private class DataItemHolder extends RecyclerView.ViewHolder
 	{
@@ -83,10 +95,16 @@ public class DataListActivityFragment extends Fragment
 		Window window = getActivity().getWindow();
 		window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
-		mRecyclerView = (RecyclerView) view.findViewById(R.id.list_recycler_view);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		//mRecyclerView = (RecyclerView) view.findViewById(R.id.list_recycler_view);
+		//mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-		updateUI();
+		//updateUI();
+
+		Bundle args = getArguments();
+
+		mTestTextView = (TextView) view.findViewById(android.R.id.text1);
+		String text = Integer.toString(args.getInt(DataItemActivityFragment.ARG_PAGE));
+		mTestTextView.setText(text);
 
 		return view;
 	}
