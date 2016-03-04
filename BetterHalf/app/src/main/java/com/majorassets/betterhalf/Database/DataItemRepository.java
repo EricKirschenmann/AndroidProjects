@@ -31,4 +31,9 @@ public class DataItemRepository
     {
         return mDataItems;
     }
+
+    public void setDataItems(Map<Subcategory, List<BaseDataItem>> dataItems)
+    {
+        this.mDataItems = dataItems;
+    }
 }

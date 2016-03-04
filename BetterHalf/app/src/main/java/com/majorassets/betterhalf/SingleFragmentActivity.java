@@ -12,9 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-/**
- * Created by dgbla on 12/14/2015.
- */
 public abstract class SingleFragmentActivity extends AppCompatActivity
 {
 	private FloatingActionButton mAddItemFab;

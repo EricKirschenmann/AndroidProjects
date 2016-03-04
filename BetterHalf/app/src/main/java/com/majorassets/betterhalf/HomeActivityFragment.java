@@ -11,6 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.majorassets.betterhalf.Database.DataItemRepository;
+import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.Subcategory;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -23,72 +30,83 @@ public class HomeActivityFragment extends Fragment
 	private Button mHobbyButton;
 	private Button mMedicalButton;
 
+	private Map<Subcategory, List<BaseDataItem>> userDataItems;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+		InitializeComponents(view);
+
 		////////// ENTERTAINMENT //////////
-		mEntertainmentButton = (Button) view.findViewById(R.id.entertainment_button);
 		mEntertainmentButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v) {
 				//TODO: putExtra() data with Intent to determine title of DataListActivity (i.e., press Food button, "Food" would be title
-				Intent intent = new Intent(getContext(), DataListActivity.class);
-				startActivity(intent);
+				GoToDataListActivity();
 			}
 		});
 
 		////////// FASHION //////////
-		mFashionButton = (Button) view.findViewById(R.id.fashion_button);
 		mFashionButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
 				//TODO: putExtra() for all category buttons
-				Intent intent = new Intent(getContext(), DataListActivity.class);
-				startActivity(intent);
+				GoToDataListActivity();
 			}
 		});
 
 		////////// FOOD //////////
-		mFoodButton = (Button) view.findViewById(R.id.food_button);
 		mFoodButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(getContext(), DataListActivity.class);
-				startActivity(intent);
+				GoToDataListActivity();
 			}
 		});
 
 		////////// HOBBY //////////
-		mHobbyButton = (Button) view.findViewById(R.id.hobby_button);
 		mHobbyButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(getContext(), DataListActivity.class);
-				startActivity(intent);
+				GoToDataListActivity();
 			}
 		});
 
 		////////// MEDICAL //////////
-		mMedicalButton = (Button) view.findViewById(R.id.medical_button);
 		mMedicalButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
-				Intent intent = new Intent(getContext(), DataListActivity.class);
-				startActivity(intent);
+				GoToDataListActivity();
 			}
 		});
 
 		return view;
+	}
+
+	private void InitializeComponents(View view)
+	{
+		mEntertainmentButton = (Button) view.findViewById(R.id.entertainment_button);
+		mFashionButton = (Button) view.findViewById(R.id.fashion_button);
+		mFoodButton = (Button) view.findViewById(R.id.food_button);
+		mHobbyButton = (Button) view.findViewById(R.id.hobby_button);
+		mMedicalButton = (Button) view.findViewById(R.id.medical_button);
+
+		userDataItems = DataItemRepository.getDataItemRepository().getDataItems();
+	}
+
+	private void GoToDataListActivity()
+	{
+		Intent intent = new Intent(getContext(), DataListActivity.class);
+		startActivity(intent);
 	}
 }

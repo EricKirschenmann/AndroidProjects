@@ -17,10 +17,12 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.DataProvider;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
 import com.majorassets.betterhalf.Model.Subcategory;
+import com.majorassets.betterhalf.Model.User;
 
 
 import java.util.ArrayList;
@@ -145,6 +147,15 @@ public class LoginActivityFragment extends Fragment {
                 mUserDataRef = db.getUserDataInstance(mUsername);
                 GetUserData(mUserDataRef);
 
+                //TODO: read User object from SQLite
+                User user = new User();
+                user.setEmail(mEmail);
+
+                // THIS IS TEMPORARY TO MOVE FORWARD - must be read from SQLite//
+                DataItemRepository userRepo = DataItemRepository.getDataItemRepository();
+                userRepo.setDataItems(userDataList);
+                user.setDataItemRepository(userRepo);
+
                 //start the home activity
                 Intent homeIntent = new Intent(getContext(), HomeActivity.class);
                 startActivity(homeIntent);
@@ -168,7 +179,12 @@ public class LoginActivityFragment extends Fragment {
             {
                 //TODO: log user in with first-time welcome screen
                 mLoginButton.setText(R.string.login_txt);
-                LoginWithPassword(email, password);
+
+                //TODO: store User object in SQLite
+                User user = new User();
+                user.setEmail(mEmail);
+
+                LoginWithPassword(mEmail, mPassword);
             }
 
             @Override
@@ -196,7 +212,7 @@ public class LoginActivityFragment extends Fragment {
                 {
                     parent = dataSnapshot.getKey();
                     next = dataSnapshot.getChildren().iterator().next();
-                    subcategory = Subcategory.getTypeFromString(parent);
+                    subcategory = Subcategory.GetTypeFromString(parent);
                     switch (subcategory)
                     {
                         //TODO: parse out datasnapshot into separate objects
