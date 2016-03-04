@@ -1,7 +1,6 @@
 package com.majorassets.betterhalf;
 
 
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 
 import com.majorassets.betterhalf.Model.BaseDataItem;
@@ -79,6 +79,9 @@ public class DataListActivityFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		View view =  inflater.inflate(R.layout.fragment_data_list, container, false);
+
+		Window window = getActivity().getWindow();
+		window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
 		mRecyclerView = (RecyclerView) view.findViewById(R.id.list_recycler_view);
 		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
