@@ -1,6 +1,7 @@
 package com.majorassets.betterhalf;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -240,6 +241,7 @@ public class LoginActivityFragment extends Fragment {
     }
 
     /* UTILITY */
+    @NonNull
     private String GenerateUsername(String email)
     {
         return email.substring(0, email.indexOf('@'));
