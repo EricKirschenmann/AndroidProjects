@@ -35,7 +35,6 @@ public class LoginActivityFragment extends Fragment {
     private Button mLoginButton;
     private EditText mEmailEdit;
     private EditText mPasswordEdit;
-    private EditText mUsernameEdit;
     private TextView mNewUserTxt;
     private TextView mResponseTxt;
     private ProgressBar mLoginProgressBar;
@@ -46,6 +45,7 @@ public class LoginActivityFragment extends Fragment {
     private Firebase mUserDataRef;
     private String mEmail;
     private String mPassword;
+    private String mUsername;
 
     private Map<Subcategory, List<BaseDataItem>> userDataList;
 
@@ -60,7 +60,7 @@ public class LoginActivityFragment extends Fragment {
         initializeUIComponents(view);
         Firebase.setAndroidContext(getContext());
         db = DataProvider.getDataProvider();
-        createAndControlEvents();
+        CreateAndControlEvents();
         return view;
     }
 
@@ -73,13 +73,12 @@ public class LoginActivityFragment extends Fragment {
 
         mEmailEdit = (EditText) view.findViewById(R.id.email_edit);
         mPasswordEdit = (EditText) view.findViewById(R.id.password_edit);
-        mUsernameEdit = (EditText) view.findViewById(R.id.username_edit);
         mLoginButton = (Button) view.findViewById(R.id.login_btn);
 
         userDataList = new HashMap<>();
     }
 
-    private void createAndControlEvents()
+    private void CreateAndControlEvents()
     {
         ////// SETTING ONCLICK LISTENERS ////////
         mEmailEdit.setOnClickListener(new View.OnClickListener()
@@ -99,21 +98,12 @@ public class LoginActivityFragment extends Fragment {
             }
         });
 
-        mUsernameEdit.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mUsernameEdit.setText("dillon-blanksma"); //temp for testing
-            }
-        });
-
         mLoginButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                attemptLogin();
+                AttemptLogin();
             }
         });
 
@@ -127,12 +117,13 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void attemptLogin()
+    private void AttemptLogin()
     {
         mRootRef = db.getFirebaseInstance();
 
         mEmail = mEmailEdit.getText().toString();
         mPassword = mPasswordEdit.getText().toString();
+        mUsername = GenerateUsername(mEmail);
 
         //TODO: implement progress bar
         //Attempt Login
@@ -149,10 +140,8 @@ public class LoginActivityFragment extends Fragment {
         {
             @Override
             public void onAuthenticated(AuthData authData) {
-                GlobalResources.Username = mUsernameEdit.getText().toString();
-
                 //get the reference for a user's data and parse it out into HashMap
-                mUserDataRef = db.getUserDataInstance(GlobalResources.Username);
+                mUserDataRef = db.getUserDataInstance(mUsername);
                 GetUserData(mUserDataRef);
 
                 //start the home activity
@@ -248,5 +237,11 @@ public class LoginActivityFragment extends Fragment {
             list = userDataList.get(subcategory);
             list.add(item);
         }
+    }
+
+    /* UTILITY */
+    private String GenerateUsername(String email)
+    {
+        return email.substring(0, email.indexOf('@'));
     }
 }
