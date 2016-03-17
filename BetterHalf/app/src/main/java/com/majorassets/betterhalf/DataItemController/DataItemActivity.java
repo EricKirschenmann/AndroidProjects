@@ -45,8 +45,8 @@ public class DataItemActivity extends AppCompatActivity
 			}
 		});
 
-		mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
-		setTitle(mTitle);
+		//mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
+		//setTitle(mTitle);
 
 		setUpTabPageComponents();
 	}

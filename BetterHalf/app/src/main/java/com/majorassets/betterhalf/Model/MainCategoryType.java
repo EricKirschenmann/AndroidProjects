@@ -9,5 +9,20 @@ public enum MainCategoryType
     FASHION,
     FOOD,
     HOBBY,
-    MEDICAL
+    MEDICAL,
+    INVALID;
+
+    public static MainCategoryType getTypeFromString(String mainCategory)
+    {
+        mainCategory = "Invalid";
+        switch(mainCategory)
+        {
+            case "entertainment":
+                return MainCategoryType.ENTERTAINMENT;
+            case "fashion":
+                return MainCategoryType.FASHION;
+            default:
+                return MainCategoryType.INVALID;
+        }
+    }
 }

@@ -13,36 +13,36 @@ public enum SubcategoryType
     TV_SHOW,
     INVALID;
 
-    public static SubcategoryType GetTypeFromString(String subcategory)
+    public static SubcategoryType getTypeFromString(String subcategory)
+{
+    SubcategoryType sub = INVALID;
+    switch(subcategory.toLowerCase())
     {
-        SubcategoryType sub = INVALID;
-        switch(subcategory.toLowerCase())
-        {
-            case "movies":
-                sub = MOVIE;
-                break;
-            case "music":
-                sub = MUSIC;
-                break;
-            case "books":
-                sub = BOOK;
-                break;
-            case "games":
-                sub = GAME;
-                break;
-            case "theater":
-                sub = THEATER;
-                break;
-            case "tvShows":
-                sub = TV_SHOW;
-                break;
-            default:
-                break; //invalid type
-        }
-        return sub;
+        case "movies":
+            sub = MOVIE;
+            break;
+        case "music":
+            sub = MUSIC;
+            break;
+        case "books":
+            sub = BOOK;
+            break;
+        case "games":
+            sub = GAME;
+            break;
+        case "theater":
+            sub = THEATER;
+            break;
+        case "tvShows":
+            sub = TV_SHOW;
+            break;
+        default:
+            break; //invalid type
     }
+    return sub;
+}
 
-    public static String GetStringFromType(MainCategoryType main, SubcategoryType sub)
+    public static String getStringFromType(MainCategoryType main, SubcategoryType sub)
     {
         String strType = "invalid";
         switch (main)

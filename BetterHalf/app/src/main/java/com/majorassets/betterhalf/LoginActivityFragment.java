@@ -63,7 +63,7 @@ public class LoginActivityFragment extends Fragment {
         initializeUIComponents(view);
         Firebase.setAndroidContext(getContext());
         db = DataProvider.getDataProvider();
-        CreateAndControlEvents();
+        createAndControlEvents();
         return view;
     }
 
@@ -81,7 +81,8 @@ public class LoginActivityFragment extends Fragment {
         userDataList = new HashMap<>();
     }
 
-    private void CreateAndControlEvents()
+    //establish event listeners as anonymous inner classes
+    private void createAndControlEvents()
     {
         ////// SETTING ONCLICK LISTENERS ////////
         mEmailEdit.setOnClickListener(new View.OnClickListener()
@@ -106,7 +107,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                AttemptLogin();
+                attemptLogin();
             }
         });
 
@@ -120,24 +121,24 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void AttemptLogin()
+    private void attemptLogin()
     {
         mRootRef = db.getFirebaseInstance();
 
         mEmail = mEmailEdit.getText().toString();
         mPassword = mPasswordEdit.getText().toString();
-        mUsername = GenerateUsername(mEmail);
+        mUsername = generateUsername(mEmail);
 
         //TODO: implement progress bar
         //Attempt Login
         if(mLoginButton.getText().toString().equals("Login"))
-            LoginWithPassword(mEmail, mPassword);
+            loginWithPassword(mEmail, mPassword);
         else if (mLoginButton.getText().toString().equals("Sign Up"))
-            CreateNewAccount(mEmail, mPassword);
+            createNewAccount(mEmail, mPassword);
     }
 
     //use Firebase user authentication with an email and password
-    private void LoginWithPassword(String email, String password)
+    private void loginWithPassword(String email, String password)
     {
         mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler()
         {
@@ -145,7 +146,7 @@ public class LoginActivityFragment extends Fragment {
             public void onAuthenticated(AuthData authData) {
                 //get the reference for a user's data and parse it out into HashMap
                 mUserDataRef = db.getUserDataInstance(mUsername);
-                GetUserData(mUserDataRef);
+                getUserData(mUserDataRef);
 
                 //TODO: read User object from SQLite
                 User user = new User();
@@ -169,7 +170,7 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void CreateNewAccount(final String email, final String password)
+    private void createNewAccount(final String email, final String password)
     {
         //Attempt to create a new user
         mRootRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>()
@@ -184,7 +185,7 @@ public class LoginActivityFragment extends Fragment {
                 User user = new User();
                 user.setEmail(mEmail);
 
-                LoginWithPassword(mEmail, mPassword);
+                loginWithPassword(mEmail, mPassword);
             }
 
             @Override
@@ -196,7 +197,7 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void GetUserData(Firebase ref)
+    private void getUserData(Firebase ref)
     {
         ref.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -212,13 +213,13 @@ public class LoginActivityFragment extends Fragment {
                 {
                     parent = dataSnapshot.getKey();
                     next = dataSnapshot.getChildren().iterator().next();
-                    subcategory = SubcategoryType.GetTypeFromString(parent);
+                    subcategory = SubcategoryType.getTypeFromString(parent);
                     switch (subcategory)
                     {
                         //TODO: parse out datasnapshot into separate objects
                         case MOVIE:
                             item = new MovieItem(next.getKey(), next.getValue().toString());
-                            AddDataItem(subcategory, item);
+                            addDataItem(subcategory, item);
                             dataSnapshot = next;
                             break;
                         case MUSIC:
@@ -239,7 +240,7 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void AddDataItem(SubcategoryType subcategory, BaseDataItem item)
+    private void addDataItem(SubcategoryType subcategory, BaseDataItem item)
     {
         List<BaseDataItem> list;
         //if there are no entries for a movie then the list will be null
@@ -258,7 +259,11 @@ public class LoginActivityFragment extends Fragment {
 
     /* UTILITY */
     @NonNull
-    private String GenerateUsername(String email)
+    /**
+     * Derive a username from a user's email address
+     * TODO: issue: different email providers could yield the same username
+     */
+    private String generateUsername(String email)
     {
         return email.substring(0, email.indexOf('@'));
     }

@@ -44,9 +44,9 @@ public class DataProvider
     }
 
     //return all the attributes of the subcategories
-    public Firebase getSubcategoryInstance(String subcategory)
+    public Firebase getSubcategories(String mainCategory)
     {
-        subcategoryInstance = new Firebase(FIREBASE_URL + "subCategories/" + subcategory);
+        subcategoryInstance = new Firebase(FIREBASE_URL + "mainCategories/" + mainCategory + "/subCategories");
         return subcategoryInstance;
     }
 
