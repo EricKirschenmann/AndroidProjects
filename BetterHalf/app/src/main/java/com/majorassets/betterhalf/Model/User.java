@@ -11,7 +11,7 @@ public class User
 {
     private String firstName;
     private String lastName;
-    private String username;
+    private String email;
 
     private DataItemRepository mDataItemRepository;
 
@@ -19,12 +19,18 @@ public class User
     {
         firstName = "John";
         lastName = "Doe";
-        username = "johndoe";
+        email = "jdoe@test.com";
         mDataItemRepository = DataItemRepository.getDataItemRepository();
     }
 
-    public User(String firstName, String lastName){
+    public String getEmail()
+    {
+        return email;
+    }
 
+    public void setEmail(String email)
+    {
+        this.email = email;
     }
 
     public String getFirstName()
@@ -45,16 +51,6 @@ public class User
     public void setLastName(String lastName)
     {
         this.lastName = lastName;
-    }
-
-    public String getEmail()
-    {
-        return username;
-    }
-
-    public void setUsername(String username)
-    {
-        this.username = username;
     }
 
     public DataItemRepository getDataItemRepository()

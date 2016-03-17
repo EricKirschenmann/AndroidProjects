@@ -29,21 +29,24 @@ public class DataProvider
         return instance;
     }
 
+    //return the info for a user
     public Firebase getUserInstance(String username)
     {
-        userInstance = new Firebase(FIREBASE_URL + "users/" + username);
+        userInstance = new Firebase(FIREBASE_URL + "users/" + username + "/info");
         return userInstance;
     }
 
-    public Firebase getUserDataInstance()
+    //return the data for a user
+    public Firebase getUserDataInstance(String username)
     {
-        userDataInstance = new Firebase(userInstance.getRef().toString() + "/" + "data");
+        userDataInstance = new Firebase(FIREBASE_URL + "users/" + username + "/data");
         return userDataInstance;
     }
 
-    public Firebase getSubcategoryInstance(String subcategory)
+    //return all the attributes of the subcategories
+    public Firebase getSubcategories(String mainCategory)
     {
-        subcategoryInstance = new Firebase(FIREBASE_URL + "subCategories/" + subcategory);
+        subcategoryInstance = new Firebase(FIREBASE_URL + "mainCategories/" + mainCategory + "/subCategories");
         return subcategoryInstance;
     }
 
