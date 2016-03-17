@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.majorassets.betterhalf.Database.DataProvider;
+import com.majorassets.betterhalf.Model.User;
 
 public class HomeActivity extends AppCompatActivity
 {
@@ -44,7 +45,13 @@ public class HomeActivity extends AppCompatActivity
 				}
 			}
 		});
+
+		Firebase ryanRef = ref.child("users").child("ryananema");
+		User ryan = new User("Ryan", "Anema");
+		ryanRef.setValue(ryan);
+		ryanRef.child("data");
 	}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu)

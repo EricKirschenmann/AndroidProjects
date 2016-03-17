@@ -19,7 +19,7 @@ public class DataProvider
     private Firebase subcategoryInstance;
 
     //singleton firebase reference
-    private DataProvider()
+    public DataProvider()
     {
         instance = new Firebase(FIREBASE_URL);
     }
@@ -52,5 +52,9 @@ public class DataProvider
         if(sDataProvider == null)
             return new DataProvider();
         return sDataProvider;
+    }
+
+    public Firebase getInstance() {
+        return instance;
     }
 }

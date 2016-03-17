@@ -1,8 +1,8 @@
 package com.majorassets.betterhalf;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,6 @@ import com.majorassets.betterhalf.Database.DataProvider;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
 import com.majorassets.betterhalf.Model.Subcategory;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +45,7 @@ public class LoginActivityFragment extends Fragment {
     private Firebase mUserDataRef;
     private String mEmail;
     private String mPassword;
+    private String mUsername;
 
     private Map<Subcategory, List<BaseDataItem>> userDataList;
 
@@ -133,6 +133,7 @@ public class LoginActivityFragment extends Fragment {
 
         mEmail = mEmailEdit.getText().toString();
         mPassword = mPasswordEdit.getText().toString();
+        mUsername = GenerateUsername( mEmail );
 
         //TODO: implement progress bar
         //Attempt Login
@@ -149,10 +150,9 @@ public class LoginActivityFragment extends Fragment {
         {
             @Override
             public void onAuthenticated(AuthData authData) {
-                GlobalResources.Username = mUsernameEdit.getText().toString();
 
                 //get the reference for this user
-                mUserRef = db.getUserInstance(GlobalResources.Username);
+                mUserRef = db.getUserInstance(mUsername);
                 //TODO: create User object from reference
                 mUserDataRef = db.getUserDataInstance();
                 GetUserData(mUserDataRef);
@@ -173,19 +173,25 @@ public class LoginActivityFragment extends Fragment {
     private void CreateNewAccount(final String email, final String password)
     {
         //Attempt to create a new user
-        mRootRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>()
-        {
+        mRootRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
-            public void onSuccess(Map<String, Object> result)
-            {
+            public void onSuccess(Map<String, Object> result) {
+
+                mUserRef = db.getUserInstance(mUsername);
+
+                Map<String, String> categories = new HashMap<String, String>();
+                categories.put("data", "");
+                categories.put("info", "");
+                mUserRef.setValue(categories);
+
+
                 //TODO: log user in with first-time welcome screen
                 mLoginButton.setText(R.string.login_txt);
                 LoginWithPassword(email, password);
             }
 
             @Override
-            public void onError(FirebaseError firebaseError)
-            {
+            public void onError(FirebaseError firebaseError) {
                 //TODO: handle account creation errors
                 mResponseTxt.setText(firebaseError.getMessage());
             }
@@ -194,35 +200,29 @@ public class LoginActivityFragment extends Fragment {
 
     private void GetUserData(Firebase ref)
     {
-        ref.addListenerForSingleValueEvent(new ValueEventListener()
-        {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 String parent;
                 DataSnapshot next;
                 BaseDataItem item;
                 List<BaseDataItem> list;
                 //"drill down" to leaf nodes
-                while(dataSnapshot.hasChildren())
-                {
+                while (dataSnapshot.hasChildren()) {
                     parent = dataSnapshot.getKey();
                     next = dataSnapshot.getChildren().iterator().next();
-                    switch (Subcategory.getTypeFromString(parent))
-                    {
+                    switch (Subcategory.getTypeFromString(parent)) {
                         //TODO: parse out datasnapshot into separate objects
                         //TODO: restructure model hierarchy
                         case MOVIE:
                             item = new MovieItem(next.getKey(), next.getValue().toString());
 
                             //if there are no entries for a movie then the list will be null
-                            if(userDataList.get(Subcategory.MOVIE) == null)
-                            {
+                            if (userDataList.get(Subcategory.MOVIE) == null) {
                                 list = new ArrayList<>(); // use an empty list
                                 list.add(item);
                                 userDataList.put(Subcategory.MOVIE, list); //create new entry for movies
-                            }
-                            else //add to an already define list
+                            } else //add to an already define list
                             {
                                 list = userDataList.get(Subcategory.MOVIE);
                                 list.add(item);
@@ -265,5 +265,10 @@ public class LoginActivityFragment extends Fragment {
 
             }
         });
+    }
+
+    private String GenerateUsername(String email)
+    {
+        return email.substring(0, email.indexOf('@'));
     }
 }
