@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,8 @@ public class HomeActivityFragment extends Fragment
 	private Button mHobbyButton;
 	private Button mMedicalButton;
 
+	private CardView mEntertainmentCardView;
+
 	private Map<SubcategoryType, List<BaseDataItem>> userDataItems;
 	private DataProvider db;
 
@@ -52,7 +55,20 @@ public class HomeActivityFragment extends Fragment
 
 		initializeComponents(view);
 
-
+		mEntertainmentCardView = (CardView) view.findViewById(R.id.entertainment_card_view);
+		mEntertainmentCardView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				//String title = mEntertainmentButton.getText().toString();
+				String title = "Entertainment";
+				MainCategoryType type = MainCategoryType.getTypeFromString(title);
+				Intent intent = newIntent(new MainCategory(type));
+				startActivity(intent);
+			}
+		});
+/*
 		////////// ENTERTAINMENT //////////
 		mEntertainmentButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -60,7 +76,8 @@ public class HomeActivityFragment extends Fragment
 			public void onClick(View v) {
 				//TODO: putExtra() data with Intent to determine title of DataItemActivity (i.e., press Food button, "Food" would be title
 				String title = mEntertainmentButton.getText().toString();
-				Intent intent = newIntent(new MainCategory(title));
+				MainCategoryType type = MainCategoryType.getTypeFromString(title);
+				Intent intent = newIntent(new MainCategory(type));
 				startActivity(intent);
 			}
 		});
@@ -73,7 +90,8 @@ public class HomeActivityFragment extends Fragment
 			{
 				//TODO: putExtra() for all category buttons
 				String title = mFashionButton.getText().toString();
-				Intent intent = newIntent(new MainCategory(title));
+				MainCategoryType type = MainCategoryType.getTypeFromString(title);
+				Intent intent = newIntent(new MainCategory(type));
 				startActivity(intent);
 			}
 		});
@@ -85,7 +103,8 @@ public class HomeActivityFragment extends Fragment
 			public void onClick(View v)
 			{
 				String title = mFoodButton.getText().toString();
-				Intent intent = newIntent(new MainCategory(title));
+				MainCategoryType type = MainCategoryType.getTypeFromString(title);
+				Intent intent = newIntent(new MainCategory(type));
 				startActivity(intent);
 			}
 		});
@@ -97,7 +116,8 @@ public class HomeActivityFragment extends Fragment
 			public void onClick(View v)
 			{
 				String title = mHobbyButton.getText().toString();
-				Intent intent = newIntent(new MainCategory(title));
+				MainCategoryType type = MainCategoryType.getTypeFromString(title);
+				Intent intent = newIntent(new MainCategory(type));
 				startActivity(intent);
 			}
 		});
@@ -109,30 +129,40 @@ public class HomeActivityFragment extends Fragment
 			public void onClick(View v)
 			{
 				String title = mMedicalButton.getText().toString();
-				Intent intent = newIntent(new MainCategory(title));
+				MainCategoryType type = MainCategoryType.getTypeFromString(title);
+				Intent intent = newIntent(new MainCategory(type));
 				startActivity(intent);
 			}
 		});
-
+*/
 		return view;
 	}
 
 	private void initializeComponents(View view)
 	{
-		mEntertainmentButton = (Button) view.findViewById(R.id.entertainment_button);
+		/*mEntertainmentButton = (Button) view.findViewById(R.id.entertainment_button);
 		mFashionButton = (Button) view.findViewById(R.id.fashion_button);
 		mFoodButton = (Button) view.findViewById(R.id.food_button);
 		mHobbyButton = (Button) view.findViewById(R.id.hobby_button);
-		mMedicalButton = (Button) view.findViewById(R.id.medical_button);
+		mMedicalButton = (Button) view.findViewById(R.id.medical_button);*/
 
 		userDataItems = DataItemRepository.getDataItemRepository().getDataItems();
 		db = DataProvider.getDataProvider();
 
 		//right now have to call this 5 times - TODO: make dynamic
-		String mainCategory = mEntertainmentButton.getText().toString().toLowerCase();
+		//String mainCategory = mEntertainmentButton.getText().toString().toLowerCase();
+		String mainCategory = "Entertainment";
 		getSubcategoryData(db.getSubcategories(mainCategory));
 	}
 
+	private void setMainCategorySubcategories(MainCategory main)
+	{
+		for(Subcategory subcategory : GlobalResources.Subcategories)
+		{
+			if(subcategory.getMainType().equals(main.getType()))
+				main.getSubcategories().add(subcategory);
+		}
+	}
 
 	private void getSubcategoryData(Firebase ref)
 	{
@@ -141,15 +171,22 @@ public class HomeActivityFragment extends Fragment
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
+				Subcategory subcategory;
 				if (dataSnapshot.hasChildren())
 				{
+					//should only have one child
 					for (DataSnapshot child : dataSnapshot.getChildren())
 					{
-						Subcategory subcategory = new Subcategory();
-						subcategory.setType(SubcategoryType.getTypeFromString(child.getKey()));
-						subcategory.setMainType(MainCategoryType.getTypeFromString(dataSnapshot.getKey()));
-						//set global data
-						GlobalResources.Subcategories.add(subcategory);
+						String mainCategory = dataSnapshot.getKey();
+						//next level should be subcategories
+						for (DataSnapshot subChild : child.getChildren())
+						{
+							subcategory = new Subcategory();
+							subcategory.setType(SubcategoryType.getTypeFromString(subChild.getKey().toLowerCase()));
+							subcategory.setMainType(MainCategoryType.getTypeFromString(mainCategory.toLowerCase()));
+							//set global data
+							GlobalResources.Subcategories.add(subcategory);
+						}
 					}
 				}
 			}
@@ -166,8 +203,8 @@ public class HomeActivityFragment extends Fragment
 	{
 		Bundle args = new Bundle();
 		Intent intent = new Intent(getContext(), DataItemActivity.class);
-		args.putSerializable(TITLE_EXTRA, (Serializable)mainCategory);
-		intent.putExtras(args);
+		//args.putSerializable(TITLE_EXTRA, (Serializable)mainCategory);
+		//intent.putExtras(args);
 		return intent;
 	}
 }

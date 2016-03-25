@@ -15,6 +15,12 @@
     <color name="foodPrimary">#098276</color>
     <color name="medicalPrimary">#098276</color>
 
+    <color name="colorEntertainment">#9E0000</color>
+    <color name="colorFood">#1D3557</color>
+    <color name="colorHobby">#386580</color>
+    <color name="colorMedical">#70C288</color>
+    <color name="colorOther">#DB5600</color>
+
     <color name="buttonBackground">#FFFFFF</color>
     <color name="generalBackground">#FFFFFF</color>
 

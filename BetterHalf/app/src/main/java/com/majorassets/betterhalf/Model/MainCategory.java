@@ -16,35 +16,35 @@ import java.util.List;
  */
 public class MainCategory
 {
-    private String mName;
-    private List<SubcategoryType> mSubcategories;
+    private MainCategoryType type;
+    private List<Subcategory> mSubcategories;
     private Firebase ref;
 
-    public MainCategory(String name)
+    public MainCategory(MainCategoryType type)
     {
-        mName = name;
+        this.type = type;
         mSubcategories = new ArrayList<>();
     }
 
     /*
     GETTERS and SETTERS
      */
-    public String getName()
+    public MainCategoryType getType()
     {
-        return mName;
+        return type;
     }
 
-    public void setName(String name)
+    public void setName(MainCategoryType type)
     {
-        mName = name;
+        this.type = type;
     }
 
-    public List<SubcategoryType> getSubcategories()
+    public List<Subcategory> getSubcategories()
     {
         return mSubcategories;
     }
 
-    public void setSubcategories(List<SubcategoryType> subcategories)
+    public void setSubcategories(List<Subcategory> subcategories)
     {
         mSubcategories = subcategories;
     }

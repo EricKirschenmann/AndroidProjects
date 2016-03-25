@@ -14,7 +14,6 @@ public enum MainCategoryType
 
     public static MainCategoryType getTypeFromString(String mainCategory)
     {
-        mainCategory = "Invalid";
         switch(mainCategory)
         {
             case "entertainment":
