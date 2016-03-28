@@ -11,86 +11,90 @@ public enum SubcategoryType
     THEATER,
     BOOK,
     TV_SHOW,
+    CLOTHING,
+    SHOE,
+    ACCESSORY,
+    JEWELRY,
     INVALID;
 
     public static SubcategoryType getTypeFromString(String subcategory)
 {
-    SubcategoryType sub = INVALID;
     switch(subcategory.toLowerCase())
     {
         case "movies":
-            sub = MOVIE;
-            break;
+            return MOVIE;
         case "music":
-            sub = MUSIC;
-            break;
+            return MUSIC;
         case "books":
-            sub = BOOK;
-            break;
+            return BOOK;
         case "games":
-            sub = GAME;
-            break;
+            return GAME;
         case "theater":
-            sub = THEATER;
-            break;
-        case "tvShows":
-            sub = TV_SHOW;
-            break;
+            return THEATER;
+        case "tvshows":
+            return TV_SHOW;
         default:
-            break; //invalid type
+            return INVALID;
     }
-    return sub;
 }
 
     public static String getStringFromType(MainCategoryType main, SubcategoryType sub)
     {
-        String strType = "invalid";
         switch (main)
         {
             case ENTERTAINMENT:
-                GetEntertainmentString(sub);
-                break;
+                return GetEntertainmentString(sub);
             case FASHION:
-                break;
+                return GetFashionString(sub);
             case FOOD:
                 break;
             case HOBBY:
                 break;
             case MEDICAL:
                 break;
+            default:
+                return "invalid";
         }
-        return strType;
+        return "invalid";
     }
 
     private static String GetEntertainmentString(SubcategoryType sub)
     {
-        String strType = "invalid";
         switch (sub)
         {
             case MOVIE:
-                strType = "movies";
-                break;
+                return "Movies";
             case MUSIC:
-                strType = "music";
-                break;
+                return "Music";
             case BOOK:
-                strType = "books";
-                break;
+                return "Books";
             case GAME:
-                strType = "games";
-                break;
+                return "Games";
             case THEATER:
-                strType = "theater";
-                break;
+                return "Theater";
             case TV_SHOW:
-                strType = "tvShows";
-                break;
+                return "TV Shows";
             default:
-                break;
+                return "invalid";
         }
-        return strType;
     }
 
+    private static String GetFashionString(SubcategoryType sub)
+    {
+        switch (sub)
+        {
+            case CLOTHING:
+                return "Clothing";
+            case SHOE:
+                return "Shoes";
+            case ACCESSORY:
+                return "Accessories";
+            case JEWELRY:
+                return "Jewelry";
+            default:
+                return "invalid";
+        }
+    }
 }
 
 

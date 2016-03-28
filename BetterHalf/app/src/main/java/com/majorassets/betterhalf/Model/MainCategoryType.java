@@ -14,7 +14,7 @@ public enum MainCategoryType
 
     public static MainCategoryType getTypeFromString(String mainCategory)
     {
-        switch(mainCategory)
+        switch(mainCategory.toLowerCase())
         {
             case "entertainment":
                 return MainCategoryType.ENTERTAINMENT;
