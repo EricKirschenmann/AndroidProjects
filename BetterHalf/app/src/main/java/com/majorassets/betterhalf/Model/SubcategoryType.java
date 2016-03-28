@@ -5,90 +5,204 @@ package com.majorassets.betterhalf.Model;
  */
 public enum SubcategoryType
 {
+    //ENTERTAINMENT
     MOVIE,
     MUSIC,
     GAME,
     THEATER,
     BOOK,
     TV_SHOW,
+
+    //FASHION
+    CLOTHING,
+    SHOE,
+    ACCESSORY,
+    JEWELRY,
+
+    //FOOD
+    RESTAURANT,
+    DRINK,
+    ENTREE,
+    SIDE,
+    SNACK,
+
+    //HOBBY
+    INDOOR,
+    OUTDOOR,
+    SPORT,
+
+    //MEDICAL
+    ALLERGY,
+    ILLNESS,
+    PHOBIA,
+    MEDICATION,
+
     INVALID;
 
     public static SubcategoryType getTypeFromString(String subcategory)
-{
-    SubcategoryType sub = INVALID;
-    switch(subcategory.toLowerCase())
     {
-        case "movies":
-            sub = MOVIE;
-            break;
-        case "music":
-            sub = MUSIC;
-            break;
-        case "books":
-            sub = BOOK;
-            break;
-        case "games":
-            sub = GAME;
-            break;
-        case "theater":
-            sub = THEATER;
-            break;
-        case "tvShows":
-            sub = TV_SHOW;
-            break;
-        default:
-            break; //invalid type
+        switch(subcategory.toLowerCase())
+        {
+            //ENTERTAINMENT
+            case "movies":
+                return MOVIE;
+            case "music":
+                return MUSIC;
+            case "books":
+                return BOOK;
+            case "games":
+                return GAME;
+            case "theater":
+                return THEATER;
+            case "tvshows":
+                return TV_SHOW;
+            //FASHION
+            case "accessories":
+                return ACCESSORY;
+            case "clothing":
+                return CLOTHING;
+            case "jewelry":
+                return JEWELRY;
+            case "shoes":
+                return SHOE;
+            //FOOD
+            case "restaurants":
+                return RESTAURANT;
+            case "drinks":
+                return DRINK;
+            case "entrees":
+                return ENTREE;
+            case "sides":
+                return SIDE;
+            case "snacks":
+                return SNACK;
+            //HOBBY
+            case "indoor":
+                return INDOOR;
+            case "outdoor":
+                return OUTDOOR;
+            case "sports":
+                return SPORT;
+            //MEDICAL
+            case "allergies":
+                return ALLERGY;
+            case "illnesses":
+                return ILLNESS;
+            case "phobias":
+                return PHOBIA;
+            case "medication":
+                return MEDICATION;
+            default:
+                return INVALID;
+        }
     }
-    return sub;
-}
 
     public static String getStringFromType(MainCategoryType main, SubcategoryType sub)
     {
-        String strType = "invalid";
         switch (main)
         {
             case ENTERTAINMENT:
-                GetEntertainmentString(sub);
-                break;
+                return getEntertainmentString(sub);
             case FASHION:
-                break;
+                return getFashionString(sub);
             case FOOD:
-                break;
+                return getFoodString(sub);
             case HOBBY:
-                break;
+                return getHobbyString(sub);
             case MEDICAL:
-                break;
+                return getMedicalString(sub);
+            default:
+                return "invalid";
         }
-        return strType;
     }
 
-    private static String GetEntertainmentString(SubcategoryType sub)
+    private static String getEntertainmentString(SubcategoryType sub)
     {
-        String strType = "invalid";
         switch (sub)
         {
             case MOVIE:
-                strType = "movies";
-                break;
+                return "Movies";
             case MUSIC:
-                strType = "music";
-                break;
+                return "Music";
             case BOOK:
-                strType = "books";
-                break;
+                return "Books";
             case GAME:
-                strType = "games";
-                break;
+                return "Games";
             case THEATER:
-                strType = "theater";
-                break;
+                return "Theater";
             case TV_SHOW:
-                strType = "tvShows";
-                break;
+                return "TV Shows";
             default:
-                break;
+                return "invalid";
         }
-        return strType;
+    }
+
+    private static String getFashionString(SubcategoryType sub)
+    {
+        switch (sub)
+        {
+            case CLOTHING:
+                return "Clothing";
+            case SHOE:
+                return "Shoes";
+            case ACCESSORY:
+                return "Accessories";
+            case JEWELRY:
+                return "Jewelry";
+            default:
+                return "invalid";
+        }
+    }
+
+    private static String getFoodString(SubcategoryType sub)
+    {
+        switch(sub)
+        {
+            case RESTAURANT:
+                return "Restaurants";
+            case DRINK:
+                return "Drinks";
+            case SIDE:
+                return "Sides";
+            case ENTREE:
+                return "Entrees";
+            case SNACK:
+                return "Snacks";
+            default:
+                return "invalid";
+        }
+    }
+
+    private static String getHobbyString(SubcategoryType sub)
+    {
+        switch (sub)
+        {
+            case INDOOR:
+                return "Indoor Hobbies";
+            case OUTDOOR:
+                return "Outdoor Hobbies";
+            case SPORT:
+                return "Sports Teams";
+            default:
+                return "invalid";
+        }
+    }
+
+    private static String getMedicalString(SubcategoryType sub)
+    {
+        switch (sub)
+        {
+            case ALLERGY:
+                return "Allergies";
+            case ILLNESS:
+                return "Illnesses";
+            case PHOBIA:
+                return "Phobias";
+            case MEDICATION:
+                return "Medications";
+            default:
+                return "invalid";
+        }
     }
 
 }

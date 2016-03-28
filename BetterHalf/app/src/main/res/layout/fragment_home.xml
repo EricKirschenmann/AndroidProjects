@@ -14,73 +14,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!--<Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/entertainment_button"
-            android:textColor="@color/entertainmentPrimary"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:id="@+id/entertainment_button"
-            android:drawableLeft="@mipmap/ic_launcher"
-            android:background="#ffffff"
-            android:padding="10dp"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/fashion_button"
-            android:textColor="@color/fashionPrimary"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:id="@+id/fashion_button"
-            android:drawableLeft="@mipmap/ic_launcher"
-            android:background="#ffffff"
-            android:padding="10dp">
-        </Button>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/food_button"
-            android:textColor="@color/foodPrimary"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:id="@+id/food_button"
-            android:drawableLeft="@mipmap/ic_launcher"
-            android:background="#ffffff"
-            android:padding="10dp">
-        </Button>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/hobby_button"
-            android:textColor="@color/foodPrimary"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:id="@+id/hobby_button"
-            android:drawableLeft="@mipmap/ic_launcher"
-            android:background="#ffffff"
-            android:padding="10dp">
-        </Button>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/medical_button"
-            android:textColor="@color/foodPrimary"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:id="@+id/medical_button"
-            android:drawableLeft="@mipmap/ic_launcher"
-            android:background="#ffffff"
-            android:padding="10dp">
-        </Button>-->
-
+        <!--Entertainment-->
         <android.support.v7.widget.CardView
             android:id="@+id/entertainment_card_view"
             card_view:cardBackgroundColor="@color/colorEntertainment"
@@ -92,32 +29,32 @@
             card_view:cardCornerRadius="5dp"
             android:clickable="true"
             android:foreground="?android:attr/selectableItemBackground">
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
+                <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:id="@+id/entertainment_txt"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/entertainment_button"
+                    android:layout_centerInParent="true"/>
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
                     android:src="@drawable/ic_menu_slideshow"
                     android:tint="#FFFFFF"
                     android:scaleType="fitCenter"/>
-
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:textColor="#FFFFFF"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Entertainment" />
-
-            </LinearLayout>
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
 
+        <!--Fashion-->
         <android.support.v7.widget.CardView
-            card_view:cardBackgroundColor="@color/colorFood"
+            android:id="@+id/fashion_card_view"
+            card_view:cardBackgroundColor="@color/colorFashion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
@@ -125,62 +62,66 @@
             card_view:cardElevation="5dp"
             card_view:cardCornerRadius="5dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:id="@+id/fashion_text"
+                    android:textColor="#FFFFFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/fashion_button"
+                    android:layout_centerInParent="true"/>
+
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_menu_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/ic_fashion"
                     android:tint="#FFFFFF"
                     android:scaleType="fitCenter"/>
 
-                <TextView
-                    style="@style/Base.TextAppearance.AppCompat.Body1"
-                    android:textColor="#FFFFFF"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Food" />
-
-            </LinearLayout>
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
 
+        <!--Food-->
         <android.support.v7.widget.CardView
-            card_view:cardBackgroundColor="@color/colorMedical"
+            android:id="@+id/food_card_view"
+            card_view:cardBackgroundColor="@color/colorFood"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             card_view:contentPadding="16dp"
             card_view:cardElevation="2dp"
             card_view:cardCornerRadius="5dp">
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_menu_manage"
-                    android:tint="#FFFFFF"
-                    android:scaleType="fitCenter"/>
-
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:id="@+id/food_text"
                     android:textColor="#FFFFFF"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Medical" />
-
-            </LinearLayout>
+                    android:text="@string/food_button"
+                    android:layout_centerInParent="true"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/ic_food"
+                    android:tint="#FFFFFF"
+                    android:scaleType="fitCenter"/>
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
 
+        <!--Hobby-->
         <android.support.v7.widget.CardView
+            android:id="@+id/hobby_card_view"
             card_view:cardBackgroundColor="@color/colorHobby"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -188,62 +129,59 @@
             card_view:contentPadding="16dp"
             card_view:cardElevation="5dp"
             card_view:cardCornerRadius="5dp">
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_menu_gallery"
-                    android:tint="#FFFFFF"
-                    android:scaleType="fitCenter"/>
-
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:id="@+id/hobby_text"
                     android:textColor="#FFFFFF"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Hobby" />
-
-            </LinearLayout>
+                    android:text="@string/hobby_button"
+                    android:layout_centerInParent="true"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_menu_camera"
+                    android:tint="#FFFFFF"
+                    android:scaleType="fitCenter"/>
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
 
+        <!--Medical-->
         <android.support.v7.widget.CardView
-            card_view:cardBackgroundColor="@color/colorOther"
+            android:id="@+id/medical_card_view"
+            card_view:cardBackgroundColor="@color/colorMedical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             card_view:contentPadding="16dp"
             card_view:cardElevation="5dp"
             card_view:cardCornerRadius="5dp">
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_menu_camera"
-                    android:tint="#FFFFFF"
-                    android:scaleType="fitCenter"/>
-
                 <TextView
                     style="@style/Base.TextAppearance.AppCompat.Body1"
+                    android:id="@+id/medical_text"
                     android:textColor="#FFFFFF"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Other" />
-
-            </LinearLayout>
+                    android:text="@string/medical_button"
+                    android:layout_centerInParent="true"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:src="@mipmap/ic_medical"
+                    android:tint="#FFFFFF"
+                    android:scaleType="fitCenter"/>
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
-
     </LinearLayout>
 
 </ScrollView>
