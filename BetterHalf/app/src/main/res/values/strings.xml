@@ -25,7 +25,7 @@
     <string name="newuser_txt">New User?</string>
     <string name="signup_txt">Sign Up</string>
 
-    <!--strings for SingleItemEditActivity-->
+    <!--strings for DataItemActivity-->
     <string name="add_item_txt">Add New Item</string>
     <string name="item_name_prompt">Item Name:</string>
     <string name="item_value_prompt">Item Value:</string>
