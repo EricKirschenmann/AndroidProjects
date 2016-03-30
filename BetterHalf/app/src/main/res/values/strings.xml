@@ -22,8 +22,9 @@
     <string name="password_prompt">Password:</string>
     <string name="username_prompt">Username:</string>
     <string name="login_txt">Login</string>
-    <string name="newuser_txt">New User?</string>
+    <string name="newuser_txt">New user?</string>
     <string name="signup_txt">Sign Up</string>
+    <string name="existing_txt">Already have an account?</string>
 
     <!--strings for SingleItemEditActivity-->
     <string name="add_item_txt">Add New Item</string>

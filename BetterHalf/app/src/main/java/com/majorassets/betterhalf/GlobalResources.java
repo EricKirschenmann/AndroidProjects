@@ -16,9 +16,7 @@ import java.util.Map;
 public class GlobalResources
 {
     public static MainCategoryType mainTypePressed = MainCategoryType.INVALID;
-
     public static Map<MainCategoryType, List<Subcategory>> Subcategories = new HashMap<>();
-
     public static void addToGlobalSubcategories(MainCategoryType main, Subcategory sub)
     {
         List<Subcategory> lst;

@@ -52,24 +52,34 @@ public class LoginActivityFragment extends Fragment {
 
     private Map<SubcategoryType, List<BaseDataItem>> userDataList;
 
+    private String mNewUserLbl;
+    private String mExistingLbl;
+    private String mSignUpLbl;
+    private String mLoginLbl;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         //TODO: somehow "wipe" savedInstanceState
-        //TODO: don't allow backward navigation to Login screen
+        //TODO: save user credentials into SQlite so, after initial account creation, user logs in automatically
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
 
         initializeUIComponents(view);
+        createAndControlEvents();
         Firebase.setAndroidContext(getContext());
         db = DataProvider.getDataProvider();
-        createAndControlEvents();
         return view;
     }
 
     //wire up all the view components from the layout XMLs
     private void initializeUIComponents(View view)
     {
+        mNewUserLbl = getResources().getString(R.string.newuser_txt);
+        mExistingLbl = getResources().getString(R.string.existing_txt);
+        mLoginLbl = getResources().getString(R.string.login_txt);
+        mSignUpLbl = getResources().getString(R.string.signup_txt);
+
         mResponseTxt = (TextView) view.findViewById(R.id.response_txt);
         mNewUserTxt = (TextView) view.findViewById(R.id.newUser_txt);
         mLoginProgressBar = (ProgressBar) view.findViewById(R.id.login_progressBar);
@@ -116,7 +126,17 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mLoginButton.setText(R.string.signup_txt);
+                //alternate text depending on which is clicked
+                if(mNewUserTxt.getText().toString().equals(mNewUserLbl))
+                {
+                    mLoginButton.setText(R.string.signup_txt);
+                    mNewUserTxt.setText(mExistingLbl);
+                }
+                else if(mNewUserTxt.getText().toString().equals(mExistingLbl))
+                {
+                    mLoginButton.setText(R.string.login_txt);
+                    mNewUserTxt.setText(mNewUserLbl);
+                }
             }
         });
     }
@@ -131,9 +151,9 @@ public class LoginActivityFragment extends Fragment {
 
         //TODO: implement progress bar
         //Attempt Login
-        if(mLoginButton.getText().toString().equals("Login"))
+        if(mLoginButton.getText().toString().equals(mLoginLbl))
             loginWithPassword(mEmail, mPassword);
-        else if (mLoginButton.getText().toString().equals("Sign Up"))
+        else if (mLoginButton.getText().toString().equals(mSignUpLbl))
             createNewAccount(mEmail, mPassword);
     }
 
@@ -170,7 +190,7 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void createNewAccount(final String email, final String password)
+    private void createNewAccount(final String email, final String password)/**/
     {
         //Attempt to create a new user
         mRootRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>()
@@ -261,10 +281,12 @@ public class LoginActivityFragment extends Fragment {
     @NonNull
     /**
      * Derive a username from a user's email address
-     * TODO: issue: different email providers could yield the same username
      */
     private String generateUsername(String email)
     {
-        return email.substring(0, email.indexOf('@'));
+        String emailProvider = email.substring(email.indexOf('@'), email.indexOf('.')); //e.g. yahoo, gmail
+        email = email.substring(0, email.indexOf('@'));
+
+        return email + emailProvider;
     }
 }
