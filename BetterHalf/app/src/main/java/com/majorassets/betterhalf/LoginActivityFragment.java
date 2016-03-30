@@ -90,7 +90,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mEmailEdit.setText("dgblanks@gmail.com"); //temp for testing
+                mEmailEdit.setText("rhinohoops8@gmail.com"); //temp for testing
             }
         });
 
@@ -184,8 +184,13 @@ public class LoginActivityFragment extends Fragment {
                 //TODO: store User object in SQLite
                 User user = new User();
                 user.setEmail(mEmail);
+                user.setUsername(mEmail);
 
                 loginWithPassword(mEmail, mPassword);
+
+                Firebase usersRef = mRootRef.child("users");
+                User newUser = new User(mUsername);
+                usersRef.setValue(newUser);
             }
 
             @Override

@@ -2,7 +2,6 @@ package com.majorassets.betterhalf;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -45,6 +44,11 @@ public class HomeActivity extends AppCompatActivity
 				}
 			}
 		});
+
+		/*Firebase ryanRef = ref.child("users").child("ryananema");
+		User ryan = new User("Ryan", "Anema");
+		ryanRef.setValue(ryan);
+		ryanRef.child("data");*/
 	}
 
 	@Override

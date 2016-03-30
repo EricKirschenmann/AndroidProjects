@@ -2,8 +2,6 @@ package com.majorassets.betterhalf.Model;
 
 import com.majorassets.betterhalf.Database.DataItemRepository;
 
-import java.util.List;
-
 /**
  * Created by dgbla on 2/28/2016.
  */
@@ -12,6 +10,7 @@ public class User
     private String firstName;
     private String lastName;
     private String email;
+    private String username;
 
     private DataItemRepository mDataItemRepository;
 
@@ -20,7 +19,12 @@ public class User
         firstName = "John";
         lastName = "Doe";
         email = "jdoe@test.com";
+        username = "johndoe";
         mDataItemRepository = DataItemRepository.getDataItemRepository();
+    }
+
+    public User( String username){
+
     }
 
     public String getEmail()
@@ -62,4 +66,8 @@ public class User
     {
         mDataItemRepository = dataItemRepository;
     }
+
+    public String getUsername() { return username; }
+
+    public void setUsername(String username) { this.username = username; }
 }
