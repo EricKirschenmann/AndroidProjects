@@ -3,7 +3,6 @@ package com.majorassets.betterhalf;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,11 +11,11 @@ import android.view.MenuItem;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
-import com.majorassets.betterhalf.Database.DataProvider;
+import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 
 public class HomeActivity extends AppCompatActivity
 {
-	private DataProvider db = DataProvider.getDataProvider();
+	private FirebaseProvider db = FirebaseProvider.getDataProvider();
 	private Firebase ref;
 
 	@Override

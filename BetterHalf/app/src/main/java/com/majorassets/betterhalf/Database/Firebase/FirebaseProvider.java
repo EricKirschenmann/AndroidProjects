@@ -1,16 +1,13 @@
-package com.majorassets.betterhalf.Database;
+package com.majorassets.betterhalf.Database.Firebase;
 
 import com.firebase.client.Firebase;
-import com.majorassets.betterhalf.Model.BaseDataItem;
-
-import java.util.List;
 
 /**
  * Created by dgbla on 2/20/2016.
  */
-public class DataProvider
+public class FirebaseProvider
 {
-    private static DataProvider sDataProvider;
+    private static FirebaseProvider sDataProvider;
 
     public static final String FIREBASE_URL = "https://betterhalf.firebaseio.com/";
     private Firebase instance;
@@ -19,7 +16,7 @@ public class DataProvider
     private Firebase subcategoryInstance;
 
     //singleton firebase reference
-    private DataProvider()
+    private FirebaseProvider()
     {
         instance = new Firebase(FIREBASE_URL);
     }
@@ -50,10 +47,10 @@ public class DataProvider
         return subcategoryInstance;
     }
 
-    public static DataProvider getDataProvider()
+    public static FirebaseProvider getDataProvider()
     {
         if(sDataProvider == null)
-            return new DataProvider();
+            return new FirebaseProvider();
         return sDataProvider;
     }
 }

@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.firebase.client.AuthData;
@@ -18,9 +17,12 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.Database.DataItemRepository;
-import com.majorassets.betterhalf.Database.DataProvider;
+import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
+import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
@@ -29,22 +31,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class LoginActivityFragment extends Fragment {
 
+    //UI components
     private Button mLoginButton;
     private EditText mEmailEdit;
     private EditText mPasswordEdit;
     private TextView mNewUserTxt;
     private TextView mResponseTxt;
-    private ProgressBar mLoginProgressBar;
 
-    private DataProvider db;
+    private FirebaseProvider db;
+    private SQLiteProvider sqliteDB;
+    private SQLiteUserDAL dal;
     private Firebase mRootRef;
-    private Firebase mUserRef;
     private Firebase mUserDataRef;
     private String mEmail;
     private String mPassword;
@@ -67,8 +71,14 @@ public class LoginActivityFragment extends Fragment {
 
         initializeUIComponents(view);
         createAndControlEvents();
+
+
+
         Firebase.setAndroidContext(getContext());
-        db = DataProvider.getDataProvider();
+        db = FirebaseProvider.getDataProvider();
+        sqliteDB = new SQLiteProvider(getContext());
+        dal = new SQLiteUserDAL(sqliteDB.SQLiteDatabase);
+
         return view;
     }
 
@@ -82,7 +92,6 @@ public class LoginActivityFragment extends Fragment {
 
         mResponseTxt = (TextView) view.findViewById(R.id.response_txt);
         mNewUserTxt = (TextView) view.findViewById(R.id.newUser_txt);
-        mLoginProgressBar = (ProgressBar) view.findViewById(R.id.login_progressBar);
 
         mEmailEdit = (EditText) view.findViewById(R.id.email_edit);
         mPasswordEdit = (EditText) view.findViewById(R.id.password_edit);
@@ -147,9 +156,9 @@ public class LoginActivityFragment extends Fragment {
 
         mEmail = mEmailEdit.getText().toString();
         mPassword = mPasswordEdit.getText().toString();
+        //generated username based off email
         mUsername = generateUsername(mEmail);
 
-        //TODO: implement progress bar
         //Attempt Login
         if(mLoginButton.getText().toString().equals(mLoginLbl))
             loginWithPassword(mEmail, mPassword);
@@ -204,6 +213,9 @@ public class LoginActivityFragment extends Fragment {
                 //TODO: store User object in SQLite
                 User user = new User();
                 user.setEmail(mEmail);
+                user.setPassword(mPassword);
+
+                dal.addUser(user);
 
                 loginWithPassword(mEmail, mPassword);
             }
@@ -243,6 +255,8 @@ public class LoginActivityFragment extends Fragment {
                             dataSnapshot = next;
                             break;
                         case MUSIC:
+                            item = new MusicItem(next.getKey(), next.getValue().toString());
+                            addDataItem(subcategory, item);
                             dataSnapshot = next;
                             break;
                         default:

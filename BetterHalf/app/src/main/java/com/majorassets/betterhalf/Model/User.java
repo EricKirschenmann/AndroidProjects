@@ -3,24 +3,34 @@ package com.majorassets.betterhalf.Model;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by dgbla on 2/28/2016.
  */
 public class User
 {
+    private UUID ID;
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
 
     private DataItemRepository mDataItemRepository;
 
     public User()
     {
-        firstName = "John";
+        this(UUID.randomUUID());
+        /*firstName = "John";
         lastName = "Doe";
         email = "jdoe@test.com";
-        mDataItemRepository = DataItemRepository.getDataItemRepository();
+        password = "test"; //TODO: hash password
+        mDataItemRepository = DataItemRepository.getDataItemRepository();*/
+    }
+
+    public User(UUID ID)
+    {
+        this.ID = ID;
     }
 
     public String getEmail()
@@ -61,5 +71,25 @@ public class User
     public void setDataItemRepository(DataItemRepository dataItemRepository)
     {
         mDataItemRepository = dataItemRepository;
+    }
+
+    public UUID getID()
+    {
+        return ID;
+    }
+
+    public void setID(UUID ID)
+    {
+        this.ID = ID;
+    }
+
+    public String getPassword()
+    {
+        return password;
+    }
+
+    public void setPassword(String password)
+    {
+        this.password = password;
     }
 }
