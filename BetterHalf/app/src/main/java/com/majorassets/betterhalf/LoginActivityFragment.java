@@ -109,7 +109,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mEmailEdit.setText("dgblanks@gmail.com"); //temp for testing
+                mEmailEdit.setText("testuser4@verizon.net"); //temp for testing
             }
         });
 
@@ -218,6 +218,19 @@ public class LoginActivityFragment extends Fragment {
                 dal.addUser(user);
 
                 loginWithPassword(mEmail, mPassword);
+
+                /*Create new user in Firebase, with username child of "users", info being child of "username",
+                  and specific data "id" and "email" being children of "info" */
+                Firebase usersRef = mRootRef.child("users");
+                Map<String, Map<String, String>> newUserInfoMap = new HashMap<String, Map<String, String>>();
+                Map<String, String> newUserDataMap = new HashMap<String, String>();
+                newUserDataMap.put("email", mEmail);
+                //TODO make ID dynamic
+                newUserDataMap.put("id", "000000002");
+                newUserInfoMap.put("info", newUserDataMap);
+                String newUsername = generateUsername(mEmail);
+                Firebase newUserRef = usersRef.child(newUsername);
+                newUserRef.setValue(newUserInfoMap);
             }
 
             @Override
@@ -298,7 +311,7 @@ public class LoginActivityFragment extends Fragment {
      */
     private String generateUsername(String email)
     {
-        String emailProvider = email.substring(email.indexOf('@'), email.indexOf('.')); //e.g. yahoo, gmail
+        String emailProvider = email.substring(email.indexOf('@') + 1, email.indexOf('.')); //e.g. yahoo, gmail
         email = email.substring(0, email.indexOf('@'));
 
         return email + emailProvider;

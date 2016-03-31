@@ -5,6 +5,7 @@ import com.majorassets.betterhalf.Database.DataItemRepository;
 import java.util.List;
 import java.util.UUID;
 
+
 /**
  * Created by dgbla on 2/28/2016.
  */
@@ -14,7 +15,11 @@ public class User
     private String firstName;
     private String lastName;
     private String email;
+
     private String password;
+
+    private String username;
+
 
     private DataItemRepository mDataItemRepository;
 
@@ -54,13 +59,23 @@ public class User
     }
 
     public String getLastName()
-    {
-        return lastName;
-    }
+{
+    return lastName;
+}
 
     public void setLastName(String lastName)
     {
         this.lastName = lastName;
+    }
+
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public void setUsername(String username)
+    {
+        this.username = username;
     }
 
     public DataItemRepository getDataItemRepository()
