@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_data_list.xml",
+        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\menu\\menu_data_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_home.xml",
+        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\menu\\menu_home.xml"
+    },
+    {
+        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_settings.xml",
+        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\menu\\menu_settings.xml"
+    },
+    {
+        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_main.xml",
+        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\menu\\menu_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_single_item_edit.xml",
+        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\menu\\menu_single_item_edit.xml"
+    }
+]
