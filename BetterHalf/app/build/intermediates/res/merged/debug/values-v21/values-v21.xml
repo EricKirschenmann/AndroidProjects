@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="buttonBackground">#FFFFFF</color>
-    <color name="colorAccent">#FF0000</color>
-    <color name="colorPrimary">#652CCD</color>
-    <color name="colorPrimaryDark">#652CCD</color>
-    <color name="entertainmentPrimary">#FF0000</color>
+    <color name="colorAccent">#FFC107</color>
+    <color name="colorEntertainment">#9E0000</color>
+    <color name="colorFashion">#1D3557</color>
+    <color name="colorFood">#386580</color>
+    <color name="colorHobby">#DB5600</color>
+    <color name="colorMedical">#70C288</color>
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorPrimaryDark">#0288D1</color>
+    <color name="colorPrimaryLight">#B3E5FC</color>
+    <color name="divider">#B6B6B6</color>
+    <color name="entertainmentPrimary">#098276</color>
     <color name="errorText">#FF0000</color>
     <color name="fadedText">#888888</color>
-    <color name="fashionPrimary">#FF4900</color>
-    <color name="foodPrimary">#00EA0B</color>
+    <color name="fashionPrimary">#098276</color>
+    <color name="foodPrimary">#098276</color>
     <color name="generalBackground">#FFFFFF</color>
-    <color name="medicalPrimary">#FFFF00</color>
-    <color name="otherPrimary">#0007FF</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="medicalPrimary">#098276</color>
+    <color name="otherPrimary">#098276</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--item name="android:statusBarColor">@android:color/transparent</item-->
     </style>
     <style name="Base.TextAppearance.AppCompat" parent="android:TextAppearance.Material"/>
     <style name="Base.TextAppearance.AppCompat.Body1" parent="android:TextAppearance.Material.Body1"/>

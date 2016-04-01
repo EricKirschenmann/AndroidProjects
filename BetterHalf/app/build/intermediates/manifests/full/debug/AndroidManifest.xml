@@ -24,6 +24,7 @@
         <activity
             android:name="com.majorassets.betterhalf.LoginActivity"
             android:label="@string/app_name"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.majorassets.betterhalf.DataListActivity"
+            android:name="com.majorassets.betterhalf.DataItemController.DataItemActivity"
             android:label="@string/app_name"
             android:parentActivityName="com.majorassets.betterhalf.HomeActivity"
             android:theme="@style/AppTheme.NoActionBar" >

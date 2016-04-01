@@ -12,6 +12,10 @@
         "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xhdpi\\ic_entertainment.png"
     },
     {
+        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi-v4\\ic_medical.png",
+        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xhdpi\\ic_medical.png"
+    },
+    {
         "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi-v4\\ic_food.png",
         "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xhdpi\\ic_food.png"
     },
