@@ -2,14 +2,17 @@ package com.majorassets.betterhalf;
 
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -33,12 +36,17 @@ import java.util.Map;
  */
 public class HomeActivityFragment extends Fragment
 {
+	private TextView mEntertainmentText;
+	private TextView mFashionText;
+	private TextView mFoodText;
+	private	TextView mHobbyText;
+	private TextView mMedicalText;
 
-	private Button mEntertainmentButton;
-	private Button mFashionButton;
-	private Button mFoodButton;
-	private Button mHobbyButton;
-	private Button mMedicalButton;
+	private CardView mEntertainmentCardView;
+	private CardView mFashionCardView;
+	private CardView mFoodCardView;
+	private CardView mHobbyCardView;
+	private CardView mMedicalCardView;
 
 	private Map<SubcategoryType, List<BaseDataItem>> userDataItems;
 	private DataProvider db;
@@ -51,88 +59,98 @@ public class HomeActivityFragment extends Fragment
 		View view = inflater.inflate(R.layout.fragment_home, container, false);
 
 		initializeComponents(view);
-
-
-		////////// ENTERTAINMENT //////////
-		mEntertainmentButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v) {
-				//TODO: putExtra() data with Intent to determine title of DataItemActivity (i.e., press Food button, "Food" would be title
-				String title = mEntertainmentButton.getText().toString();
-				Intent intent = newIntent(new MainCategory(title));
-				startActivity(intent);
-			}
-		});
-
-		////////// FASHION //////////
-		mFashionButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				//TODO: putExtra() for all category buttons
-				String title = mFashionButton.getText().toString();
-				Intent intent = newIntent(new MainCategory(title));
-				startActivity(intent);
-			}
-		});
-
-		////////// FOOD //////////
-		mFoodButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				String title = mFoodButton.getText().toString();
-				Intent intent = newIntent(new MainCategory(title));
-				startActivity(intent);
-			}
-		});
-
-		////////// HOBBY //////////
-		mHobbyButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				String title = mHobbyButton.getText().toString();
-				Intent intent = newIntent(new MainCategory(title));
-				startActivity(intent);
-			}
-		});
-
-		////////// MEDICAL //////////
-		mMedicalButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public void onClick(View v)
-			{
-				String title = mMedicalButton.getText().toString();
-				Intent intent = newIntent(new MainCategory(title));
-				startActivity(intent);
-			}
-		});
+		createEvents();
 
 		return view;
 	}
 
 	private void initializeComponents(View view)
 	{
-		mEntertainmentButton = (Button) view.findViewById(R.id.entertainment_button);
-		mFashionButton = (Button) view.findViewById(R.id.fashion_button);
-		mFoodButton = (Button) view.findViewById(R.id.food_button);
-		mHobbyButton = (Button) view.findViewById(R.id.hobby_button);
-		mMedicalButton = (Button) view.findViewById(R.id.medical_button);
+		mEntertainmentText = (TextView) view.findViewById(R.id.entertainment_txt);
+		mFashionText = (TextView) view.findViewById(R.id.fashion_text);
+		mFoodText = (TextView) view.findViewById(R.id.food_text);
+		mHobbyText = (TextView) view.findViewById(R.id.hobby_text);
+		mMedicalText = (TextView) view.findViewById(R.id.medical_text);
+
+		mEntertainmentCardView = (CardView) view.findViewById(R.id.entertainment_card_view);
+		mFashionCardView = (CardView) view.findViewById(R.id.fashion_card_view);
+		mFoodCardView = (CardView) view.findViewById(R.id.food_card_view);
+		mHobbyCardView = (CardView) view.findViewById(R.id.hobby_card_view);
+		mMedicalCardView = (CardView) view.findViewById(R.id.medical_card_view);
 
 		userDataItems = DataItemRepository.getDataItemRepository().getDataItems();
 		db = DataProvider.getDataProvider();
 
 		//right now have to call this 5 times - TODO: make dynamic
-		String mainCategory = mEntertainmentButton.getText().toString().toLowerCase();
-		getSubcategoryData(db.getSubcategories(mainCategory));
+		//String mainCategory = mEntertainmentButton.getText().toString().toLowerCase();
+		getSubcategoryData(db.getSubcategories(mEntertainmentText.getText().toString()));
+		getSubcategoryData(db.getSubcategories(mFashionText.getText().toString()));
+		getSubcategoryData(db.getSubcategories(mFoodText.getText().toString()));
+		getSubcategoryData(db.getSubcategories(mHobbyText.getText().toString()));
+		getSubcategoryData(db.getSubcategories(mMedicalText.getText().toString()));
 	}
 
+	private void createEvents()
+	{
+		mEntertainmentCardView.setOnClickListener(new View.OnClickListener()
+		{
+		@Override
+			public void onClick(View v)
+			{
+				String title = mEntertainmentText.getText().toString();
+				launchDataItemActivity(title);
+			}
+		});
+
+		mFashionCardView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				String title = mFashionText.getText().toString();
+				launchDataItemActivity(title);
+			}
+		});
+
+		mFoodCardView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				String title = mFoodText.getText().toString();
+				launchDataItemActivity(title);
+			}
+		});
+
+		mHobbyCardView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				String title = mHobbyText.getText().toString();
+				launchDataItemActivity(title);
+			}
+		});
+
+		mMedicalCardView.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				String title = mMedicalText.getText().toString();
+				launchDataItemActivity(title);
+			}
+		});
+	}
+
+	private void launchDataItemActivity(String title)
+	{
+		MainCategoryType type = MainCategoryType.getTypeFromString(title);
+		GlobalResources.mainTypePressed = type;
+
+		Intent intent = newIntent(new MainCategory(type));
+		startActivity(intent);
+	}
 
 	private void getSubcategoryData(Firebase ref)
 	{
@@ -141,15 +159,22 @@ public class HomeActivityFragment extends Fragment
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot)
 			{
+				Subcategory subcategory;
 				if (dataSnapshot.hasChildren())
 				{
+					//should only have one child
 					for (DataSnapshot child : dataSnapshot.getChildren())
 					{
-						Subcategory subcategory = new Subcategory();
-						subcategory.setType(SubcategoryType.getTypeFromString(child.getKey()));
-						subcategory.setMainType(MainCategoryType.getTypeFromString(dataSnapshot.getKey()));
-						//set global data
-						GlobalResources.Subcategories.add(subcategory);
+						String mainCategory = dataSnapshot.getKey();
+						//next level should be subcategories
+						for (DataSnapshot subChild : child.getChildren())
+						{
+							subcategory = new Subcategory();
+							subcategory.setType(SubcategoryType.getTypeFromString(subChild.getKey().toLowerCase()));
+							subcategory.setMainType(MainCategoryType.getTypeFromString(mainCategory.toLowerCase()));
+							//set global data
+							GlobalResources.addToGlobalSubcategories(subcategory.getMainType(), subcategory);
+						}
 					}
 				}
 			}
@@ -166,8 +191,8 @@ public class HomeActivityFragment extends Fragment
 	{
 		Bundle args = new Bundle();
 		Intent intent = new Intent(getContext(), DataItemActivity.class);
-		args.putSerializable(TITLE_EXTRA, (Serializable)mainCategory);
-		intent.putExtras(args);
+		//args.putSerializable(TITLE_EXTRA, (Serializable)mainCategory);
+		//intent.putExtras(args);
 		return intent;
 	}
 }

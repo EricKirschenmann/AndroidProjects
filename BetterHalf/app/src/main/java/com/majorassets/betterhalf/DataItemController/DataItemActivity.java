@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
-import com.majorassets.betterhalf.HomeActivityFragment;
 import com.majorassets.betterhalf.R;
 import com.majorassets.betterhalf.SingleItemEditActivity;
 
@@ -49,6 +48,13 @@ public class DataItemActivity extends AppCompatActivity
 		//setTitle(mTitle);
 
 		setUpTabPageComponents();
+	}
+
+	@Override
+	public void onStop()
+	{
+		super.onStop();
+		finish();
 	}
 
 	@Override

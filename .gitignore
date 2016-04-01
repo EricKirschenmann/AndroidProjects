@@ -1,2 +1,4 @@
-*.gradle
-BetterHalf/.idea/misc.xml
+.gradle
+/.idea/misc.xml
+/.idea/workspace.xml
+/.idea/libraries

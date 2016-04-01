@@ -14,13 +14,18 @@ public enum MainCategoryType
 
     public static MainCategoryType getTypeFromString(String mainCategory)
     {
-        mainCategory = "Invalid";
-        switch(mainCategory)
+        switch(mainCategory.toLowerCase())
         {
             case "entertainment":
                 return MainCategoryType.ENTERTAINMENT;
             case "fashion":
                 return MainCategoryType.FASHION;
+            case "food":
+                return MainCategoryType.FOOD;
+            case "hobby":
+                return MainCategoryType.HOBBY;
+            case "medical":
+                return MainCategoryType.MEDICAL;
             default:
                 return MainCategoryType.INVALID;
         }
