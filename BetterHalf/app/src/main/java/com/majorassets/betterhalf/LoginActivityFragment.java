@@ -188,9 +188,18 @@ public class LoginActivityFragment extends Fragment {
 
                 loginWithPassword(mEmail, mPassword);
 
+                /*Create new user in Firebase, with username child of "users", info being child of "username",
+                  and specific data "id" and "email" being children of "info" */
                 Firebase usersRef = mRootRef.child("users");
-                User newUser = new User(mUsername);
-                usersRef.setValue(newUser);
+                Map<String, Map<String, String>> newUserInfoMap = new HashMap<String, Map<String, String>>();
+                Map<String, String> newUserDataMap = new HashMap<String, String>();
+                newUserDataMap.put("email", mEmail);
+                //TODO make ID dynamic
+                newUserDataMap.put("id", "000000002");
+                newUserInfoMap.put("info", newUserDataMap);
+                String newUsername = generateUsername(mEmail);
+                Firebase newUserRef = usersRef.child(newUsername);
+                newUserRef.setValue(newUserInfoMap);
             }
 
             @Override
