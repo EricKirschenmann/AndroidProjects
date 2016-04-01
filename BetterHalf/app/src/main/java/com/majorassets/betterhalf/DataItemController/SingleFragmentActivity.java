@@ -1,23 +1,30 @@
-package com.majorassets.betterhalf;
+package com.majorassets.betterhalf.DataItemController;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 
-/**
- * Created by dgbla on 12/14/2015.
- */
+import com.majorassets.betterhalf.HomeActivityFragment;
+import com.majorassets.betterhalf.R;
+import com.majorassets.betterhalf.SingleItemEditActivity;
+
 public abstract class SingleFragmentActivity extends AppCompatActivity
 {
 	private FloatingActionButton mAddItemFab;
+	private String mTitle;
+
+	private DataItemPagerAdapter mDataItemPagerAdapter;
+	private ViewPager mViewPager;
+	private TabLayout mTabLayout;
 
 	protected abstract Fragment createFragment();
 
@@ -44,6 +51,11 @@ public abstract class SingleFragmentActivity extends AppCompatActivity
 			}
 		});
 
+		mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
+		setTitle(mTitle);
+
+		setUpTabPages();
+
 		FragmentManager fm = getSupportFragmentManager();
 
 		//retrieve the fragment if it exists in the FragmentManager
@@ -63,6 +75,17 @@ public abstract class SingleFragmentActivity extends AppCompatActivity
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_data_list, menu);
 		return true;
+	}
+
+	private void setUpTabPages()
+	{
+		mDataItemPagerAdapter = new DataItemPagerAdapter(getSupportFragmentManager());
+		mViewPager = (ViewPager) findViewById(R.id.pager);
+
+		mViewPager.setAdapter(mDataItemPagerAdapter);
+
+		mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+		mTabLayout.setupWithViewPager(mViewPager);
 	}
 
 	/*@Override

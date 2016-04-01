@@ -1,46 +1,40 @@
 package com.majorassets.betterhalf.Model;
 
 /**
- * Created by dgbla on 2/28/2016.
+ * Created by dgbla on 3/7/2016.
  */
-public enum Subcategory
+public class Subcategory
 {
-    MOVIE,
-    MUSIC,
-    GAME,
-    THEATER,
-    BOOK,
-    TV_SHOW,
-    INVALID;
+    private SubcategoryType type;
+    private MainCategoryType mainType;
 
-    public static Subcategory getTypeFromString(String subcategory)
+    public Subcategory()
     {
-        Subcategory sub = INVALID;
-        switch(subcategory.toLowerCase())
-        {
-            case "movies":
-                sub = MOVIE;
-                break;
-            case "music":
-                sub = MUSIC;
-                break;
-            case "books":
-                sub = BOOK;
-                break;
-            case "games":
-                sub = GAME;
-                break;
-            case "theater":
-                sub = THEATER;
-                break;
-            case "tvShows":
-                sub = TV_SHOW;
-                break;
-            default:
-                break; //invalid type
-        }
-        return sub;
+
+    }
+
+    public Subcategory(SubcategoryType type)
+    {
+        this.type = type;
+    }
+
+    public SubcategoryType getType()
+    {
+        return type;
+    }
+
+    public void setType(SubcategoryType type)
+    {
+        this.type = type;
+    }
+
+    public MainCategoryType getMainType()
+    {
+        return mainType;
+    }
+
+    public void setMainType(MainCategoryType mainType)
+    {
+        this.mainType = mainType;
     }
 }
-
-

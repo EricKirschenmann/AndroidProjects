@@ -1,6 +1,7 @@
 package com.majorassets.betterhalf;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,10 +17,12 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.DataProvider;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
-import com.majorassets.betterhalf.Model.Subcategory;
+import com.majorassets.betterhalf.Model.SubcategoryType;
+import com.majorassets.betterhalf.Model.User;
 
 
 import java.util.ArrayList;
@@ -35,7 +38,6 @@ public class LoginActivityFragment extends Fragment {
     private Button mLoginButton;
     private EditText mEmailEdit;
     private EditText mPasswordEdit;
-    private EditText mUsernameEdit;
     private TextView mNewUserTxt;
     private TextView mResponseTxt;
     private ProgressBar mLoginProgressBar;
@@ -46,39 +48,50 @@ public class LoginActivityFragment extends Fragment {
     private Firebase mUserDataRef;
     private String mEmail;
     private String mPassword;
+    private String mUsername;
 
-    private Map<Subcategory, List<BaseDataItem>> userDataList;
+    private Map<SubcategoryType, List<BaseDataItem>> userDataList;
+
+    private String mNewUserLbl;
+    private String mExistingLbl;
+    private String mSignUpLbl;
+    private String mLoginLbl;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         //TODO: somehow "wipe" savedInstanceState
-        //TODO: don't allow backward navigation to Login screen
+        //TODO: save user credentials into SQlite so, after initial account creation, user logs in automatically
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
 
         initializeUIComponents(view);
+        createAndControlEvents();
         Firebase.setAndroidContext(getContext());
         db = DataProvider.getDataProvider();
-        createAndControlEvents();
         return view;
     }
 
     //wire up all the view components from the layout XMLs
     private void initializeUIComponents(View view)
     {
+        mNewUserLbl = getResources().getString(R.string.newuser_txt);
+        mExistingLbl = getResources().getString(R.string.existing_txt);
+        mLoginLbl = getResources().getString(R.string.login_txt);
+        mSignUpLbl = getResources().getString(R.string.signup_txt);
+
         mResponseTxt = (TextView) view.findViewById(R.id.response_txt);
         mNewUserTxt = (TextView) view.findViewById(R.id.newUser_txt);
         mLoginProgressBar = (ProgressBar) view.findViewById(R.id.login_progressBar);
 
         mEmailEdit = (EditText) view.findViewById(R.id.email_edit);
         mPasswordEdit = (EditText) view.findViewById(R.id.password_edit);
-        mUsernameEdit = (EditText) view.findViewById(R.id.username_edit);
         mLoginButton = (Button) view.findViewById(R.id.login_btn);
 
         userDataList = new HashMap<>();
     }
 
+    //establish event listeners as anonymous inner classes
     private void createAndControlEvents()
     {
         ////// SETTING ONCLICK LISTENERS ////////
@@ -87,7 +100,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mEmailEdit.setText("dgblanks@gmail.com"); //temp for testing
+                mEmailEdit.setText("testuser4@verizon.net"); //temp for testing
             }
         });
 
@@ -96,15 +109,6 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mPasswordEdit.setText("test"); //temp password for testing
-            }
-        });
-
-        mUsernameEdit.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                mUsernameEdit.setText("dillon-blanksma"); //temp for testing
             }
         });
 
@@ -122,7 +126,17 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mLoginButton.setText(R.string.signup_txt);
+                //alternate text depending on which is clicked
+                if(mNewUserTxt.getText().toString().equals(mNewUserLbl))
+                {
+                    mLoginButton.setText(R.string.signup_txt);
+                    mNewUserTxt.setText(mExistingLbl);
+                }
+                else if(mNewUserTxt.getText().toString().equals(mExistingLbl))
+                {
+                    mLoginButton.setText(R.string.login_txt);
+                    mNewUserTxt.setText(mNewUserLbl);
+                }
             }
         });
     }
@@ -133,27 +147,35 @@ public class LoginActivityFragment extends Fragment {
 
         mEmail = mEmailEdit.getText().toString();
         mPassword = mPasswordEdit.getText().toString();
+        mUsername = generateUsername(mEmail);
 
         //TODO: implement progress bar
         //Attempt Login
-        if(mLoginButton.getText().toString().equals("Login"))
-            LoginWithPassword(mEmail, mPassword);
-        else if (mLoginButton.getText().toString().equals("Sign Up"))
-            CreateNewAccount(mEmail, mPassword);
+        if(mLoginButton.getText().toString().equals(mLoginLbl))
+            loginWithPassword(mEmail, mPassword);
+        else if (mLoginButton.getText().toString().equals(mSignUpLbl))
+            createNewAccount(mEmail, mPassword);
     }
 
     //use Firebase user authentication with an email and password
-    private void LoginWithPassword(String email, String password)
+    private void loginWithPassword(String email, String password)
     {
         mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler()
         {
             @Override
             public void onAuthenticated(AuthData authData) {
-                GlobalResources.Username = mUsernameEdit.getText().toString();
-
                 //get the reference for a user's data and parse it out into HashMap
-                mUserDataRef = db.getUserDataInstance(GlobalResources.Username);
-                GetUserData(mUserDataRef);
+                mUserDataRef = db.getUserDataInstance(mUsername);
+                getUserData(mUserDataRef);
+
+                //TODO: read User object from SQLite
+                User user = new User();
+                user.setEmail(mEmail);
+
+                // THIS IS TEMPORARY TO MOVE FORWARD - must be read from SQLite//
+                DataItemRepository userRepo = DataItemRepository.getDataItemRepository();
+                userRepo.setDataItems(userDataList);
+                user.setDataItemRepository(userRepo);
 
                 //start the home activity
                 Intent homeIntent = new Intent(getContext(), HomeActivity.class);
@@ -168,7 +190,7 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void CreateNewAccount(final String email, final String password)
+    private void createNewAccount(final String email, final String password)/**/
     {
         //Attempt to create a new user
         mRootRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>()
@@ -178,7 +200,25 @@ public class LoginActivityFragment extends Fragment {
             {
                 //TODO: log user in with first-time welcome screen
                 mLoginButton.setText(R.string.login_txt);
-                LoginWithPassword(email, password);
+
+                //TODO: store User object in SQLite
+                User user = new User();
+                user.setEmail(mEmail);
+
+                loginWithPassword(mEmail, mPassword);
+
+                /*Create new user in Firebase, with username child of "users", info being child of "username",
+                  and specific data "id" and "email" being children of "info" */
+                Firebase usersRef = mRootRef.child("users");
+                Map<String, Map<String, String>> newUserInfoMap = new HashMap<String, Map<String, String>>();
+                Map<String, String> newUserDataMap = new HashMap<String, String>();
+                newUserDataMap.put("email", mEmail);
+                //TODO make ID dynamic
+                newUserDataMap.put("id", "000000002");
+                newUserInfoMap.put("info", newUserDataMap);
+                String newUsername = generateUsername(mEmail);
+                Firebase newUserRef = usersRef.child(newUsername);
+                newUserRef.setValue(newUserInfoMap);
             }
 
             @Override
@@ -190,7 +230,7 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void GetUserData(Firebase ref)
+    private void getUserData(Firebase ref)
     {
         ref.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -199,20 +239,20 @@ public class LoginActivityFragment extends Fragment {
             {
                 String parent;
                 DataSnapshot next;
-                Subcategory subcategory;
+                SubcategoryType subcategory;
                 BaseDataItem item;
                 //"drill down" to leaf nodes
                 while(dataSnapshot.hasChildren())
                 {
                     parent = dataSnapshot.getKey();
                     next = dataSnapshot.getChildren().iterator().next();
-                    subcategory = Subcategory.getTypeFromString(parent);
+                    subcategory = SubcategoryType.getTypeFromString(parent);
                     switch (subcategory)
                     {
                         //TODO: parse out datasnapshot into separate objects
                         case MOVIE:
                             item = new MovieItem(next.getKey(), next.getValue().toString());
-                            AddDataItem(subcategory, item);
+                            addDataItem(subcategory, item);
                             dataSnapshot = next;
                             break;
                         case MUSIC:
@@ -233,7 +273,7 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
-    private void AddDataItem(Subcategory subcategory, BaseDataItem item)
+    private void addDataItem(SubcategoryType subcategory, BaseDataItem item)
     {
         List<BaseDataItem> list;
         //if there are no entries for a movie then the list will be null
@@ -248,5 +288,18 @@ public class LoginActivityFragment extends Fragment {
             list = userDataList.get(subcategory);
             list.add(item);
         }
+    }
+
+    /* UTILITY */
+    @NonNull
+    /**
+     * Derive a username from a user's email address
+     */
+    private String generateUsername(String email)
+    {
+        String emailProvider = email.substring(email.indexOf('@') + 1, email.indexOf('.')); //e.g. yahoo, gmail
+        email = email.substring(0, email.indexOf('@'));
+
+        return email + emailProvider;
     }
 }
