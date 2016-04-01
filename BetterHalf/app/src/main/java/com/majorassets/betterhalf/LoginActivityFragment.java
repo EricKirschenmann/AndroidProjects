@@ -72,8 +72,6 @@ public class LoginActivityFragment extends Fragment {
         initializeUIComponents(view);
         createAndControlEvents();
 
-
-
         Firebase.setAndroidContext(getContext());
         db = FirebaseProvider.getDataProvider();
         sqliteDB = new SQLiteProvider(getContext());
@@ -109,7 +107,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mEmailEdit.setText("testuser4@verizon.net"); //temp for testing
+                mEmailEdit.setText("dgblanks@gmail.com"); //temp for testing
             }
         });
 
@@ -169,34 +167,43 @@ public class LoginActivityFragment extends Fragment {
     //use Firebase user authentication with an email and password
     private void loginWithPassword(String email, String password)
     {
-        mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler()
+        User user = dal.getUser(email);
+
+        if(user == null)
         {
-            @Override
-            public void onAuthenticated(AuthData authData) {
-                //get the reference for a user's data and parse it out into HashMap
-                mUserDataRef = db.getUserDataInstance(mUsername);
-                getUserData(mUserDataRef);
+            mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler()
+            {
+                @Override
+                public void onAuthenticated(AuthData authData)
+                {
+                    //get the reference for a user's data and parse it out into HashMap
+                    mUserDataRef = db.getUserDataInstance(mUsername);
+                    getUserData(mUserDataRef);
 
-                //TODO: read User object from SQLite
-                User user = new User();
-                user.setEmail(mEmail);
+                    //TODO: read User object from SQLite
+                    User user = new User();
+                    user.setEmail(mEmail);
 
-                // THIS IS TEMPORARY TO MOVE FORWARD - must be read from SQLite//
-                DataItemRepository userRepo = DataItemRepository.getDataItemRepository();
-                userRepo.setDataItems(userDataList);
-                user.setDataItemRepository(userRepo);
+                    // THIS IS TEMPORARY TO MOVE FORWARD - must be read from SQLite//
+                    DataItemRepository userRepo = DataItemRepository.getDataItemRepository();
+                    userRepo.setDataItems(userDataList);
+                    user.setDataItemRepository(userRepo);
 
-                //start the home activity
-                Intent homeIntent = new Intent(getContext(), HomeActivity.class);
-                startActivity(homeIntent);
-            }
+                    //start the home activity
+                    startHomeActivity();
+                }
 
-            @Override
-            public void onAuthenticationError(FirebaseError firebaseError) {
-                //TODO: handle invalid credentials or no account
-                mResponseTxt.setText(firebaseError.getMessage());
-            }
-        });
+                @Override
+                public void onAuthenticationError(FirebaseError firebaseError)
+                {
+                    //TODO: handle invalid credentials or no account
+                    mResponseTxt.setText(firebaseError.getMessage());
+                }
+            });
+        }
+        else
+            startHomeActivity();
+
     }
 
     private void createNewAccount(final String email, final String password)/**/
@@ -215,6 +222,7 @@ public class LoginActivityFragment extends Fragment {
                 user.setEmail(mEmail);
                 user.setPassword(mPassword);
 
+                //add new user to SQLite database
                 dal.addUser(user);
 
                 loginWithPassword(mEmail, mPassword);
@@ -240,6 +248,12 @@ public class LoginActivityFragment extends Fragment {
                 mResponseTxt.setText(firebaseError.getMessage());
             }
         });
+    }
+
+    private void startHomeActivity()
+    {
+        Intent homeIntent = new Intent(getContext(), HomeActivity.class);
+        startActivity(homeIntent);
     }
 
     private void getUserData(Firebase ref)
