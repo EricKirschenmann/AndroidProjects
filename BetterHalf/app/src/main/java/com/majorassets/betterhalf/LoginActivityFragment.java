@@ -31,7 +31,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -45,7 +44,7 @@ public class LoginActivityFragment extends Fragment {
     private TextView mNewUserTxt;
     private TextView mResponseTxt;
 
-    private FirebaseProvider db;
+    private FirebaseProvider firebaseDB;
     private SQLiteProvider sqliteDB;
     private SQLiteUserDAL dal;
     private Firebase mRootRef;
@@ -69,13 +68,21 @@ public class LoginActivityFragment extends Fragment {
         //TODO: save user credentials into SQlite so, after initial account creation, user logs in automatically
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
 
+        //setup
         initializeUIComponents(view);
         createAndControlEvents();
 
+        //for Firebase
         Firebase.setAndroidContext(getContext());
-        db = FirebaseProvider.getDataProvider();
-        sqliteDB = new SQLiteProvider(getContext());
-        dal = new SQLiteUserDAL(sqliteDB.SQLiteDatabase);
+
+        //data providers
+        firebaseDB = FirebaseProvider.getDataProvider();
+        sqliteDB = SQLiteProvider.getSQLiteProvider(getContext());
+
+        //to query sqlite firebaseDB
+        dal = new SQLiteUserDAL(sqliteDB.getDatabase());
+
+        GlobalResources.Users = dal.getAllUsers();
 
         return view;
     }
@@ -150,7 +157,7 @@ public class LoginActivityFragment extends Fragment {
 
     private void attemptLogin()
     {
-        mRootRef = db.getFirebaseInstance();
+        mRootRef = firebaseDB.getFirebaseInstance();
 
         mEmail = mEmailEdit.getText().toString();
         mPassword = mPasswordEdit.getText().toString();
@@ -177,7 +184,7 @@ public class LoginActivityFragment extends Fragment {
                 public void onAuthenticated(AuthData authData)
                 {
                     //get the reference for a user's data and parse it out into HashMap
-                    mUserDataRef = db.getUserDataInstance(mUsername);
+                    mUserDataRef = firebaseDB.getUserDataInstance(mUsername);
                     getUserData(mUserDataRef);
 
                     //TODO: read User object from SQLite
@@ -221,6 +228,7 @@ public class LoginActivityFragment extends Fragment {
                 User user = new User();
                 user.setEmail(mEmail);
                 user.setPassword(mPassword);
+                user.setLoggedOnLast(true); //tmp needs better logic for more users on same device
 
                 //add new user to SQLite database
                 dal.addUser(user);

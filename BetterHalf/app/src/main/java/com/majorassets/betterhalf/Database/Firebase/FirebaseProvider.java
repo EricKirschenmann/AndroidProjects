@@ -27,7 +27,7 @@ public class FirebaseProvider
     }
 
     //return the info for a user
-    public Firebase getUserInstance(String username)
+    public Firebase getUserInfoInstance(String username)
     {
         userInstance = new Firebase(FIREBASE_URL + "users/" + username + "/info");
         return userInstance;
@@ -50,7 +50,8 @@ public class FirebaseProvider
     public static FirebaseProvider getDataProvider()
     {
         if(sDataProvider == null)
-            return new FirebaseProvider();
+            sDataProvider = new FirebaseProvider();
+
         return sDataProvider;
     }
 }

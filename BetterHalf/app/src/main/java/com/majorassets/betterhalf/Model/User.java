@@ -15,11 +15,10 @@ public class User
     private String firstName;
     private String lastName;
     private String email;
-
     private String password;
-
     private String username;
 
+    private boolean loggedOnLast;
 
     private DataItemRepository mDataItemRepository;
 
@@ -106,5 +105,15 @@ public class User
     public void setPassword(String password)
     {
         this.password = password;
+    }
+
+    public boolean isLoggedOnLast()
+    {
+        return loggedOnLast;
+    }
+
+    public void setLoggedOnLast(boolean loggedOnLast)
+    {
+        this.loggedOnLast = loggedOnLast;
     }
 }

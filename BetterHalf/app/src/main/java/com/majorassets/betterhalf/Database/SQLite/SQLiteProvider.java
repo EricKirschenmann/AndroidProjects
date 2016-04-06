@@ -13,11 +13,21 @@ import com.majorassets.betterhalf.Model.User;
  */
 public class SQLiteProvider
 {
-    public static SQLiteDatabase SQLiteDatabase;
+    private static SQLiteProvider sSQLiteProvider;
+    private static SQLiteDatabase database;
 
-    public SQLiteProvider(Context context)
+    private SQLiteProvider(Context context)
     {
-        SQLiteDatabase = new DataBaseHelper(context).getWritableDatabase();
+        database = new DataBaseHelper(context).getWritableDatabase();
+    }
+
+    //singleton implementation
+    public static SQLiteProvider getSQLiteProvider(Context context)
+    {
+        if(sSQLiteProvider == null)
+            sSQLiteProvider = new SQLiteProvider(context);
+
+        return sSQLiteProvider;
     }
 
     public static ContentValues getUserContentValues(User user)
@@ -26,12 +36,13 @@ public class SQLiteProvider
         values.put(UserDBTable.Cols.UUID, user.getID().toString());
         values.put(UserDBTable.Cols.EMAIL, user.getEmail());
         values.put(UserDBTable.Cols.PASSWORD, user.getPassword());
+        values.put(UserDBTable.Cols.LOGGED_ON_LAST, user.isLoggedOnLast());
         return values;
     }
 
     public static UserCursorWrapper queryUser(String whereClause, String[] whereArgs)
     {
-        Cursor cursor = SQLiteDatabase.query(
+                Cursor cursor = database.query(
                 UserDBTable.NAME,
                 null, //select * columns
                 whereClause,
@@ -41,5 +52,10 @@ public class SQLiteProvider
                 null); //order by
 
         return new UserCursorWrapper(cursor);
+    }
+
+    public SQLiteDatabase getDatabase()
+    {
+        return database;
     }
 }

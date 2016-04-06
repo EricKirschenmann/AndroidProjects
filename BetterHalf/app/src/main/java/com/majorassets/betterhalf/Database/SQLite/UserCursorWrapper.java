@@ -27,10 +27,14 @@ public class UserCursorWrapper extends CursorWrapper
         String userID = getString(getColumnIndex(UserDBTable.Cols.UUID));
         String email = getString(getColumnIndex(UserDBTable.Cols.EMAIL));
         String password = getString(getColumnIndex(UserDBTable.Cols.PASSWORD));
+        String loggedOnLastStr = getString(getColumnIndex(UserDBTable.Cols.LOGGED_ON_LAST));
+
+        boolean loggedOnLast = Integer.parseInt(loggedOnLastStr) == 1;
 
         User user = new User(UUID.fromString(userID));
         user.setEmail(email);
         user.setPassword(password);
+        user.setLoggedOnLast(loggedOnLast);
 
         return user;
     }

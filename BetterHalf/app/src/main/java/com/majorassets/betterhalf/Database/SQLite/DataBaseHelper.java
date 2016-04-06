@@ -23,10 +23,11 @@ public class DataBaseHelper extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase db)
     {
         db.execSQL("CREATE TABLE " + UserDBTable.NAME + "(" +
-                        "_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "_id integer primary key autoincrement, " +
                         UserDBTable.Cols.UUID + ", " +
                         UserDBTable.Cols.EMAIL + ", " +
-                        UserDBTable.Cols.PASSWORD + ")");
+                        UserDBTable.Cols.PASSWORD + ", " +
+                        UserDBTable.Cols.LOGGED_ON_LAST + ")");
     }
 
     @Override
