@@ -80,11 +80,11 @@ public class HomeActivityFragment extends Fragment
 
 		//right now have to call this 5 times - TODO: make dynamic
 		//String mainCategory = mEntertainmentButton.getText().toString().toLowerCase();
-		getSubcategoryData(db.getSubcategories(mEntertainmentText.getText().toString()));
-		getSubcategoryData(db.getSubcategories(mFashionText.getText().toString()));
-		getSubcategoryData(db.getSubcategories(mFoodText.getText().toString()));
-		getSubcategoryData(db.getSubcategories(mHobbyText.getText().toString()));
-		getSubcategoryData(db.getSubcategories(mMedicalText.getText().toString()));
+		getSubcategoryData(db.getSubcategoryInstance(mEntertainmentText.getText().toString()));
+		getSubcategoryData(db.getSubcategoryInstance(mFashionText.getText().toString()));
+		getSubcategoryData(db.getSubcategoryInstance(mFoodText.getText().toString()));
+		getSubcategoryData(db.getSubcategoryInstance(mHobbyText.getText().toString()));
+		getSubcategoryData(db.getSubcategoryInstance(mMedicalText.getText().toString()));
 	}
 
 	private void createEvents()

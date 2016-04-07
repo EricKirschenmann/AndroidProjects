@@ -42,13 +42,17 @@ public class LoginActivityFragment extends Fragment {
     private EditText mEmailEdit;
     private EditText mPasswordEdit;
     private TextView mNewUserTxt;
+    private TextView mForgotPwdTxt;
     private TextView mResponseTxt;
 
+    //DB componenets
     private FirebaseProvider firebaseDB;
     private SQLiteProvider sqliteDB;
     private SQLiteUserDAL dal;
     private Firebase mRootRef;
-    private Firebase mUserDataRef;
+
+    //User components
+    private User appUser;
     private String mEmail;
     private String mPassword;
     private String mUsername;
@@ -95,6 +99,7 @@ public class LoginActivityFragment extends Fragment {
 
         mResponseTxt = (TextView) view.findViewById(R.id.response_txt);
         mNewUserTxt = (TextView) view.findViewById(R.id.newUser_txt);
+        mForgotPwdTxt = (TextView) view.findViewById(R.id.forgot_pwd_txt);
 
         mEmailEdit = (EditText) view.findViewById(R.id.email_edit);
         mPasswordEdit = (EditText) view.findViewById(R.id.password_edit);
@@ -151,6 +156,15 @@ public class LoginActivityFragment extends Fragment {
                 }
             }
         });
+
+        mForgotPwdTxt.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+
+            }
+        });
     }
 
     private void attemptLogin()
@@ -172,27 +186,24 @@ public class LoginActivityFragment extends Fragment {
     //use Firebase user authentication with an email and password
     private void loginWithPassword(String email, String password, boolean initialLogin)
     {
-        User user = dal.getUser(email);
+         appUser = dal.getUser(email);
 
-        if(user == null || !initialLogin)
+        if(appUser == null || !initialLogin)
         {
             mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler()
             {
                 @Override
                 public void onAuthenticated(AuthData authData)
                 {
-                    //get the reference for a user's data and parse it out into HashMap
-                    mUserDataRef = firebaseDB.getUserDataInstance(mUsername);
-                    getUserData(mUserDataRef);
+                    if(appUser == null)
+                    {
+                        appUser = new User();
+                        appUser.setEmail(mEmail);
+                        appUser.setPassword(mPassword);
+                        appUser.setLoggedOnLast(true);
 
-                    //TODO: read User object from SQLite
-                    User user = new User();
-                    user.setEmail(mEmail);
-
-                    // THIS IS TEMPORARY TO MOVE FORWARD - must be read from SQLite//
-                    DataItemRepository userRepo = DataItemRepository.getDataItemRepository();
-                    userRepo.setDataItems(userDataList);
-                    user.setDataItemRepository(userRepo);
+                        dal.addUser(appUser);
+                    }
 
                     //start the home activity
                     startHomeActivity();
@@ -208,7 +219,7 @@ public class LoginActivityFragment extends Fragment {
         }
         else
         {
-            createNewAccount(user, user.getEmail(), user.getPassword());
+            createNewAccount(appUser, appUser.getEmail(), appUser.getPassword());
         }
     }
 
@@ -266,67 +277,5 @@ public class LoginActivityFragment extends Fragment {
     {
         Intent homeIntent = new Intent(this.getContext(), HomeActivity.class);
         startActivity(homeIntent);
-    }
-
-    private void getUserData(Firebase ref)
-    {
-        ref.addListenerForSingleValueEvent(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                String parent;
-                DataSnapshot next;
-                SubcategoryType subcategory;
-                BaseDataItem item;
-                //"drill down" to leaf nodes
-                while(dataSnapshot.hasChildren())
-                {
-                    parent = dataSnapshot.getKey();
-                    next = dataSnapshot.getChildren().iterator().next();
-                    subcategory = SubcategoryType.getTypeFromString(parent);
-                    switch (subcategory)
-                    {
-                        //TODO: parse out datasnapshot into separate objects
-                        case MOVIE:
-                            item = new MovieItem(next.getKey(), next.getValue().toString());
-                            addDataItem(subcategory, item);
-                            dataSnapshot = next;
-                            break;
-                        case MUSIC:
-                            item = new MusicItem(next.getKey(), next.getValue().toString());
-                            addDataItem(subcategory, item);
-                            dataSnapshot = next;
-                            break;
-                        default:
-                            dataSnapshot = next; //parent was some other folder; keep going
-                            break; //error check here
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError)
-            {
-
-            }
-        });
-    }
-
-    private void addDataItem(SubcategoryType subcategory, BaseDataItem item)
-    {
-        List<BaseDataItem> list;
-        //if there are no entries for a movie then the list will be null
-        if(userDataList.get(subcategory) == null)
-        {
-            list = new ArrayList<>(); // use an empty list
-            list.add(item);
-            userDataList.put(subcategory, list); //create new entry for movies
-        }
-        else //add to an already define list
-        {
-            list = userDataList.get(subcategory);
-            list.add(item);
-        }
     }
 }
