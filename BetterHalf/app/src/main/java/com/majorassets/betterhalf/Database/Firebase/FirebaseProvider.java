@@ -26,6 +26,11 @@ public class FirebaseProvider
         return instance;
     }
 
+    public Firebase getUserInstance(String username)
+    {
+        userInstance = new Firebase(FIREBASE_URL + "users/" + username);
+        return userInstance;
+    }
     //return the info for a user
     public Firebase getUserInfoInstance(String username)
     {

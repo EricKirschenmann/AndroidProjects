@@ -25,26 +25,6 @@ public class HomeActivity extends AppCompatActivity
 		setContentView(R.layout.activity_home);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-
-		ref = db.getFirebaseInstance();
-
-		ref.addAuthStateListener(new Firebase.AuthStateListener()
-		{
-			@Override
-			public void onAuthStateChanged(AuthData authData)
-			{
-				if(authData != null)
-				{
-					//user logged in
-				}
-				else
-				{
-					//user is not logged in - go to login screen
-					Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-					startActivity(intent);
-				}
-			}
-		});
 	}
 
 	@Override

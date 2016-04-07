@@ -82,8 +82,6 @@ public class LoginActivityFragment extends Fragment {
         //to query sqlite firebaseDB
         dal = new SQLiteUserDAL(sqliteDB.getDatabase());
 
-        GlobalResources.Users = dal.getAllUsers();
-
         return view;
     }
 
@@ -162,21 +160,21 @@ public class LoginActivityFragment extends Fragment {
         mEmail = mEmailEdit.getText().toString();
         mPassword = mPasswordEdit.getText().toString();
         //generated username based off email
-        mUsername = generateUsername(mEmail);
+        mUsername = LoginHelperActivity.generateUsername(mEmail);
 
         //Attempt Login
         if(mLoginButton.getText().toString().equals(mLoginLbl))
-            loginWithPassword(mEmail, mPassword);
+            loginWithPassword(mEmail, mPassword, true);
         else if (mLoginButton.getText().toString().equals(mSignUpLbl))
-            createNewAccount(mEmail, mPassword);
+            createNewAccount(null, mEmail, mPassword);
     }
 
     //use Firebase user authentication with an email and password
-    private void loginWithPassword(String email, String password)
+    private void loginWithPassword(String email, String password, boolean initialLogin)
     {
         User user = dal.getUser(email);
 
-        if(user == null)
+        if(user == null || !initialLogin)
         {
             mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler()
             {
@@ -209,11 +207,12 @@ public class LoginActivityFragment extends Fragment {
             });
         }
         else
-            startHomeActivity();
-
+        {
+            createNewAccount(user, user.getEmail(), user.getPassword());
+        }
     }
 
-    private void createNewAccount(final String email, final String password)/**/
+    private void createNewAccount(final User user, final String email, final String password)/**/
     {
         //Attempt to create a new user
         mRootRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>()
@@ -224,27 +223,32 @@ public class LoginActivityFragment extends Fragment {
                 //TODO: log user in with first-time welcome screen
                 mLoginButton.setText(R.string.login_txt);
 
-                //TODO: store User object in SQLite
-                User user = new User();
-                user.setEmail(mEmail);
-                user.setPassword(mPassword);
-                user.setLoggedOnLast(true); //tmp needs better logic for more users on same device
+                //Ensure we only add User to SQLite database once
+                User userLocal;
+                if(user == null)
+                {
+                    userLocal = new User();
 
-                //add new user to SQLite database
-                dal.addUser(user);
+                    userLocal.setEmail(mEmail);
+                    userLocal.setPassword(mPassword);
+                    userLocal.setLoggedOnLast(true); //tmp needs better logic for more users on same device
 
-                loginWithPassword(mEmail, mPassword);
+                    //add new user to SQLite database
+                    dal.addUser(userLocal);
+                }
+
+                loginWithPassword(mEmail, mPassword, false);
 
                 /*Create new user in Firebase, with username child of "users", info being child of "username",
                   and specific data "id" and "email" being children of "info" */
                 Firebase usersRef = mRootRef.child("users");
-                Map<String, Map<String, String>> newUserInfoMap = new HashMap<String, Map<String, String>>();
-                Map<String, String> newUserDataMap = new HashMap<String, String>();
+                Map<String, Map<String, String>> newUserInfoMap = new HashMap<>();
+                Map<String, String> newUserDataMap = new HashMap<>();
                 newUserDataMap.put("email", mEmail);
                 //TODO make ID dynamic
                 newUserDataMap.put("id", "000000002");
                 newUserInfoMap.put("info", newUserDataMap);
-                String newUsername = generateUsername(mEmail);
+                String newUsername = LoginHelperActivity.generateUsername(mEmail);
                 Firebase newUserRef = usersRef.child(newUsername);
                 newUserRef.setValue(newUserInfoMap);
             }
@@ -260,7 +264,7 @@ public class LoginActivityFragment extends Fragment {
 
     private void startHomeActivity()
     {
-        Intent homeIntent = new Intent(getContext(), HomeActivity.class);
+        Intent homeIntent = new Intent(this.getContext(), HomeActivity.class);
         startActivity(homeIntent);
     }
 
@@ -324,18 +328,5 @@ public class LoginActivityFragment extends Fragment {
             list = userDataList.get(subcategory);
             list.add(item);
         }
-    }
-
-    /* UTILITY */
-    @NonNull
-    /**
-     * Derive a username from a user's email address
-     */
-    private String generateUsername(String email)
-    {
-        String emailProvider = email.substring(email.indexOf('@') + 1, email.indexOf('.')); //e.g. yahoo, gmail
-        email = email.substring(0, email.indexOf('@'));
-
-        return email + emailProvider;
     }
 }
