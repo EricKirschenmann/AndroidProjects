@@ -57,8 +57,7 @@ public class LoginActivityFragment extends Fragment {
     private String mPassword;
     private String mUsername;
 
-    private Map<SubcategoryType, List<BaseDataItem>> userDataList;
-
+    //labels
     private String mNewUserLbl;
     private String mExistingLbl;
     private String mSignUpLbl;
@@ -68,8 +67,6 @@ public class LoginActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        //TODO: somehow "wipe" savedInstanceState
-        //TODO: save user credentials into SQlite so, after initial account creation, user logs in automatically
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
 
         //setup
@@ -104,8 +101,6 @@ public class LoginActivityFragment extends Fragment {
         mEmailEdit = (EditText) view.findViewById(R.id.email_edit);
         mPasswordEdit = (EditText) view.findViewById(R.id.password_edit);
         mLoginButton = (Button) view.findViewById(R.id.login_btn);
-
-        userDataList = new HashMap<>();
     }
 
     //establish event listeners as anonymous inner classes
@@ -162,7 +157,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-
+                //TODO: dialog for new password
             }
         });
     }
@@ -256,7 +251,7 @@ public class LoginActivityFragment extends Fragment {
                 Map<String, Map<String, String>> newUserInfoMap = new HashMap<>();
                 Map<String, String> newUserDataMap = new HashMap<>();
                 newUserDataMap.put("email", mEmail);
-                //TODO make ID dynamic
+                //TODO make ID dynamic - try us UUID.randomUUID() or on login use authData.getUid()
                 newUserDataMap.put("id", "000000002");
                 newUserInfoMap.put("info", newUserDataMap);
                 String newUsername = LoginHelperActivity.generateUsername(mEmail);
