@@ -7,7 +7,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="top|center"
     tools:context="com.majorassets.betterhalf.LoginActivityFragment">
     tools:showIn="@layout/activity_login">
 
@@ -34,27 +34,33 @@
         android:textColor="@color/colorAccent"
         android:background="#FFF"/>
 
-    <TextView
-        android:id="@+id/newUser_txt"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/newuser_txt"
-        android:gravity="center"
-        android:padding="24dp"/>
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/newUser_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/newuser_txt"
+            android:padding="12dp"/>
+
+        <TextView
+            android:id="@+id/forgot_pwd_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/newUser_txt"
+            android:padding="12dp"
+            android:text="@string/forgot_pwd_txt"/>
+    </RelativeLayout>
+
 
     <TextView
         android:id="@+id/response_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="24dp"
+        android:padding="32dp"
         android:textColor="@color/errorText"
+        android:layout_gravity="center"
         tools:text="Invalid Login"/>
-
-    <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
-        android:id="@+id/login_progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
 
 </LinearLayout>
