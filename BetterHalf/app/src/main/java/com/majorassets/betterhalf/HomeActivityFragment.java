@@ -2,7 +2,6 @@ package com.majorassets.betterhalf;
 
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.firebase.client.DataSnapshot;
@@ -20,14 +18,13 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
 import com.majorassets.betterhalf.Database.DataItemRepository;
-import com.majorassets.betterhalf.Database.DataProvider;
+import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.MainCategory;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +46,7 @@ public class HomeActivityFragment extends Fragment
 	private CardView mMedicalCardView;
 
 	private Map<SubcategoryType, List<BaseDataItem>> userDataItems;
-	private DataProvider db;
+	private FirebaseProvider db;
 
 	public static final String TITLE_EXTRA = "com.majorassets.betterhalf.title";
 
@@ -79,7 +76,7 @@ public class HomeActivityFragment extends Fragment
 		mMedicalCardView = (CardView) view.findViewById(R.id.medical_card_view);
 
 		userDataItems = DataItemRepository.getDataItemRepository().getDataItems();
-		db = DataProvider.getDataProvider();
+		db = FirebaseProvider.getDataProvider();
 
 		//right now have to call this 5 times - TODO: make dynamic
 		//String mainCategory = mEntertainmentButton.getText().toString().toLowerCase();

@@ -4,6 +4,7 @@ import com.majorassets.betterhalf.Model.MainCategory;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
+import com.majorassets.betterhalf.Model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,8 @@ public class GlobalResources
 {
     public static MainCategoryType mainTypePressed = MainCategoryType.INVALID;
     public static Map<MainCategoryType, List<Subcategory>> Subcategories = new HashMap<>();
+    public static List<User> Users = new ArrayList<>();
+    public static User AppUser;
     public static void addToGlobalSubcategories(MainCategoryType main, Subcategory sub)
     {
         List<Subcategory> lst;
