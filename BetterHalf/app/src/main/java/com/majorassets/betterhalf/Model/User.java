@@ -37,6 +37,13 @@ public class User
         this.ID = ID;
     }
 
+    public User(String email, String password)
+    {
+        this.ID = UUID.randomUUID();
+        this.email = email;
+        this.password = password;
+    }
+
     public String getEmail()
     {
         return email;

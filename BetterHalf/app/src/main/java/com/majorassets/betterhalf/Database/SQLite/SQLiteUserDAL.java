@@ -81,7 +81,13 @@ public class SQLiteUserDAL implements ISQLiteUserDAL
                 return null;
 
             cursor.moveToFirst();
-            users.add(cursor.getUser());
+
+            while(!cursor.isAfterLast())
+            {
+                users.add(cursor.getUser());
+                cursor.moveToNext();
+            }
+
         }
         finally
         {
