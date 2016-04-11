@@ -18,6 +18,7 @@ import java.util.List;
 public class SQLiteUserDAL implements ISQLiteUserDAL
 {
     private SQLiteDatabase db;
+
     public SQLiteUserDAL(SQLiteDatabase db)
     {
         this.db = db;
@@ -48,13 +49,18 @@ public class SQLiteUserDAL implements ISQLiteUserDAL
     @Override
     public User deleteUser(User user)
     {
-        return null;
+        String userID = user.getID().toString();
+
+        db.delete(UserDBTable.NAME, UserDBTable.Cols.UUID + "= ?", new String[]{userID});
+
+        return user;
     }
 
     @Override
     public User getUser(String email)
     {
-        UserCursorWrapper cursor = SQLiteProvider.queryUser(UserDBTable.Cols.EMAIL + "= ?", new String[]{email});
+        UserCursorWrapper cursor = SQLiteProvider.queryUser(UserDBTable.Cols.EMAIL + "= ?"
+                                                            , new String[]{email});
 
         try
         {
@@ -81,7 +87,14 @@ public class SQLiteUserDAL implements ISQLiteUserDAL
                 return null;
 
             cursor.moveToFirst();
-            users.add(cursor.getUser());
+
+            //iterate the cursor over each record in DB
+            while(!cursor.isAfterLast())
+            {
+                users.add(cursor.getUser());
+                cursor.moveToNext();
+            }
+
         }
         finally
         {
