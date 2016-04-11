@@ -51,10 +51,10 @@ public class LoginHelperActivity extends AppCompatActivity
 
         //these represent all users that have ever logged in on the same device
         GlobalResources.Users = dal.getAllUsers();
-        //this represents the global user - the one logged in, using the app - accessible from anywhere
+        //this represents the global user - the one last logged in, using the app - accessible from anywhere
         GlobalResources.AppUser = getLastLoggedInUser(GlobalResources.Users);
 
-        //first check if SQLite had user data
+        //first check if SQLite had user data (someone was last logged in on device)
         if(GlobalResources.AppUser != null)
         {
             appUser = GlobalResources.AppUser;

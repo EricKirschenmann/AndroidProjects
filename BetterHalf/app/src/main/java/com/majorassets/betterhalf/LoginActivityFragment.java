@@ -18,6 +18,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseDataItem;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -75,7 +77,7 @@ public class LoginActivityFragment extends Fragment {
         createAndControlEvents();
 
         //for Firebase
-        Firebase.setAndroidContext(getContext());
+        Firebase.setAndroidContext(getContext().getApplicationContext());
 
         //data providers
         firebaseDB = FirebaseProvider.getDataProvider();
@@ -144,11 +146,13 @@ public class LoginActivityFragment extends Fragment {
                 {
                     mLoginButton.setText(R.string.signup_txt);
                     mNewUserTxt.setText(mExistingLbl);
+                    mForgotPwdTxt.setText("");
                 }
                 else if(mNewUserTxt.getText().toString().equals(mExistingLbl))
                 {
                     mLoginButton.setText(R.string.login_txt);
                     mNewUserTxt.setText(mNewUserLbl);
+                    mForgotPwdTxt.setText(R.string.forgot_pwd_txt);
                 }
             }
         });
@@ -188,7 +192,7 @@ public class LoginActivityFragment extends Fragment {
          appUser = dal.getUser(email);
         GlobalResources.AppUser = appUser;
 
-        //if user is not in SQLite AND was not logged on last
+        //if user is not in SQLite OR this a login after creating an account
         if(appUser == null || postCreationLogin)
         {
             mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler()
@@ -196,16 +200,18 @@ public class LoginActivityFragment extends Fragment {
                 @Override
                 public void onAuthenticated(AuthData authData)
                 {
-                    if(!postCreationLogin)
-                    {
-                        //create new user
-                        appUser = new User(mEmail, mPassword);
-                        appUser.setLoggedOnLast(true);
 
-                        GlobalResources.AppUser = appUser;
-                        //add user to SQLite db
-                        dal.addUser(appUser);
-                    }
+                    //create new user
+                    appUser = new User(mEmail, mPassword);
+                    appUser.setID(UUID.fromString(authData.getUid()));
+                    appUser.setLoggedOnLast(true);
+
+                    GlobalResources.AppUser = appUser;
+
+                    //add user to SQLite db
+                    dal.addUser(appUser);
+
+                    createNewUserFirebaseStructure(appUser);
 
                     //go to home screen
                     startHomeActivity();
@@ -269,23 +275,7 @@ public class LoginActivityFragment extends Fragment {
                     appUser.setEmail(mEmail);
                     appUser.setPassword(mPassword);
                     appUser.setLoggedOnLast(true);
-
-                    //add new user to SQLite database
-                    dal.addUser(appUser);
                 }
-
-                /*Create new user in Firebase, with username child of "users", info being child of "username",
-                  and specific data "id" and "email" being children of "info" */
-                Firebase usersRef = mRootRef.child("users");
-                Map<String, Map<String, String>> newUserInfoMap = new HashMap<>();
-                Map<String, String> newUserDataMap = new HashMap<>();
-                newUserDataMap.put("email", mEmail);
-                //TODO make ID dynamic - try us UUID.randomUUID() or on login use authData.getUid()
-                newUserDataMap.put("id", "000000002");
-                newUserInfoMap.put("info", newUserDataMap);
-                String newUsername = LoginHelperActivity.generateUsername(mEmail);
-                Firebase newUserRef = usersRef.child(newUsername);
-                newUserRef.setValue(newUserInfoMap);
 
                 if(shouldLogin)
                     //automatic login after account creation
@@ -299,6 +289,27 @@ public class LoginActivityFragment extends Fragment {
                 mResponseTxt.setText(firebaseError.getMessage());
             }
         });
+    }
+
+    private void createNewUserFirebaseStructure(User user)
+    {
+        /*
+        Create new user in Firebase, with username child of "users", info being child of "username",
+        and specific data "id" and "email" being children of "info"
+        */
+
+        Firebase usersRef = mRootRef.child(FirebaseStructure.USERS);
+
+        Map<String, Map<String, String>> newUserInfoMap = new HashMap<>();
+        Map<String, String> newUserDataMap = new HashMap<>();
+
+        newUserDataMap.put(FirebaseStructure.EMAIL, mEmail);
+        newUserDataMap.put(FirebaseStructure.ID, appUser.getID().toString());
+        newUserInfoMap.put(FirebaseStructure.INFO, newUserDataMap);
+
+        String newUsername = LoginHelperActivity.generateUsername(mEmail);
+        Firebase newUserRef = usersRef.child(newUsername);
+        newUserRef.setValue(newUserInfoMap);
     }
 
     private void startHomeActivity()

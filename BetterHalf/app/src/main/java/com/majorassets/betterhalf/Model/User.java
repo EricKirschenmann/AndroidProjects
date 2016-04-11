@@ -24,12 +24,7 @@ public class User
 
     public User()
     {
-        this(UUID.randomUUID());
-        /*firstName = "John";
-        lastName = "Doe";
-        email = "jdoe@test.com";
-        password = "test"; //TODO: hash password
-        mDataItemRepository = DataItemRepository.getDataItemRepository();*/
+        //TODO: hash password
     }
 
     public User(UUID ID)
@@ -39,7 +34,6 @@ public class User
 
     public User(String email, String password)
     {
-        this.ID = UUID.randomUUID();
         this.email = email;
         this.password = password;
     }
