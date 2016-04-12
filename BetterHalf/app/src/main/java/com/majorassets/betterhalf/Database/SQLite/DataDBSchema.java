@@ -14,7 +14,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -26,7 +25,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -38,7 +36,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -50,7 +47,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -62,7 +58,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -74,7 +69,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -88,7 +82,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -100,7 +93,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -112,7 +104,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -124,21 +115,19 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
     }
 
 
-    /*  Food Categories */
+    /*  Food */
     public static final class DrinksTable
     {
         public static final String NAME = "Drinks";
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -150,7 +139,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -162,7 +150,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -174,7 +161,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -186,7 +172,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -200,7 +185,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -212,7 +196,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -224,7 +207,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -238,7 +220,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -250,7 +231,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -262,7 +242,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -274,7 +253,6 @@ public class DataDBSchema {
 
         public static final class Cols
         {
-            public static final String ID = "ID";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
