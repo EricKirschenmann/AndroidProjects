@@ -7,67 +7,6 @@ package com.majorassets.betterhalf.Database.SQLite;
  */
 public class DataDBSchema {
 
-    /*  Food Categories */
-    public static final class RestaurantsTable
-    {
-        public static final String NAME = "Restaurants";
-
-        public static final class Cols
-        {
-            public static final String ID = "ID";
-            public static final String LABEL = "label";
-            public static final String VALUE = "value";
-        }
-    }
-
-    public static final class DrinksTable
-    {
-        public static final String NAME = "Drinks";
-
-        public static final class Cols
-        {
-            public static final String ID = "ID";
-            public static final String LABEL = "label";
-            public static final String VALUE = "value";
-        }
-    }
-
-    public static final class DishesTable
-    {
-        public static final String NAME = "Dishes";
-
-        public static final class Cols
-        {
-            public static final String ID = "ID";
-            public static final String LABEL = "label";
-            public static final String VALUE = "value";
-        }
-    }
-
-    public static final class FoodPyramidTable
-    {
-        public static final String NAME = "FoodPyramid";
-
-        public static final class Cols
-        {
-            public static final String ID = "ID";
-            public static final String LABEL = "label";
-            public static final String VALUE = "value";
-        }
-    }
-
-    public static final class SnacksTable
-    {
-        public static final String NAME = "Snacks";
-
-        public static final class Cols
-        {
-            public static final String ID = "ID";
-            public static final String LABEL = "label";
-            public static final String VALUE = "value";
-        }
-    }
-
     /*  Entertainment Tables */
     public static final class BooksTable
     {
@@ -105,18 +44,6 @@ public class DataDBSchema {
         }
     }
 
-    public static final class TVShowsTable
-    {
-        public static final String NAME = "TVShows";
-
-        public static final class Cols
-        {
-            public static final String ID = "ID";
-            public static final String LABEL = "label";
-            public static final String VALUE = "value";
-        }
-    }
-
     public static final class MusicTable
     {
         public static final String NAME = "Music";
@@ -129,9 +56,9 @@ public class DataDBSchema {
         }
     }
 
-    public static final class TheatreTable
+    public static final class TheaterTable
     {
-        public static final String NAME = "Theatre";
+        public static final String NAME = "Theater";
 
         public static final class Cols
         {
@@ -141,10 +68,47 @@ public class DataDBSchema {
         }
     }
 
+    public static final class TVShowsTable
+    {
+        public static final String NAME = "TVShows";
+
+        public static final class Cols
+        {
+            public static final String ID = "ID";
+            public static final String LABEL = "label";
+            public static final String VALUE = "value";
+        }
+    }
+
+
     /*  Fashion */
+    public static final class AccessoriesTable
+    {
+        public static final String NAME = "Accessories";
+
+        public static final class Cols
+        {
+            public static final String ID = "ID";
+            public static final String LABEL = "label";
+            public static final String VALUE = "value";
+        }
+    }
+
     public static final class ClothingTable
     {
         public static final String NAME = "Clothing";
+
+        public static final class Cols
+        {
+            public static final String ID = "ID";
+            public static final String LABEL = "label";
+            public static final String VALUE = "value";
+        }
+    }
+
+    public static final class JewelryTable
+    {
+        public static final String NAME = "Jewelry";
 
         public static final class Cols
         {
@@ -166,9 +130,11 @@ public class DataDBSchema {
         }
     }
 
-    public static final class AccessoriesTable
+
+    /*  Food Categories */
+    public static final class DrinksTable
     {
-        public static final String NAME = "Accessories";
+        public static final String NAME = "Drinks";
 
         public static final class Cols
         {
@@ -178,9 +144,9 @@ public class DataDBSchema {
         }
     }
 
-    public static final class JewelryTable
+    public static final class EntreesTable
     {
-        public static final String NAME = "Jewelry";
+        public static final String NAME = "Entrees";
 
         public static final class Cols
         {
@@ -189,6 +155,43 @@ public class DataDBSchema {
             public static final String VALUE = "value";
         }
     }
+
+    public static final class RestaurantsTable
+    {
+        public static final String NAME = "Restaurants";
+
+        public static final class Cols
+        {
+            public static final String ID = "ID";
+            public static final String LABEL = "label";
+            public static final String VALUE = "value";
+        }
+    }
+
+    public static final class SidesTable
+    {
+        public static final String NAME = "Sides";
+
+        public static final class Cols
+        {
+            public static final String ID = "ID";
+            public static final String LABEL = "label";
+            public static final String VALUE = "value";
+        }
+    }
+
+    public static final class SnacksTable
+    {
+        public static final String NAME = "Snacks";
+
+        public static final class Cols
+        {
+            public static final String ID = "ID";
+            public static final String LABEL = "label";
+            public static final String VALUE = "value";
+        }
+    }
+
 
     /*  Hobbies */
     public static final class IndoorTable
@@ -227,6 +230,7 @@ public class DataDBSchema {
         }
     }
 
+
     /*  Medical */
     public static final class AllergiesTable
     {
@@ -252,9 +256,9 @@ public class DataDBSchema {
         }
     }
 
-    public static final class PhobiasTable
+    public static final class MedicationTable
     {
-        public static final String NAME = "Phobias";
+        public static final String NAME = "Medication";
 
         public static final class Cols
         {
@@ -264,9 +268,9 @@ public class DataDBSchema {
         }
     }
 
-    public static final class MedicationTable
+    public static final class PhobiasTable
     {
-        public static final String NAME = "Medication";
+        public static final String NAME = "Phobias";
 
         public static final class Cols
         {
