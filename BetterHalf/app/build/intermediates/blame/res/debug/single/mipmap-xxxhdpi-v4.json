@@ -1,9 +1,5 @@
 [
     {
-        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi-v4\\ic_entertainment.png",
-        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_entertainment.png"
-    },
-    {
         "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi-v4\\ic_share.png",
         "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_share.png"
     },
@@ -20,11 +16,11 @@
         "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_food.png"
     },
     {
-        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi-v4\\ic_fashion.png",
-        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_fashion.png"
-    },
-    {
         "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi-v4\\ic_medical.png",
         "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_medical.png"
+    },
+    {
+        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi-v4\\ic_fashion.png",
+        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_fashion.png"
     }
 ]
