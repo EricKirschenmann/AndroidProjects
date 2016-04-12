@@ -100,7 +100,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mEmailEdit.setText("testuser4@verizon.net"); //temp for testing
+                mEmailEdit.setText("testuser5@verizon.net"); //temp for testing
             }
         });
 
@@ -214,7 +214,7 @@ public class LoginActivityFragment extends Fragment {
                 Map<String, String> newUserDataMap = new HashMap<String, String>();
                 newUserDataMap.put("email", mEmail);
                 //TODO make ID dynamic
-                newUserDataMap.put("id", "000000002");
+                newUserDataMap.put("id", "000000005");
                 newUserInfoMap.put("info", newUserDataMap);
                 String newUsername = generateUsername(mEmail);
                 Firebase newUserRef = usersRef.child(newUsername);
