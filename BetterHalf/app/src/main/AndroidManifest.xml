@@ -40,7 +40,7 @@
         <activity
             android:name=".SingleItemEditActivity"
             android:label="@string/add_item_txt"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
