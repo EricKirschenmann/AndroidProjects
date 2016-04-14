@@ -2,29 +2,39 @@ package com.majorassets.betterhalf.Model;
 
 import com.majorassets.betterhalf.Database.DataItemRepository;
 
+import java.util.List;
+import java.util.UUID;
+
+
 /**
  * Created by dgbla on 2/28/2016.
  */
 public class User
 {
+    private UUID ID;
     private String firstName;
     private String lastName;
     private String email;
+    private String password;
     private String username;
+
+    private boolean loggedOnLast;
 
     private DataItemRepository mDataItemRepository;
 
     public User()
     {
-        firstName = "John";
+        this(UUID.randomUUID());
+        /*firstName = "John";
         lastName = "Doe";
         email = "jdoe@test.com";
-        username = "johndoe";
-        mDataItemRepository = DataItemRepository.getDataItemRepository();
+        password = "test"; //TODO: hash password
+        mDataItemRepository = DataItemRepository.getDataItemRepository();*/
     }
 
-    public User( String username){
-
+    public User(UUID ID)
+    {
+        this.ID = ID;
     }
 
     public String getEmail()
@@ -57,6 +67,16 @@ public class User
         this.lastName = lastName;
     }
 
+    public String getUsername()
+    {
+        return username;
+    }
+
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
     public DataItemRepository getDataItemRepository()
     {
         return mDataItemRepository;
@@ -67,7 +87,33 @@ public class User
         mDataItemRepository = dataItemRepository;
     }
 
-    public String getUsername() { return username; }
+    public UUID getID()
+    {
+        return ID;
+    }
 
-    public void setUsername(String username) { this.username = username; }
+    public void setID(UUID ID)
+    {
+        this.ID = ID;
+    }
+
+    public String getPassword()
+    {
+        return password;
+    }
+
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
+
+    public boolean isLoggedOnLast()
+    {
+        return loggedOnLast;
+    }
+
+    public void setLoggedOnLast(boolean loggedOnLast)
+    {
+        this.loggedOnLast = loggedOnLast;
+    }
 }
