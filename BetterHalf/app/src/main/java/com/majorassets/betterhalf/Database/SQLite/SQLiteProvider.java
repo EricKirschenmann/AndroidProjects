@@ -29,7 +29,7 @@ public class SQLiteProvider
 
         return sSQLiteProvider;
     }
-
+    
     public static ContentValues getUserContentValues(User user)
     {
         ContentValues values = new ContentValues();
@@ -53,6 +53,8 @@ public class SQLiteProvider
 
         return new UserCursorWrapper(cursor);
     }
+
+
 
     public SQLiteDatabase getDatabase()
     {
