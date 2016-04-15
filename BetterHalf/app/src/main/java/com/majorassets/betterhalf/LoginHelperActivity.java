@@ -1,9 +1,9 @@
 package com.majorassets.betterhalf;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -17,7 +17,6 @@ import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
 import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
-import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
@@ -46,14 +45,15 @@ public class LoginHelperActivity extends AppCompatActivity
         firebaseDB = FirebaseProvider.getDataProvider();
         sqliteDB = SQLiteProvider.getSQLiteProvider(this.getApplicationContext());
 
-        //to query sqlite firebaseDB
+        //to query sqlite
         dal = new SQLiteUserDAL(sqliteDB.getDatabase());
 
         //these represent all users that have ever logged in on the same device
         GlobalResources.Users = dal.getAllUsers();
-        //this represents the global user - the one logged in, using the app - accessible from anywhere
+        //this represents the global user - the one last logged in, using the app - accessible from anywhere
         GlobalResources.AppUser = getLastLoggedInUser(GlobalResources.Users);
 
+        //first check if SQLite had user data (someone was last logged in on device)
         if(GlobalResources.AppUser != null)
         {
             appUser = GlobalResources.AppUser;
@@ -63,11 +63,14 @@ public class LoginHelperActivity extends AppCompatActivity
             userRepo.setDataItems(new HashMap<SubcategoryType, List<BaseDataItem>>());
             //assign repo to app user
             appUser.setDataItemRepository(userRepo);
+            //use variable for data instead of get method...
             appUserData = userRepo.getDataItems();
 
-
-            final String username = generateUsername(appUser.getEmail());
+            //generate the username from user's email
+            String username = generateUsername(appUser.getEmail());
             appUser.setUsername(username);
+
+            //retrieve datasnapshot of user instance (includes info and data sub trees)
             Firebase ref = firebaseDB.getUserInstance(username);
 
             try
@@ -80,6 +83,7 @@ public class LoginHelperActivity extends AppCompatActivity
                         //if user is not in firebase, launch new login page
                         if(dataSnapshot.getValue() == null)
                             startLoginActivity();
+                        //otherwise retrieve the user's data and go straight to the home screen
                         else
                         {
                             getUserData(firebaseDB.getUserDataInstance(appUser.getUsername()));
@@ -99,6 +103,7 @@ public class LoginHelperActivity extends AppCompatActivity
                 throw e;
             }
         }
+        //if SQLite is empty (of users) then launch Login screen
         else
             startLoginActivity();
     }

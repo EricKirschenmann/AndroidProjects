@@ -1,8 +1,8 @@
 package com.majorassets.betterhalf.Model;
 
 import com.majorassets.betterhalf.Database.DataItemRepository;
+import com.majorassets.betterhalf.LoginHelperActivity;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -24,17 +24,18 @@ public class User
 
     public User()
     {
-        this(UUID.randomUUID());
-        /*firstName = "John";
-        lastName = "Doe";
-        email = "jdoe@test.com";
-        password = "test"; //TODO: hash password
-        mDataItemRepository = DataItemRepository.getDataItemRepository();*/
+        //TODO: hash password
     }
 
     public User(UUID ID)
     {
         this.ID = ID;
+    }
+
+    public User(String email, String password)
+    {
+        this.email = email;
+        this.password = password;
     }
 
     public String getEmail()
@@ -69,6 +70,7 @@ public class User
 
     public String getUsername()
     {
+        username = LoginHelperActivity.generateUsername(email);
         return username;
     }
 
