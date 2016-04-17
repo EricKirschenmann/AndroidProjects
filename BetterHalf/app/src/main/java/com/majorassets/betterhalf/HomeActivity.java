@@ -61,7 +61,6 @@ public class HomeActivity extends AppCompatActivity
 				startActivity(intent);
 				return true;
 			case R.id.action_logout:
-
 				//this user is is officially logged out - was NOT logged on last
 				appUser.setLoggedOnLast(false);
 				//update the user in SQLite
@@ -72,8 +71,10 @@ public class HomeActivity extends AppCompatActivity
 				//return to login screen
 				intent = new Intent(HomeActivity.this, LoginActivity.class);
 				startActivity(intent);
-			case R.id.action_share:
 				return true;
+			case R.id.action_connect:
+				intent = new Intent(HomeActivity.this, ConnectionActivity.class);
+				startActivity(intent);
 			default:
 				return super.onOptionsItemSelected(item);
 		}
