@@ -12,6 +12,10 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_single_item_edit">SingleItemEditActivity</string>
 
+    <!--Error messages-->
+    <string name="invalid_email">Invalid email address</string>
+    <string name="invalid_password">Invalid password</string>
+
     <!--strings for HomeActivity-->
     <string name="entertainment_button">Entertainment</string>
     <string name="fashion_button">Fashion</string>
