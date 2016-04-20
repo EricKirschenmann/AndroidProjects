@@ -49,6 +49,7 @@ public class SettingsActivityFragment extends Fragment
         return view;
     }
 
+
     private void initializeComponents(View view)
     {
         mDeleteAccountButton = (Button) view.findViewById(R.id.delete_account_btn);
@@ -59,6 +60,7 @@ public class SettingsActivityFragment extends Fragment
 
     private void createEvents()
     {
+
         //TODO: pop up "Are you sure?" dialog
         mDeleteAccountButton.setOnClickListener(new View.OnClickListener()
         {
@@ -79,11 +81,13 @@ public class SettingsActivityFragment extends Fragment
                     @Override
                     public void onSuccess() {
                         //TODO: RYAN - add popup message to say account successfully deleted
+
                     }
 
                     @Override
                     public void onError(FirebaseError firebaseError) {
                         //TODO: RYAN - add error popup message
+
                     }
                 });
 
