@@ -47,8 +47,9 @@ public class SQLiteProvider
             colValue = the value from the schema
                 ex: BooksTable.Cols.VALUE
      */
-    public static ContentValues getDataContentValues(BaseDataItem item, String colLabel, String colValue){
+    public static ContentValues getDataContentValues(BaseDataItem item, String colUUID, String colLabel, String colValue){
         ContentValues values = new ContentValues();
+        values.put(colUUID, item.getID().toString());
         values.put(colLabel, item.getLabel());
         values.put(colValue, item.getValue());
         return values;
