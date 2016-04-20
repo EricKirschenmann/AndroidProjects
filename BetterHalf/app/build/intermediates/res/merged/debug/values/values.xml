@@ -291,20 +291,25 @@
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <string name="bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
     <string name="character_counter_pattern" translatable="false">%1$d / %2$d</string>
+    <string name="delete_account_button">Delete Account</string>
     <string name="email_prompt">Email:</string>
     <string name="entertainment_button">Entertainment</string>
     <string name="existing_txt">Already have an account?</string>
     <string name="fashion_button">Fashion</string>
     <string name="firebaseUrl"/>
+    <string name="first_name">First Name:</string>
     <string name="food_button">Food</string>
+    <string name="forgot_pwd_txt">Forgot Password?</string>
     <string name="gcm_defaultSenderId" translatable="false"/>
     <string name="hobby_button">Hobby</string>
     <string name="item_name_prompt">Item Name:</string>
     <string name="item_value_prompt">Item Value:</string>
+    <string name="last_name">Last Name</string>
     <string name="login_txt">Login</string>
     <string name="medical_button">Medical</string>
     <string name="newuser_txt">New user?</string>
     <string name="password_prompt">Password:</string>
+    <string name="save_account_button">Save Changes</string>
     <string name="signup_txt">Sign Up</string>
     <string name="status_bar_notification_info_overflow">999+</string>
     <string name="title_activity_home">HomeActivity</string>
