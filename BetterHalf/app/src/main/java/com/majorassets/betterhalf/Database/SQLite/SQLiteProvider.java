@@ -68,6 +68,71 @@ public class SQLiteProvider
         return new UserCursorWrapper(cursor);
     }
 
+    public static EntertainmentCursorWrapper queryEntertainment(String whereClause, String[] whereArgs, String tableName){
+        Cursor cursor = database.query(
+                tableName,
+                null, //select * columns
+                whereClause,
+                whereArgs,
+                null, //group by
+                null, //having
+                null); //order by
+
+        return new EntertainmentCursorWrapper(cursor);
+    }
+
+    public static FashionCursorWrapper queryFashion(String whereClause, String[] whereArgs, String tableName){
+        Cursor cursor = database.query(
+                tableName,
+                null, //select * columns
+                whereClause,
+                whereArgs,
+                null, //group by
+                null, //having
+                null); //order by
+
+        return new FashionCursorWrapper(cursor);
+    }
+
+    public static FoodCursorWrapper queryFood(String whereClause, String[] whereArgs, String tableName){
+        Cursor cursor = database.query(
+                tableName,
+                null, //select * columns
+                whereClause,
+                whereArgs,
+                null, //group by
+                null, //having
+                null); //order by
+
+        return new FoodCursorWrapper(cursor);
+    }
+
+    public static HobbiesCursorWrapper queryHobbies(String whereClause, String[] whereArgs, String tableName){
+        Cursor cursor = database.query(
+                tableName,
+                null, //select * columns
+                whereClause,
+                whereArgs,
+                null, //group by
+                null, //having
+                null); //order by
+
+        return new HobbiesCursorWrapper(cursor);
+    }
+
+    public static MedicalCursorWrapper queryMedical(String whereClause, String[] whereArgs, String tableName){
+        Cursor cursor = database.query(
+                tableName,
+                null, //select * columns
+                whereClause,
+                whereArgs,
+                null, //group by
+                null, //having
+                null); //order by
+
+        return new MedicalCursorWrapper(cursor);
+    }
+
 
 
     public SQLiteDatabase getDatabase()
