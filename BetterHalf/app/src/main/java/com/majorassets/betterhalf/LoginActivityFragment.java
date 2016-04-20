@@ -18,6 +18,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseDataItem;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -42,19 +44,23 @@ public class LoginActivityFragment extends Fragment {
     private EditText mEmailEdit;
     private EditText mPasswordEdit;
     private TextView mNewUserTxt;
+    private TextView mForgotPwdTxt;
     private TextView mResponseTxt;
 
+    //DB componenets
     private FirebaseProvider firebaseDB;
     private SQLiteProvider sqliteDB;
     private SQLiteUserDAL dal;
     private Firebase mRootRef;
-    private Firebase mUserDataRef;
+    private Firebase userRef;
+
+    //User components
+    private User appUser;
     private String mEmail;
     private String mPassword;
     private String mUsername;
 
-    private Map<SubcategoryType, List<BaseDataItem>> userDataList;
-
+    //labels
     private String mNewUserLbl;
     private String mExistingLbl;
     private String mSignUpLbl;
@@ -64,8 +70,6 @@ public class LoginActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
-        //TODO: somehow "wipe" savedInstanceState
-        //TODO: save user credentials into SQlite so, after initial account creation, user logs in automatically
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
 
         //setup
@@ -73,7 +77,7 @@ public class LoginActivityFragment extends Fragment {
         createAndControlEvents();
 
         //for Firebase
-        Firebase.setAndroidContext(getContext());
+        Firebase.setAndroidContext(getContext().getApplicationContext());
 
         //data providers
         firebaseDB = FirebaseProvider.getDataProvider();
@@ -95,12 +99,11 @@ public class LoginActivityFragment extends Fragment {
 
         mResponseTxt = (TextView) view.findViewById(R.id.response_txt);
         mNewUserTxt = (TextView) view.findViewById(R.id.newUser_txt);
+        mForgotPwdTxt = (TextView) view.findViewById(R.id.forgot_pwd_txt);
 
         mEmailEdit = (EditText) view.findViewById(R.id.email_edit);
         mPasswordEdit = (EditText) view.findViewById(R.id.password_edit);
         mLoginButton = (Button) view.findViewById(R.id.login_btn);
-
-        userDataList = new HashMap<>();
     }
 
     //establish event listeners as anonymous inner classes
@@ -143,16 +146,28 @@ public class LoginActivityFragment extends Fragment {
                 {
                     mLoginButton.setText(R.string.signup_txt);
                     mNewUserTxt.setText(mExistingLbl);
+                    mForgotPwdTxt.setText("");
                 }
                 else if(mNewUserTxt.getText().toString().equals(mExistingLbl))
                 {
                     mLoginButton.setText(R.string.login_txt);
                     mNewUserTxt.setText(mNewUserLbl);
+                    mForgotPwdTxt.setText(R.string.forgot_pwd_txt);
                 }
+            }
+        });
+
+        mForgotPwdTxt.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                //TODO: dialog for new password
             }
         });
     }
 
+    //either login or create an account
     private void attemptLogin()
     {
         mRootRef = firebaseDB.getFirebaseInstance();
@@ -164,37 +179,41 @@ public class LoginActivityFragment extends Fragment {
 
         //Attempt Login
         if(mLoginButton.getText().toString().equals(mLoginLbl))
-            loginWithPassword(mEmail, mPassword, true);
+            //pass in 'false' showing that this is the initial login
+            loginWithPassword(mEmail, mPassword, false);
         else if (mLoginButton.getText().toString().equals(mSignUpLbl))
-            createNewAccount(null, mEmail, mPassword);
+            createNewAccount(mEmail, mPassword);
     }
 
     //use Firebase user authentication with an email and password
-    private void loginWithPassword(String email, String password, boolean initialLogin)
+    private void loginWithPassword(String email, String password, final boolean postCreationLogin)
     {
-        User user = dal.getUser(email);
+        //first check if user with specified email exists in SQLite db
+         appUser = dal.getUser(email);
+        GlobalResources.AppUser = appUser;
 
-        if(user == null || !initialLogin)
+        //if user is not in SQLite OR this a login after creating an account
+        if(appUser == null || postCreationLogin)
         {
             mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler()
             {
                 @Override
                 public void onAuthenticated(AuthData authData)
                 {
-                    //get the reference for a user's data and parse it out into HashMap
-                    mUserDataRef = firebaseDB.getUserDataInstance(mUsername);
-                    getUserData(mUserDataRef);
 
-                    //TODO: read User object from SQLite
-                    User user = new User();
-                    user.setEmail(mEmail);
+                    //create new user
+                    appUser = new User(mEmail, mPassword);
+                    appUser.setID(UUID.fromString(authData.getUid()));
+                    appUser.setLoggedOnLast(true);
 
-                    // THIS IS TEMPORARY TO MOVE FORWARD - must be read from SQLite//
-                    DataItemRepository userRepo = DataItemRepository.getDataItemRepository();
-                    userRepo.setDataItems(userDataList);
-                    user.setDataItemRepository(userRepo);
+                    GlobalResources.AppUser = appUser;
 
-                    //start the home activity
+                    //add user to SQLite db
+                    dal.addUser(appUser);
+
+                    createNewUserFirebaseStructure(appUser);
+
+                    //go to home screen
                     startHomeActivity();
                 }
 
@@ -208,11 +227,33 @@ public class LoginActivityFragment extends Fragment {
         }
         else
         {
-            createNewAccount(user, user.getEmail(), user.getPassword());
+            appUser.setLoggedOnLast(true);
+
+            userRef = firebaseDB.getUserInstance(mUsername);
+            userRef.addListenerForSingleValueEvent(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    if(dataSnapshot.getValue() == null)
+                        createNewAccount(mEmail, mPassword);
+
+                    else
+                        startHomeActivity();
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError)
+                {
+
+                }
+            });
+
         }
     }
 
-    private void createNewAccount(final User user, final String email, final String password)/**/
+    //use Firebase account creation with email and password
+    private void createNewAccount(String email, String password)
     {
         //Attempt to create a new user
         mRootRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>()
@@ -224,33 +265,21 @@ public class LoginActivityFragment extends Fragment {
                 mLoginButton.setText(R.string.login_txt);
 
                 //Ensure we only add User to SQLite database once
-                User userLocal;
-                if(user == null)
+                boolean shouldLogin = false;
+                if(appUser == null)
                 {
-                    userLocal = new User();
+                    shouldLogin = true;
+                    appUser = new User();
+                    GlobalResources.AppUser = appUser;
 
-                    userLocal.setEmail(mEmail);
-                    userLocal.setPassword(mPassword);
-                    userLocal.setLoggedOnLast(true); //tmp needs better logic for more users on same device
-
-                    //add new user to SQLite database
-                    dal.addUser(userLocal);
+                    appUser.setEmail(mEmail);
+                    appUser.setPassword(mPassword);
+                    appUser.setLoggedOnLast(true);
                 }
 
-                loginWithPassword(mEmail, mPassword, false);
-
-                /*Create new user in Firebase, with username child of "users", info being child of "username",
-                  and specific data "id" and "email" being children of "info" */
-                Firebase usersRef = mRootRef.child("users");
-                Map<String, Map<String, String>> newUserInfoMap = new HashMap<>();
-                Map<String, String> newUserDataMap = new HashMap<>();
-                newUserDataMap.put("email", mEmail);
-                //TODO make ID dynamic
-                newUserDataMap.put("id", "000000002");
-                newUserInfoMap.put("info", newUserDataMap);
-                String newUsername = LoginHelperActivity.generateUsername(mEmail);
-                Firebase newUserRef = usersRef.child(newUsername);
-                newUserRef.setValue(newUserInfoMap);
+                if(shouldLogin)
+                    //automatic login after account creation
+                    loginWithPassword(mEmail, mPassword, true);
             }
 
             @Override
@@ -262,71 +291,30 @@ public class LoginActivityFragment extends Fragment {
         });
     }
 
+    private void createNewUserFirebaseStructure(User user)
+    {
+        /*
+        Create new user in Firebase, with username child of "users", info being child of "username",
+        and specific data "id" and "email" being children of "info"
+        */
+
+        Firebase usersRef = mRootRef.child(FirebaseStructure.USERS);
+
+        Map<String, Map<String, String>> newUserInfoMap = new HashMap<>();
+        Map<String, String> newUserDataMap = new HashMap<>();
+
+        newUserDataMap.put(FirebaseStructure.EMAIL, mEmail);
+        newUserDataMap.put(FirebaseStructure.ID, appUser.getID().toString());
+        newUserInfoMap.put(FirebaseStructure.INFO, newUserDataMap);
+
+        String newUsername = LoginHelperActivity.generateUsername(mEmail);
+        Firebase newUserRef = usersRef.child(newUsername);
+        newUserRef.setValue(newUserInfoMap);
+    }
+
     private void startHomeActivity()
     {
         Intent homeIntent = new Intent(this.getContext(), HomeActivity.class);
         startActivity(homeIntent);
-    }
-
-    private void getUserData(Firebase ref)
-    {
-        ref.addListenerForSingleValueEvent(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                String parent;
-                DataSnapshot next;
-                SubcategoryType subcategory;
-                BaseDataItem item;
-                //"drill down" to leaf nodes
-                while(dataSnapshot.hasChildren())
-                {
-                    parent = dataSnapshot.getKey();
-                    next = dataSnapshot.getChildren().iterator().next();
-                    subcategory = SubcategoryType.getTypeFromString(parent);
-                    switch (subcategory)
-                    {
-                        //TODO: parse out datasnapshot into separate objects
-                        case MOVIE:
-                            item = new MovieItem(next.getKey(), next.getValue().toString());
-                            addDataItem(subcategory, item);
-                            dataSnapshot = next;
-                            break;
-                        case MUSIC:
-                            item = new MusicItem(next.getKey(), next.getValue().toString());
-                            addDataItem(subcategory, item);
-                            dataSnapshot = next;
-                            break;
-                        default:
-                            dataSnapshot = next; //parent was some other folder; keep going
-                            break; //error check here
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError)
-            {
-
-            }
-        });
-    }
-
-    private void addDataItem(SubcategoryType subcategory, BaseDataItem item)
-    {
-        List<BaseDataItem> list;
-        //if there are no entries for a movie then the list will be null
-        if(userDataList.get(subcategory) == null)
-        {
-            list = new ArrayList<>(); // use an empty list
-            list.add(item);
-            userDataList.put(subcategory, list); //create new entry for movies
-        }
-        else //add to an already define list
-        {
-            list = userDataList.get(subcategory);
-            list.add(item);
-        }
     }
 }

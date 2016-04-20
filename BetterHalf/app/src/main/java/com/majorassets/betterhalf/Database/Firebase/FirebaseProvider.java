@@ -1,6 +1,16 @@
 package com.majorassets.betterhalf.Database.Firebase;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
+import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
+import com.majorassets.betterhalf.Model.SubcategoryType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dgbla on 2/20/2016.
@@ -19,6 +29,14 @@ public class FirebaseProvider
     private FirebaseProvider()
     {
         instance = new Firebase(FIREBASE_URL);
+    }
+
+    public static FirebaseProvider getDataProvider()
+    {
+        if(sDataProvider == null)
+            sDataProvider = new FirebaseProvider();
+
+        return sDataProvider;
     }
 
     public Firebase getFirebaseInstance()
@@ -46,17 +64,9 @@ public class FirebaseProvider
     }
 
     //return all the attributes of the subcategories
-    public Firebase getSubcategories(String mainCategory)
+    public Firebase getSubcategoryInstance(String mainCategory)
     {
         subcategoryInstance = new Firebase(FIREBASE_URL + "mainCategories/" + mainCategory.toLowerCase());
         return subcategoryInstance;
-    }
-
-    public static FirebaseProvider getDataProvider()
-    {
-        if(sDataProvider == null)
-            sDataProvider = new FirebaseProvider();
-
-        return sDataProvider;
     }
 }

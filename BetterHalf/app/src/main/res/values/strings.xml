@@ -25,10 +25,17 @@
     <string name="newuser_txt">New user?</string>
     <string name="signup_txt">Sign Up</string>
     <string name="existing_txt">Already have an account?</string>
+    <string name="forgot_pwd_txt">Forgot Password?</string>
 
     <!--strings for SingleItemEditActivity-->
     <string name="add_item_txt">Add New Item</string>
     <string name="item_name_prompt">Item Name:</string>
     <string name="item_value_prompt">Item Value:</string>
+
+    <!--strings for SettingsActivity-->
+    <string name="delete_account_button">Delete Account</string>
+    <string name="save_account_button">Save Changes</string>
+    <string name="first_name">First Name:</string>
+    <string name="last_name">Last Name</string>
 
 </resources>
