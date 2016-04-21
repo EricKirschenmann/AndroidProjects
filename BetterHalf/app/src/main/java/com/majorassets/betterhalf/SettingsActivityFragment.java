@@ -1,7 +1,9 @@
 package com.majorassets.betterhalf;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,35 +63,55 @@ public class SettingsActivityFragment extends Fragment
     private void createEvents()
     {
 
-        //TODO: pop up "Are you sure?" dialog
+        //TODO: FIXED - pop up "Are you sure?" dialog
         mDeleteAccountButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                //remove user from SQLite db
-                dal.deleteUser(GlobalResources.AppUser);
 
-                //TODO: FIXED - RYAN - remove structure and delete user in Firebase
-                Firebase usersRef = rootRef.child(FirebaseStructure.USERS);
-                //Global resources.appuser
-                String dUsername = GlobalResources.AppUser.getUsername();
-                String dPassword = GlobalResources.AppUser.getPassword();
-                Firebase dThisUser = usersRef.child(dUsername);
-                dThisUser.removeValue();
-                dThisUser.removeUser(dUsername, dPassword, new Firebase.ResultHandler() {
-                    @Override
-                    public void onSuccess() {
-                        //TODO: RYAN - add popup message to say account successfully deleted
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Delete your account?")
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Delete User account here
+                                //remove user from SQLite db
+                                dal.deleteUser(GlobalResources.AppUser);
 
-                    }
+                                //TODO: FIXED - RYAN - remove structure and delete user in Firebase
+                                Firebase usersRef = rootRef.child(FirebaseStructure.USERS);
+                                //Global resources.appuser
+                                String dUsername = GlobalResources.AppUser.getUsername();
+                                String dPassword = GlobalResources.AppUser.getPassword();
+                                Firebase dThisUser = usersRef.child(dUsername);
+                                dThisUser.removeValue();
+                                dThisUser.removeUser(dUsername, dPassword, new Firebase.ResultHandler() {
+                                    @Override
+                                    public void onSuccess() {
+                                        //TODO: RYAN - add popup message to say account successfully deleted
 
-                    @Override
-                    public void onError(FirebaseError firebaseError) {
-                        //TODO: RYAN - add error popup message
+                                    }
 
-                    }
-                });
+                                    @Override
+                                    public void onError(FirebaseError firebaseError) {
+                                        //TODO: RYAN - add error popup message
+
+                                    }
+                                });
+
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Don't delete account
+                            }
+                        });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                //TODO Logout after account deleted
 
             }
         });
