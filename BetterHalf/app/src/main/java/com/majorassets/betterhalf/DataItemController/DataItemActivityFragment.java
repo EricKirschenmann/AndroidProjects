@@ -1,21 +1,19 @@
 package com.majorassets.betterhalf.DataItemController;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.TextView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.majorassets.betterhalf.Model.BaseDataItem;
-import com.majorassets.betterhalf.Model.Testing.TestDataItemList;
 import com.majorassets.betterhalf.R;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 /**
@@ -23,7 +21,9 @@ import java.util.List;
  */
 public class DataItemActivityFragment extends Fragment
 {
-	private TextView mTestTextView;
+    private ArrayList<String> Array = new ArrayList<String>();
+    public HashMap stuffs = new HashMap();
+    private DataItemPagerAdapter mDataItemPagerAdapter;
 
 	public static final String ARG_PAGE = "com.majorassets.betterhalf.page";
 
@@ -47,13 +47,86 @@ public class DataItemActivityFragment extends Fragment
 		Window window = getActivity().getWindow();
 		window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
+        //SAMPLE DATA
+        ArrayList<String> Movies = new ArrayList<String>();
+        ArrayList<String> Books = new ArrayList<String>();
+        ArrayList<String> Allergies = new ArrayList<String>();
+        Movies.add("The Force Awakens");
+        Movies.add("10 Cloverfield Lane");
+        Books.add("Silmarillion");
+        Books.add("Aftermath");
+        Allergies.add("Banana");
+        Allergies.add("Gluten");
+        stuffs.put("Books", Books);
+        stuffs.put("Allergies", Allergies);
+        stuffs.put("Movies", Movies);
+        //SAMPLE DATA
 
-		Bundle args = getArguments();
+        //DECLARE ADAPTER FOR LISTVIEW
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_expandable_list_item_1, Array);
+        ListView mTestTextView = (ListView) view.findViewById(android.R.id.text1);
+        mTestTextView.setAdapter(adapter);
 
-		mTestTextView = (TextView) view.findViewById(android.R.id.text1);
-		String text = Integer.toString(args.getInt(DataItemActivityFragment.ARG_PAGE));
-		mTestTextView.setText(text);
+        mDataItemPagerAdapter = new DataItemPagerAdapter(getFragmentManager());
+        Bundle args = getArguments();
 
-		return view;
+        //DECLARE VARIABLES FOR LISTVIEW
+        String keyString = null;
+        Object dataArrayHolder = null;
+        int dataArraySize = 0;
+
+        //FIND CURRENT TAB AND FIND DATA ARRAY TO FILL LIST(IF EXISTS)(SHOULD PULL FROM SQLITE)
+        if(stuffs.containsKey(mDataItemPagerAdapter.getPageTitle(0).toString())){
+            for(int j=1 ; j<mDataItemPagerAdapter.getCount() ; j++) {
+                if (args.getInt(DataItemActivityFragment.ARG_PAGE) == j) {
+                    adapter.clear();
+                    keyString = mDataItemPagerAdapter.getPageTitle(j-1).toString();
+                    if(stuffs.containsKey(keyString)) {
+                        dataArrayHolder = stuffs.get(keyString);
+                        dataArraySize = ((ArrayList) dataArrayHolder).size();
+                    }
+                    for (int i=0; i < dataArraySize; i++) {
+                        adapter.add(((ArrayList) dataArrayHolder).get(i).toString());
+                    }
+                }
+            }
+        }
+
+
+        //TEST METHODS
+        /*if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 1 && mDataItemPagerAdapter.getPageTitle(0).toString() == "Allergies") {
+            Array.clear();
+            Array.add(0,"Banana");
+            Array.add(1,"Gluten");
+        }
+        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 1 && mDataItemPagerAdapter.getPageTitle(0).toString() == "Books") {
+            Array.clear();
+            Array.add(0,"Silmarillion");
+            Array.add(1,"Aftermath");
+        }
+        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 2 && mDataItemPagerAdapter.getPageTitle(1).toString() == "Illnesses") {
+            Array.clear();
+            Array.add(0,"Asthma");
+        }
+        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 4 && stuffs.get(mDataItemPagerAdapter.getPageTitle(3).toString()) != null) {
+            text = stuffs.get(mDataItemPagerAdapter.getPageTitle(3)).toString();
+        }
+        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 5 && stuffs.get(mDataItemPagerAdapter.getPageTitle(4).toString()) != null) {
+            text = mDataItemPagerAdapter.getPageTitle(4).toString();
+        }
+        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 6 && stuffs.get(mDataItemPagerAdapter.getPageTitle(5).toString()) != null) {
+            text = mDataItemPagerAdapter.getPageTitle(5).toString();
+        }
+        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 7 && stuffs.get(mDataItemPagerAdapter.getPageTitle(6).toString()) != null) {
+            text = mDataItemPagerAdapter.getPageTitle(6).toString();
+        }
+        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 8 && stuffs.get(mDataItemPagerAdapter.getPageTitle(7).toString()) != null) {
+            text = mDataItemPagerAdapter.getPageTitle(7).toString();
+        }*/
+
+
+
+        return view;
 	}
 }
+
