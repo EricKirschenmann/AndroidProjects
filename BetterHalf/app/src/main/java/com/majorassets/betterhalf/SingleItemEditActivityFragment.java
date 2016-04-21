@@ -1,15 +1,17 @@
 package com.majorassets.betterhalf;
 
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.firebase.client.Firebase;
+import com.majorassets.betterhalf.DataItemController.DataItemActivity;
+import com.majorassets.betterhalf.DataItemController.DataItemActivityFragment;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -19,6 +21,8 @@ public class SingleItemEditActivityFragment extends Fragment
 
     private EditText mItemName;
     private EditText mItemValue;
+    private Button mAddButton;
+    private DataItemActivityFragment mDataItemActivityFragment;
 
     public SingleItemEditActivityFragment()
     {
@@ -48,6 +52,22 @@ public class SingleItemEditActivityFragment extends Fragment
             public void onClick(View v)
             {
                 mItemValue.setSelection(0);
+            }
+        });
+
+        //ADD BUTTON (CHANGED SOME VARIABLES TO PUBLIC FOR TESTING)
+        mAddButton = (Button) view.findViewById(R.id.add_button);
+        mAddButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                mDataItemActivityFragment = new DataItemActivityFragment();
+                //mDataItemActivityFragment.Books.add(mItemValue.getText().toString());//SHOULD ADD TO SQLITE
+                mAddButton.setText("Yay!");
+                Intent intent = new Intent();
+                intent.setClass(getContext(), DataItemActivity.class);
+                startActivity(intent);
             }
         });
 
