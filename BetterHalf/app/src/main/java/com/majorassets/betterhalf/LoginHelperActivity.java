@@ -68,7 +68,7 @@ public class LoginHelperActivity extends AppCompatActivity
             appUserData = userRepo.getDataItems();
 
             //generate the username from user's email
-            String username = generateUsername(appUser.getEmail());
+            String username = appUser.getUsername();
             appUser.setUsername(username);
 
             //retrieve datasnapshot of user instance (includes info and data sub trees)
