@@ -37,6 +37,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/item_value_edit"
                     android:text="Favorite"/>
+
+                <Button
+                    android:id="@+id/add_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/favorite_checkbox"
+                    android:text="Add"/>
             </RelativeLayout>
 
 </LinearLayout>

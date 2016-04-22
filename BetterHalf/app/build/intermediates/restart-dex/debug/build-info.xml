@@ -4,21 +4,29 @@
     api-level="23"
     density="560dpi"
     format="7"
-    timestamp="189831190615728" >
+    timestamp="375626998814541" >
 
     <task
         name="javac"
-        duration="11436" />
+        duration="132350" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="4966" />
+        duration="16599" />
     <task
         name="verifier"
-        duration="3129" />
+        duration="1191" />
 
-    <build timestamp="189831190615728" />
+    <artifact
+        location="C:\Users\Marissa\Documents\GitHub\AndroidProjects\BetterHalf\app\build\outputs\apk\app-debug.apk"
+        type="MAIN" />
+
+    <build timestamp="375626998814541" >
+        <artifact
+            location="C:\Users\Marissa\Documents\GitHub\AndroidProjects\BetterHalf\app\build\outputs\apk\app-debug.apk"
+            type="MAIN" />
+    </build>
 
 </instant-run>

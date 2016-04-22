@@ -22,5 +22,9 @@
     {
         "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi-v4\\ic_medical.png",
         "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_medical.png"
+    },
+    {
+        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi-v4\\ic_home.png",
+        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_home.png"
     }
 ]

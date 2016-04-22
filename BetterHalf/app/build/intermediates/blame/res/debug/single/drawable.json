@@ -16,12 +16,12 @@
         "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\src\\main\\res\\drawable\\ic_menu_slideshow.xml"
     },
     {
-        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_default_mtrl_shape.xml",
-        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.2.1\\res\\drawable\\abc_btn_default_mtrl_shape.xml"
-    },
-    {
         "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_dialog_material_background_dark.xml",
         "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.2.1\\res\\drawable\\abc_dialog_material_background_dark.xml"
+    },
+    {
+        "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_default_mtrl_shape.xml",
+        "source": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\23.2.1\\res\\drawable\\abc_btn_default_mtrl_shape.xml"
     },
     {
         "merged": "C:\\Users\\Marissa\\Documents\\GitHub\\AndroidProjects\\BetterHalf\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_list_selector_background_transition_holo_light.xml",
