@@ -230,7 +230,14 @@ public class LoginActivityFragment extends Fragment {
                         createNewAccount(mEmail, mPassword);
 
                     else
-                        startHomeActivity();
+                    {
+                        if(!mEmail.equals(appUser.getEmail()))
+                            mResponseTxt.setText(R.string.invalid_email);
+                        else if(!mPassword.equals(appUser.getPassword()))
+                            mResponseTxt.setText(R.string.invalid_password);
+                        else
+                            startHomeActivity();
+                    }
                 }
 
                 @Override

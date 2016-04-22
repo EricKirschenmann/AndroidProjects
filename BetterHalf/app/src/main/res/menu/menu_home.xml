@@ -16,8 +16,10 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/action_share"
-        android:icon="@mipmap/ic_share"
-        android:title="@string/action_share"
+        android:id="@+id/action_connect"
+        android:orderInCategory="3"
+        android:title="@string/action_logout"
+        android:icon="@mipmap/ic_connect"
         app:showAsAction="ifRoom"/>
+
 </menu>

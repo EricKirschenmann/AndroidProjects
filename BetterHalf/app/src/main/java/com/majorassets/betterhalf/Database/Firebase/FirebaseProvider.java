@@ -23,6 +23,7 @@ public class FirebaseProvider
     private Firebase instance;
     private Firebase userInstance;
     private Firebase userDataInstance;
+    private Firebase allUsers;
     private Firebase subcategoryInstance;
 
     //singleton firebase reference
@@ -49,6 +50,13 @@ public class FirebaseProvider
         userInstance = new Firebase(FIREBASE_URL + "users/" + username);
         return userInstance;
     }
+
+    public Firebase getAllUsersInstance()
+    {
+        allUsers = new Firebase(FIREBASE_URL + "users");
+        return allUsers;
+    }
+
     //return the info for a user
     public Firebase getUserInfoInstance(String username)
     {
