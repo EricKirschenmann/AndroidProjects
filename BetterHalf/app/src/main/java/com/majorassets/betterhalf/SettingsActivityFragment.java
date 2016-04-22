@@ -1,9 +1,11 @@
 package com.majorassets.betterhalf;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
+import com.majorassets.betterhalf.Model.User;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -32,6 +35,8 @@ public class SettingsActivityFragment extends Fragment
 
     private FirebaseProvider firebaseDB;
     private Firebase rootRef;
+
+    private User appUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,6 +59,7 @@ public class SettingsActivityFragment extends Fragment
 
     private void initializeComponents(View view)
     {
+        appUser = GlobalResources.AppUser;
         mDeleteAccountButton = (Button) view.findViewById(R.id.delete_account_btn);
         mSaveChangesButton = (Button) view.findViewById(R.id.save_account_btn);
         mFirstNameEdit = (EditText) view.findViewById(R.id.first_name_edit);
@@ -82,20 +88,31 @@ public class SettingsActivityFragment extends Fragment
                                 //TODO: FIXED - RYAN - remove structure and delete user in Firebase
                                 Firebase usersRef = rootRef.child(FirebaseStructure.USERS);
                                 //Global resources.appuser
-                                String dUsername = GlobalResources.AppUser.getUsername();
-                                String dPassword = GlobalResources.AppUser.getPassword();
-                                Firebase dThisUser = usersRef.child(dUsername);
+                                //String dUsername = GlobalResources.AppUser.getUsername();
+                                //String dPassword = GlobalResources.AppUser.getPassword();
+                                Firebase dThisUser = usersRef.child(appUser.getUsername());
                                 dThisUser.removeValue();
-                                dThisUser.removeUser(dUsername, dPassword, new Firebase.ResultHandler() {
+                                dThisUser.removeUser(appUser.getEmail(), appUser.getPassword(), new Firebase.ResultHandler() {
                                     @Override
                                     public void onSuccess() {
-                                        //TODO: RYAN - add popup message to say account successfully deleted
 
+                                        Firebase ref = firebaseDB.getFirebaseInstance();
+                                        User appUser = GlobalResources.AppUser;
+                                        //this user is is officially logged out - was NOT logged on last
+                                        appUser.setLoggedOnLast(false);
+                                        //update the user in SQLite
+                                        dal.updateUser(appUser);
+
+                                        ref.unauth(); //un-authenticate a user from firebase
+                                        //return to login screen
+                                        Intent intent = new Intent(getContext(), LoginActivity.class);
+                                        startActivity(intent);
                                     }
 
                                     @Override
                                     public void onError(FirebaseError firebaseError) {
                                         //TODO: RYAN - add error popup message
+                                        Log.e("User not deleted", SettingsActivityFragment.class.getSimpleName());
 
                                     }
                                 });
@@ -111,7 +128,6 @@ public class SettingsActivityFragment extends Fragment
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
-                //TODO Logout after account deleted
 
             }
         });

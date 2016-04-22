@@ -61,7 +61,8 @@ public class HomeActivity extends AppCompatActivity
 				startActivity(intent);
 				return true;
 			case R.id.action_logout:
-
+				ref = firebaseDB.getFirebaseInstance();
+				appUser = GlobalResources.AppUser;
 				//this user is is officially logged out - was NOT logged on last
 				appUser.setLoggedOnLast(false);
 				//update the user in SQLite
@@ -78,4 +79,5 @@ public class HomeActivity extends AppCompatActivity
 				return super.onOptionsItemSelected(item);
 		}
 	}
+
 }
