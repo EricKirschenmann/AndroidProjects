@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.firebase.client.Firebase;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -27,6 +29,7 @@ public class SingleItemEditActivityFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View view =  inflater.inflate(R.layout.fragment_single_item_edit, container, false);
+        Firebase.setAndroidContext(getContext());
 
         mItemName = (EditText) view.findViewById(R.id.item_name_edit);
         mItemName.setOnClickListener(new View.OnClickListener()
