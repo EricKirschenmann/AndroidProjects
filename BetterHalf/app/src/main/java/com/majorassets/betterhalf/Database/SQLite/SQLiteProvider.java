@@ -30,7 +30,7 @@ public class SQLiteProvider
 
         return sSQLiteProvider;
     }
-
+    
     public static ContentValues getUserContentValues(User user)
     {
         ContentValues values = new ContentValues();
@@ -42,19 +42,18 @@ public class SQLiteProvider
     }
 
     /*
-     colLabel = the label from the schema of the item
-         ex: BooksTable.Cols.LABEL
-     colValue = the value from the schema
-         ex: BooksTable.Cols.VALUE
-    */
-     public static ContentValues getDataContentValues(BaseDataItem item, String colLabel, String colValue)
-     {
-         ContentValues values = new ContentValues();
-         values.put(colLabel, item.getLabel());
-         values.put(colValue, item.getValue());
+            colLabel = the label from the schema of the item
+                ex: BooksTable.Cols.LABEL
+            colValue = the value from the schema
+                ex: BooksTable.Cols.VALUE
+     */
+    public static ContentValues getDataContentValues(BaseDataItem item, String colUUID, String colLabel, String colValue){
+        ContentValues values = new ContentValues();
+        values.put(colUUID, item.getID().toString());
+        values.put(colLabel, item.getLabel());
+        values.put(colValue, item.getValue());
         return values;
-     }
-
+    }
 
     public static UserCursorWrapper queryUser(String whereClause, String[] whereArgs)
     {
@@ -69,6 +68,73 @@ public class SQLiteProvider
 
         return new UserCursorWrapper(cursor);
     }
+
+    public static EntertainmentCursorWrapper queryEntertainment(String whereClause, String[] whereArgs, String tableName){
+        Cursor cursor = database.query(
+                tableName,
+                null, //select * columns
+                whereClause,
+                whereArgs,
+                null, //group by
+                null, //having
+                null); //order by
+
+        return new EntertainmentCursorWrapper(cursor);
+    }
+
+    public static FashionCursorWrapper queryFashion(String whereClause, String[] whereArgs, String tableName){
+        Cursor cursor = database.query(
+                tableName,
+                null, //select * columns
+                whereClause,
+                whereArgs,
+                null, //group by
+                null, //having
+                null); //order by
+
+        return new FashionCursorWrapper(cursor);
+    }
+
+    public static FoodCursorWrapper queryFood(String whereClause, String[] whereArgs, String tableName){
+        Cursor cursor = database.query(
+                tableName,
+                null, //select * columns
+                whereClause,
+                whereArgs,
+                null, //group by
+                null, //having
+                null); //order by
+
+        return new FoodCursorWrapper(cursor);
+    }
+
+    public static HobbiesCursorWrapper queryHobbies(String whereClause, String[] whereArgs, String tableName){
+        Cursor cursor = database.query(
+                tableName,
+                null, //select * columns
+                whereClause,
+                whereArgs,
+                null, //group by
+                null, //having
+                null); //order by
+
+        return new HobbiesCursorWrapper(cursor);
+    }
+
+    public static MedicalCursorWrapper queryMedical(String whereClause, String[] whereArgs, String tableName){
+        Cursor cursor = database.query(
+                tableName,
+                null, //select * columns
+                whereClause,
+                whereArgs,
+                null, //group by
+                null, //having
+                null); //order by
+
+        return new MedicalCursorWrapper(cursor);
+    }
+
+
 
     public SQLiteDatabase getDatabase()
     {

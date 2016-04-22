@@ -14,6 +14,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -25,6 +26,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -36,6 +38,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -47,6 +50,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -58,6 +62,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -69,6 +74,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -82,6 +88,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -93,6 +100,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -104,6 +112,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -115,6 +124,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -128,6 +138,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -139,6 +150,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -150,6 +162,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -161,6 +174,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -172,6 +186,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -185,6 +200,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -196,6 +212,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -207,6 +224,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -220,6 +238,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -231,6 +250,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -242,6 +262,7 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
@@ -253,10 +274,10 @@ public class DataDBSchema {
 
         public static final class Cols
         {
+            public static final String UUID = "uuid";
             public static final String LABEL = "label";
             public static final String VALUE = "value";
         }
     }
 
 }
-
