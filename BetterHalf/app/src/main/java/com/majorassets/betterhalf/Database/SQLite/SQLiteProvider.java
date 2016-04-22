@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.majorassets.betterhalf.Database.SQLite.UserDBSchema.UserDBTable;
+import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.User;
 
 /**
@@ -39,6 +40,21 @@ public class SQLiteProvider
         values.put(UserDBTable.Cols.LOGGED_ON_LAST, user.isLoggedOnLast());
         return values;
     }
+
+    /*
+     colLabel = the label from the schema of the item
+         ex: BooksTable.Cols.LABEL
+     colValue = the value from the schema
+         ex: BooksTable.Cols.VALUE
+    */
+     public static ContentValues getDataContentValues(BaseDataItem item, String colLabel, String colValue)
+     {
+         ContentValues values = new ContentValues();
+         values.put(colLabel, item.getLabel());
+         values.put(colValue, item.getValue());
+        return values;
+     }
+
 
     public static UserCursorWrapper queryUser(String whereClause, String[] whereArgs)
     {
