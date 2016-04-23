@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -43,10 +42,6 @@ public class DataItemActivityFragment extends Fragment
 							 Bundle savedInstanceState)
 	{
 		View view =  inflater.inflate(R.layout.fragment_data_list, container, false);
-
-		//setting the tool bar to primary color
-		Window window = getActivity().getWindow();
-		window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
         //SAMPLE DATA
         ArrayList<String> Movies = new ArrayList<>();
