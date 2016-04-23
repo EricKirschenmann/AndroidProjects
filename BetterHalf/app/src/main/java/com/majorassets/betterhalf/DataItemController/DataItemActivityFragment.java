@@ -49,9 +49,9 @@ public class DataItemActivityFragment extends Fragment
 		window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
         //SAMPLE DATA
-        ArrayList<String> Movies = new ArrayList<String>();
-        ArrayList<String> Books = new ArrayList<String>();
-        ArrayList<String> Allergies = new ArrayList<String>();
+        ArrayList<String> Movies = new ArrayList<>();
+        ArrayList<String> Books = new ArrayList<>();
+        ArrayList<String> Allergies = new ArrayList<>();
         Movies.add("The Force Awakens");
         Movies.add("10 Cloverfield Lane");
         Books.add("Silmarillion");
@@ -64,7 +64,7 @@ public class DataItemActivityFragment extends Fragment
         //SAMPLE DATA
 
         //DECLARE ADAPTER FOR LISTVIEW
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_expandable_list_item_1, Array);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_expandable_list_item_1, Array);
         listView = (ListView) view.findViewById(android.R.id.text1);
         listView.setAdapter(adapter);
 
