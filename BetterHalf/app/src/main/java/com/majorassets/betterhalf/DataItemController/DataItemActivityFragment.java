@@ -92,40 +92,6 @@ public class DataItemActivityFragment extends Fragment
             }
         }
 
-
-        //TEST METHODS
-        /*if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 1 && mDataItemPagerAdapter.getPageTitle(0).toString() == "Allergies") {
-            Array.clear();
-            Array.add(0,"Banana");
-            Array.add(1,"Gluten");
-        }
-        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 1 && mDataItemPagerAdapter.getPageTitle(0).toString() == "Books") {
-            Array.clear();
-            Array.add(0,"Silmarillion");
-            Array.add(1,"Aftermath");
-        }
-        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 2 && mDataItemPagerAdapter.getPageTitle(1).toString() == "Illnesses") {
-            Array.clear();
-            Array.add(0,"Asthma");
-        }
-        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 4 && stuffs.get(mDataItemPagerAdapter.getPageTitle(3).toString()) != null) {
-            text = stuffs.get(mDataItemPagerAdapter.getPageTitle(3)).toString();
-        }
-        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 5 && stuffs.get(mDataItemPagerAdapter.getPageTitle(4).toString()) != null) {
-            text = mDataItemPagerAdapter.getPageTitle(4).toString();
-        }
-        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 6 && stuffs.get(mDataItemPagerAdapter.getPageTitle(5).toString()) != null) {
-            text = mDataItemPagerAdapter.getPageTitle(5).toString();
-        }
-        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 7 && stuffs.get(mDataItemPagerAdapter.getPageTitle(6).toString()) != null) {
-            text = mDataItemPagerAdapter.getPageTitle(6).toString();
-        }
-        if(args.getInt(DataItemActivityFragment.ARG_PAGE) == 8 && stuffs.get(mDataItemPagerAdapter.getPageTitle(7).toString()) != null) {
-            text = mDataItemPagerAdapter.getPageTitle(7).toString();
-        }*/
-
-
-
         return view;
 	}
 }
