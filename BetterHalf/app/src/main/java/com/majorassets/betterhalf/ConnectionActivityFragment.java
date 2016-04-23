@@ -87,8 +87,9 @@ public class ConnectionActivityFragment extends Fragment
                     if(dataSnapshot.getValue() != null)
                     {
                         User SO = new User(); //TODO RYAN read out User object from Firebase
-
                         appUser.setSignificantOther(SO);
+
+                        SO.setSignificantOther(appUser);
                     }
                 }
 

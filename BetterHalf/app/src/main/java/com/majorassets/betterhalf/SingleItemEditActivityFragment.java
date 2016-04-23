@@ -12,6 +12,11 @@ import android.widget.EditText;
 import com.firebase.client.Firebase;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
 import com.majorassets.betterhalf.DataItemController.DataItemActivityFragment;
+import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
+import com.majorassets.betterhalf.Model.User;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -24,6 +29,14 @@ public class SingleItemEditActivityFragment extends Fragment
     private Button mAddButton;
     private DataItemActivityFragment mDataItemActivityFragment;
 
+    private SQLiteProvider sqliteDB;
+    private FirebaseProvider firebaseDB;
+
+    private SQLiteUserDAL dal;
+    private Firebase userDataRef;
+
+    private User appUser;
+
     public SingleItemEditActivityFragment()
     {
     }
@@ -35,7 +48,24 @@ public class SingleItemEditActivityFragment extends Fragment
         View view =  inflater.inflate(R.layout.fragment_single_item_edit, container, false);
         Firebase.setAndroidContext(getContext());
 
+        initializeComponents(view);
+        createEvents();
+
+        return view;
+    }
+
+    private void initializeComponents(View view)
+    {
+        appUser = GlobalResources.AppUser;
+        userDataRef = firebaseDB.getUserDataInstance(appUser.getUsername());
+
         mItemName = (EditText) view.findViewById(R.id.item_name_edit);
+        mItemValue = (EditText) view.findViewById(R.id.item_value_edit);
+        mAddButton = (Button) view.findViewById(R.id.add_button);
+    }
+
+    private void createEvents()
+    {
         mItemName.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -45,7 +75,6 @@ public class SingleItemEditActivityFragment extends Fragment
             }
         });
 
-        mItemValue = (EditText) view.findViewById(R.id.item_value_edit);
         mItemValue.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -56,21 +85,16 @@ public class SingleItemEditActivityFragment extends Fragment
         });
 
         //ADD BUTTON (CHANGED SOME VARIABLES TO PUBLIC FOR TESTING)
-        mAddButton = (Button) view.findViewById(R.id.add_button);
         mAddButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                mDataItemActivityFragment = new DataItemActivityFragment();
-                //mDataItemActivityFragment.Books.add(mItemValue.getText().toString());//SHOULD ADD TO SQLITE
-                mAddButton.setText("Yay!");
+
                 Intent intent = new Intent();
                 intent.setClass(getContext(), DataItemActivity.class);
                 startActivity(intent);
             }
         });
-
-        return view;
     }
 }
