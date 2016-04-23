@@ -57,15 +57,19 @@ public class DataItemActivityFragment extends Fragment
         ArrayList<String> Movies = new ArrayList<>();
         ArrayList<String> Books = new ArrayList<>();
         ArrayList<String> Allergies = new ArrayList<>();
+        ArrayList<String> Jewelry = new ArrayList<>();
+        ArrayList<String> Music = new ArrayList<>();
         Movies.add("The Force Awakens");
         Movies.add("10 Cloverfield Lane");
         Books.add("Silmarillion");
         Books.add("Aftermath");
         Allergies.add("Banana");
         Allergies.add("Gluten");
+        Music.add("Phil Collins");
         stuffs.put("Books", Books);
         stuffs.put("Allergies", Allergies);
         stuffs.put("Movies", Movies);
+        stuffs.put("Music", Music);
         //SAMPLE DATA
 
         //DECLARE ADAPTER FOR LISTVIEW
@@ -74,7 +78,7 @@ public class DataItemActivityFragment extends Fragment
         listView.setAdapter(adapter);
 
         mDataItemPagerAdapter = new DataItemPagerAdapter(getFragmentManager());
-        Bundle args = getArguments();
+        final Bundle args = getArguments();
         //store all the titles into an array
         getTitles();
 
@@ -91,7 +95,8 @@ public class DataItemActivityFragment extends Fragment
             public void onClick(View v)
             {
                 Intent intent = new Intent(getContext(), SingleItemEditActivity.class);
-                //intent.putExtra(Intent.EXTRA_REFERRER, titles[]);
+                //gives wrong numbers!! check why
+                intent.putExtra(Intent.EXTRA_REFERRER, titles[args.getInt(DataItemActivityFragment.ARG_PAGE) - 1]);
                 startActivity(intent);
             }
         });
@@ -101,6 +106,7 @@ public class DataItemActivityFragment extends Fragment
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String query = adapter.getItem(position);
+                query += " "+ titles[getPageNum(args)];
                 searchWeb(query);
             }
         });
@@ -130,6 +136,10 @@ public class DataItemActivityFragment extends Fragment
         return view;
 	}
 
+    private int getPageNum(Bundle args) {
+        return args.getInt(DataItemActivityFragment.ARG_PAGE) - 1;
+    }
+
     private void getTitles() {
         titles = new String[mDataItemPagerAdapter.getCount()];
 
@@ -145,6 +155,5 @@ public class DataItemActivityFragment extends Fragment
             startActivity(intent);
         }
     }
-
 }
 
