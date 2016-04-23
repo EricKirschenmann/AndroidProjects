@@ -24,6 +24,7 @@ public class DataItemActivityFragment extends Fragment
     private ArrayList<String> Array = new ArrayList<String>();
     public HashMap stuffs = new HashMap();
     private DataItemPagerAdapter mDataItemPagerAdapter;
+    private ListView listView;
 
 	public static final String ARG_PAGE = "com.majorassets.betterhalf.page";
 
@@ -64,8 +65,8 @@ public class DataItemActivityFragment extends Fragment
 
         //DECLARE ADAPTER FOR LISTVIEW
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_expandable_list_item_1, Array);
-        ListView mTestTextView = (ListView) view.findViewById(android.R.id.text1);
-        mTestTextView.setAdapter(adapter);
+        listView = (ListView) view.findViewById(android.R.id.text1);
+        listView.setAdapter(adapter);
 
         mDataItemPagerAdapter = new DataItemPagerAdapter(getFragmentManager());
         Bundle args = getArguments();
