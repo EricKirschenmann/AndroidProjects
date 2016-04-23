@@ -1,5 +1,4 @@
 package com.majorassets.betterhalf.DataItemController;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -8,10 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
 
 import com.majorassets.betterhalf.R;
-import com.majorassets.betterhalf.SingleItemEditActivity;
 
 public class DataItemActivity extends AppCompatActivity
 {
@@ -31,18 +28,18 @@ public class DataItemActivity extends AppCompatActivity
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		//get reference to floating action button in bottom right of screen
-		mAddItemFab = (FloatingActionButton) findViewById(R.id.fab_add_item);
-		mAddItemFab.setOnClickListener(new View.OnClickListener()
-		{
-			//have the click start the edit screen for a single item
-			@Override
-			public void onClick(View v)
-			{
-				Intent intent = new Intent(DataItemActivity.this, SingleItemEditActivity.class);
-				startActivity(intent);
-			}
-		});
+//		//get reference to floating action button in bottom right of screen
+//		mAddItemFab = (FloatingActionButton) findViewById(R.id.fab_add_item);
+//		mAddItemFab.setOnClickListener(new View.OnClickListener()
+//		{
+//			//have the click start the edit screen for a single item
+//			@Override
+//			public void onClick(View v)
+//			{
+//				Intent intent = new Intent(DataItemActivity.this, SingleItemEditActivity.class);
+//				startActivity(intent);
+//			}
+//		});
 
 		//mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
 		//setTitle(mTitle);
