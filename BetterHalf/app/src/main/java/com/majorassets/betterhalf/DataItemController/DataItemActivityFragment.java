@@ -1,6 +1,7 @@
 package com.majorassets.betterhalf.DataItemController;
 
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -96,6 +97,7 @@ public class DataItemActivityFragment extends Fragment
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 String query = adapter.getItem(position);
+                searchWeb(query);
             }
         });
 
@@ -132,8 +134,12 @@ public class DataItemActivityFragment extends Fragment
         }
     }
 
-    private void searchWeb(String query) {
-
+    public void searchWeb(String query) {
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, query);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
 }
