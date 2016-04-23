@@ -78,6 +78,10 @@ public class DataItemActivityFragment extends Fragment
         //store all the titles into an array
         getTitles();
 
+
+        /**
+         * HOW DO YOU GET THE CURRENT PAGE TITLE!!!! I FORGOT -_- REMEMBER THIS
+         */
         //get reference to floating action button in bottom right of screen
         mAddItemFab = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_item);
         mAddItemFab.setOnClickListener(new View.OnClickListener()
