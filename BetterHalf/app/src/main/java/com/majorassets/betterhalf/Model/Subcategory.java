@@ -16,6 +16,7 @@ public class Subcategory
     public Subcategory(SubcategoryType type)
     {
         this.type = type;
+        //TODO: populate mainType
     }
 
     public SubcategoryType getType()

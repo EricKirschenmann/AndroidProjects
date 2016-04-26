@@ -8,8 +8,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.majorassets.betterhalf.DataItemController.DataItemActivity;
+
 public class SingleItemEditActivity extends AppCompatActivity
 {
+    private String mTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -24,6 +28,9 @@ public class SingleItemEditActivity extends AppCompatActivity
         }
 
         setSupportActionBar(toolbar);
+
+        mTitle = getIntent().getStringExtra(DataItemActivity.SUBCAT_EXTRA);
+        setTitle(mTitle);
     }
 
     @Override

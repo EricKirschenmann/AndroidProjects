@@ -7,8 +7,17 @@ package com.majorassets.betterhalf.Database.SQLite;
  */
 public class DataDBSchema {
 
+    public static class BaseTable
+    {
+        public static final class Cols
+        {
+            public static final String UUID = "uuid";
+            public static final String LABEL = "label";
+            public static final String VALUE = "value";
+        }
+    }
     /*  Entertainment Tables */
-    public static final class BooksTable
+    public static final class BooksTable extends BaseTable
     {
         public static final String NAME = "Books";
 

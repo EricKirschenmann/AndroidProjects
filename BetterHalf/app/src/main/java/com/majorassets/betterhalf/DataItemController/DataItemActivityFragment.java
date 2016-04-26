@@ -1,23 +1,30 @@
 package com.majorassets.betterhalf.DataItemController;
 
 
-import android.app.SearchManager;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.firebase.client.Firebase;
+import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
+import com.majorassets.betterhalf.GlobalResources;
+import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.Subcategory;
+import com.majorassets.betterhalf.Model.SubcategoryType;
+import com.majorassets.betterhalf.Model.User;
 import com.majorassets.betterhalf.R;
-import com.majorassets.betterhalf.SingleItemEditActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -25,15 +32,22 @@ import java.util.HashMap;
  */
 public class DataItemActivityFragment extends Fragment
 {
-
-    //TODO: Find out why onCreateView runs twice whenever the activity is opened
-
     private ArrayList<String> Array = new ArrayList<String>();
     public HashMap stuffs = new HashMap();
     private DataItemPagerAdapter mDataItemPagerAdapter;
-    private ListView listView;
-    private FloatingActionButton mAddItemFab;
-    private String[] titles;
+    private Map<SubcategoryType, List<BaseDataItem>> data;
+
+    private SQLiteProvider sqliteDB;
+    private FirebaseProvider firebaseDB;
+
+    private SQLiteItemsDAL dal;
+    private Firebase userDataRef;
+
+    private User appUser;
+
+    private Bundle args;
+    private ListView mListView;
+    private ArrayAdapter<String> mArrayAdapter;
 
 	public static final String ARG_PAGE = "com.majorassets.betterhalf.page";
 
@@ -53,106 +67,84 @@ public class DataItemActivityFragment extends Fragment
 	{
 		View view =  inflater.inflate(R.layout.fragment_data_list, container, false);
 
+		//setting the tool bar to primary color
+		Window window = getActivity().getWindow();
+		window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
+
+        data = new HashMap<>();
+        appUser = GlobalResources.AppUser;
+
+        //data layer components
+        firebaseDB = FirebaseProvider.getDataProvider();
+        sqliteDB = SQLiteProvider.getSQLiteProvider(getContext());
+        dal = new SQLiteItemsDAL(sqliteDB.getDatabase());
+
         //SAMPLE DATA
-        ArrayList<String> Movies = new ArrayList<>();
-        ArrayList<String> Books = new ArrayList<>();
-        ArrayList<String> Allergies = new ArrayList<>();
-        ArrayList<String> Jewelry = new ArrayList<>();
-        ArrayList<String> Music = new ArrayList<>();
+        ArrayList<String> Movies = new ArrayList<String>();
+        ArrayList<String> Books = new ArrayList<String>();
+        ArrayList<String> Allergies = new ArrayList<String>();
         Movies.add("The Force Awakens");
         Movies.add("10 Cloverfield Lane");
         Books.add("Silmarillion");
         Books.add("Aftermath");
         Allergies.add("Banana");
         Allergies.add("Gluten");
-        Music.add("Phil Collins");
-        stuffs.put("Books", Books);
-        stuffs.put("Allergies", Allergies);
-        stuffs.put("Movies", Movies);
-        stuffs.put("Music", Music);
+        //stuffs.put("Books", Books);
+        //stuffs.put("Allergies", Allergies);
+        //stuffs.put("Movies", Movies);
         //SAMPLE DATA
 
         //DECLARE ADAPTER FOR LISTVIEW
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_expandable_list_item_1, Array);
-        listView = (ListView) view.findViewById(android.R.id.text1);
-        listView.setAdapter(adapter);
+        mArrayAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_expandable_list_item_1, Array);
+        mListView = (ListView) view.findViewById(android.R.id.text1);
+        mListView.setAdapter(mArrayAdapter);
 
         mDataItemPagerAdapter = new DataItemPagerAdapter(getFragmentManager());
-        final Bundle args = getArguments();
-        //store all the titles into an array
-        getTitles();
+        args = getArguments();
 
-
-        /**
-         * HOW DO YOU GET THE CURRENT PAGE TITLE!!!! I FORGOT -_- REMEMBER THIS
-         */
-        //get reference to floating action button in bottom right of screen
-        mAddItemFab = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_item);
-        mAddItemFab.setOnClickListener(new View.OnClickListener()
-        {
-            //have the click start the edit screen for a single item
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(getContext(), SingleItemEditActivity.class);
-                //gives wrong numbers!! check why
-                intent.putExtra(Intent.EXTRA_REFERRER, titles[args.getInt(DataItemActivityFragment.ARG_PAGE) - 1]);
-                startActivity(intent);
-            }
-        });
-
-        //Add listener for the click on a list item to search the web
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String query = adapter.getItem(position);
-                query += " "+ titles[getPageNum(args)];
-                searchWeb(query);
-            }
-        });
-
-        //DECLARE VARIABLES FOR LISTVIEW
-        String keyString = null;
-        Object dataArrayHolder = null;
-        int dataArraySize = 0;
-
-        //FIND CURRENT TAB AND FIND DATA ARRAY TO FILL LIST(IF EXISTS)(SHOULD PULL FROM SQLITE)
-        if(stuffs.containsKey(mDataItemPagerAdapter.getPageTitle(0).toString())){
-            for(int j=1 ; j<mDataItemPagerAdapter.getCount() ; j++) {
-                if (args.getInt(DataItemActivityFragment.ARG_PAGE) == j) {
-                    adapter.clear();
-                    keyString = mDataItemPagerAdapter.getPageTitle(j-1).toString();
-                    if(stuffs.containsKey(keyString)) {
-                        dataArrayHolder = stuffs.get(keyString);
-                        dataArraySize = ((ArrayList) dataArrayHolder).size();
-                    }
-                    for (int i=0; i < dataArraySize; i++) {
-                        adapter.add(((ArrayList) dataArrayHolder).get(i).toString());
-                    }
-                }
-            }
-        }
+        readDataFromSQLite(view);
 
         return view;
 	}
 
-    private int getPageNum(Bundle args) {
-        return args.getInt(DataItemActivityFragment.ARG_PAGE) - 1;
+    private void readDataFromSQLite(View view)
+    {
+        List<BaseDataItem> items;
+
+        int position = args.getInt(ARG_PAGE)-1;
+        String table = mDataItemPagerAdapter.getPageTitle(position).toString();
+        items = dal.getEntertainmentItems(table);
+
+        SubcategoryType type = SubcategoryType.getTypeFromString(table);
+        data.put(type, items);
+
+        updateDisplay(type);
     }
 
-    private void getTitles() {
-        titles = new String[mDataItemPagerAdapter.getCount()];
+    private void updateDisplay(SubcategoryType type)
+    {
+        //DECLARE VARIABLES FOR LISTVIEW
+        String keyString = null;
+        List<BaseDataItem> dataArrayHolder = null;
 
-        for(int i = 0; i < mDataItemPagerAdapter.getCount(); i++) {
-            titles[i] = mDataItemPagerAdapter.getPageTitle(i).toString();
-        }
-    }
+        //FIND CURRENT TAB AND FIND DATA ARRAY TO FILL LIST(IF EXISTS)(SHOULD PULL FROM SQLITE)
+        if(data.containsKey(type))
+        {
+            for(int j=1 ; j<mDataItemPagerAdapter.getCount() ; j++)
+            {
+                if (args.getInt(ARG_PAGE) == j)
+                {
+                    mArrayAdapter.clear();
+                    keyString = mDataItemPagerAdapter.getPageTitle(j-1).toString();
+                    SubcategoryType keyType = SubcategoryType.getTypeFromString(keyString);
+                    if(data.containsKey(keyType))
+                        dataArrayHolder = data.get(keyType);
 
-    public void searchWeb(String query) {
-        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-        intent.putExtra(SearchManager.QUERY, query);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-            startActivity(intent);
+                    if (dataArrayHolder != null)
+                        for (int i=0; i < dataArrayHolder.size(); i++)
+                            mArrayAdapter.add((dataArrayHolder).get(i).getValue());
+                }
+            }
         }
     }
 }

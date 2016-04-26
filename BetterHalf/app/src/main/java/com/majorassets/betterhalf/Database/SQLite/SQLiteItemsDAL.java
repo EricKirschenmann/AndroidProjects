@@ -1,11 +1,17 @@
 package com.majorassets.betterhalf.Database.SQLite;
 
 import android.content.ContentValues;
+import android.database.CursorWrapper;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.EntertainmentCursorWrapper;
 import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.Subcategory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Marissa on 4/20/2016.
@@ -38,8 +44,8 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
 
 
     // Add an item to database
-    public void addItem(BaseDataItem item, String tableName, String colUUID, String colLabel, String colValue){
-        ContentValues values = SQLiteProvider.getDataContentValues(item, colUUID, colLabel, colValue);
+    public void addItem(BaseDataItem item, String tableName){
+        ContentValues values = SQLiteProvider.getDataContentValues(item);
         try
         {
             db.insertOrThrow(tableName, null, values);
@@ -53,7 +59,7 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     // Change an existing item
     public void updateItem(BaseDataItem item, String tableName, String colUUID, String colLabel, String colValue){
         String itemID = item.getID().toString();
-        ContentValues values = SQLiteProvider.getDataContentValues(item, colUUID, colLabel, colValue);
+        ContentValues values = SQLiteProvider.getDataContentValues(item);
 
         db.update(tableName, values, colUUID + " = ?", new String[] {itemID});
     }
@@ -65,6 +71,33 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
         db.delete(tableName, colUUID + "= ?", new String[]{itemID});
 
         return item;
+    }
+
+    @Override
+    public List<BaseDataItem> getEntertainmentItems(String tableName)
+    {
+        EntertainmentCursorWrapper cursor = SQLiteProvider.queryEntertainmentItem(tableName, null, null);
+
+        List<BaseDataItem> items = new ArrayList<>();
+        try{
+            if(cursor.getCount() == 0)
+                return null;
+
+            cursor.moveToFirst();
+
+            //iterate the cursor over each record in DB
+            while(!cursor.isAfterLast())
+            {
+                items.add(cursor.getItem());
+                cursor.moveToNext();
+            }
+        }
+        finally
+        {
+            cursor.close();
+        }
+
+        return items;
     }
 
 

@@ -5,8 +5,9 @@ import com.majorassets.betterhalf.Model.BaseLikeableItem;
 /**
  * Created by Marissa on 4/14/2016.
  */
-public class OutdoorItem extends BaseLikeableItem {
+public class OutdoorItem extends HobbyItem {
     public OutdoorItem(String label, String value) {
         super(label, value);
     }
+
 }

@@ -32,6 +32,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
                 UserDBTable.Cols.PASSWORD + ", " +
                 UserDBTable.Cols.LOGGED_ON_LAST + ")";
 
+        //TODO: finish adding UUID column
         // Entertainment Tables
         String createBooksTable = "CREATE TABLE " + BooksTable.NAME + "(" +
                 "_id integer primary key autoincrement, " +

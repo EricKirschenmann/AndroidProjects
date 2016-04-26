@@ -2,6 +2,7 @@ package com.majorassets.betterhalf.Database.SQLite;
 
 import com.majorassets.betterhalf.Model.User;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -13,4 +14,5 @@ public interface ISQLiteUserDAL
     void updateUser(User user);
     User deleteUser(User user);
     User getUser(String email);
+    List<User> getAllUsers();
 }

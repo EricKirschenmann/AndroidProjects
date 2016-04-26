@@ -5,8 +5,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.UserCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.UserDBSchema.UserDBTable;
-import com.majorassets.betterhalf.GlobalResources;
 import com.majorassets.betterhalf.Model.User;
 
 import java.util.ArrayList;
