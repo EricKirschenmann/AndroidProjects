@@ -2,6 +2,7 @@ package com.majorassets.betterhalf;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -124,7 +125,18 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                attemptLogin();
+                //get the current entered text
+                String checkEmail = mEmailEdit.getText().toString();
+                String checkPass = mPasswordEdit.getText().toString();
+
+                //check if user has entered information or not
+                if(!checkEmail.equals("") && !checkPass.equals("")) {
+                    attemptLogin();
+                }
+                else {
+                    Snackbar.make(v, "Please enter your email and password", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
             }
         });
 

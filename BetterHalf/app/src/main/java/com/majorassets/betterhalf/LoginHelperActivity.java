@@ -1,9 +1,9 @@
 package com.majorassets.betterhalf;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -17,7 +17,6 @@ import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
 import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
-import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
