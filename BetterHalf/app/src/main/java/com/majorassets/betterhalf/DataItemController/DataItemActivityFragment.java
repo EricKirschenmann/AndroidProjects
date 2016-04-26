@@ -1,12 +1,15 @@
 package com.majorassets.betterhalf.DataItemController;
 
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -16,7 +19,6 @@ import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.GlobalResources;
 import com.majorassets.betterhalf.Model.BaseDataItem;
-import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 import com.majorassets.betterhalf.R;
@@ -104,6 +106,16 @@ public class DataItemActivityFragment extends Fragment
 
         readDataFromSQLite(view);
 
+        // if user presses an item in the list Google search that item and its subcategory
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String query = mArrayAdapter.getItem(position);
+                query += " " + mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE) - 1);
+                searchWeb(query);
+            }
+        });
+
         return view;
 	}
 
@@ -145,6 +157,15 @@ public class DataItemActivityFragment extends Fragment
                             mArrayAdapter.add((dataArrayHolder).get(i).getValue());
                 }
             }
+        }
+    }
+
+    //using implicit intents create a web search with a given string
+    public void searchWeb(String query) {
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, query);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
         }
     }
 }

@@ -38,12 +38,12 @@
         <activity
             android:name=".SingleItemEditActivity"
             android:parentActivityName=".DataItemController.DataItemActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:noHistory="true">
         </activity>
         <activity android:name=".LoginHelperActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
