@@ -5,8 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.EntertainmentCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.UserCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.UserDBSchema.UserDBTable;
+import com.majorassets.betterhalf.Database.SQLite.DataDBSchema.BaseTable;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.User;
 
@@ -48,11 +50,11 @@ public class SQLiteProvider
             colValue = the value from the schema
                 ex: BooksTable.Cols.VALUE
      */
-    public static ContentValues getDataContentValues(BaseDataItem item, String colUUID, String colLabel, String colValue){
+    public static ContentValues getDataContentValues(BaseDataItem item){
         ContentValues values = new ContentValues();
-        values.put(colUUID, item.getID().toString());
-        values.put(colLabel, item.getLabel());
-        values.put(colValue, item.getValue());
+        values.put(BaseTable.Cols.UUID, item.getID().toString());
+        values.put(BaseTable.Cols.LABEL, item.getLabel());
+        values.put(BaseTable.Cols.VALUE, item.getValue());
         return values;
     }
 
@@ -69,6 +71,20 @@ public class SQLiteProvider
                 null); //order by
 
         return new UserCursorWrapper(cursor);
+    }
+
+    public static EntertainmentCursorWrapper queryEntertainmentItem(String tableName, String whereClause, String[] whereArgs)
+    {
+        Cursor cursor = database.query(
+                tableName,
+                null,
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null
+        );
+        return new EntertainmentCursorWrapper(cursor);
     }
 
     public SQLiteDatabase getDatabase()

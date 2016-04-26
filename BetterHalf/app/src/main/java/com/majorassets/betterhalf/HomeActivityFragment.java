@@ -142,10 +142,9 @@ public class HomeActivityFragment extends Fragment
 
 	private void launchDataItemActivity(String title)
 	{
-		MainCategoryType type = MainCategoryType.getTypeFromString(title);
-		GlobalResources.mainTypePressed = type;
+		GlobalResources.mainTypePressed = MainCategoryType.getTypeFromString(title);
 
-		Intent intent = newIntent(new MainCategory(type));
+		Intent intent = newIntent(title);
 		startActivity(intent);
 	}
 
@@ -184,12 +183,10 @@ public class HomeActivityFragment extends Fragment
 		});
 	}
 
-	private Intent newIntent(MainCategory mainCategory)
+	private Intent newIntent(String title)
 	{
-		Bundle args = new Bundle();
 		Intent intent = new Intent(getContext(), DataItemActivity.class);
-		//args.putSerializable(TITLE_EXTRA, (Serializable)mainCategory);
-		//intent.putExtras(args);
+		intent.putExtra(TITLE_EXTRA, title);
 		return intent;
 	}
 }

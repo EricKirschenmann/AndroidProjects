@@ -6,10 +6,12 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import com.majorassets.betterhalf.HomeActivityFragment;
 import com.majorassets.betterhalf.R;
 import com.majorassets.betterhalf.SingleItemEditActivity;
 
@@ -21,6 +23,8 @@ public class DataItemActivity extends AppCompatActivity
 	private DataItemPagerAdapter mDataItemPagerAdapter;
 	private ViewPager mViewPager;
 	private TabLayout mTabLayout;
+
+	public static final String SUBCAT_EXTRA = "com.majorassets.betterhalf.subcat";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -39,13 +43,18 @@ public class DataItemActivity extends AppCompatActivity
 			@Override
 			public void onClick(View v)
 			{
+				int currentTab = mTabLayout.getSelectedTabPosition();
+				TabLayout.Tab tab = mTabLayout.getTabAt(currentTab);
+				mTitle = tab.getText().toString();
+
 				Intent intent = new Intent(DataItemActivity.this, SingleItemEditActivity.class);
+				intent.putExtra(SUBCAT_EXTRA, mTitle);
 				startActivity(intent);
 			}
 		});
 
-		//mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
-		//setTitle(mTitle);
+		mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
+		setTitle(mTitle);
 
 		setUpTabPageComponents();
 	}
@@ -70,9 +79,16 @@ public class DataItemActivity extends AppCompatActivity
 		mDataItemPagerAdapter = new DataItemPagerAdapter(getSupportFragmentManager());
 		mViewPager = (ViewPager) findViewById(R.id.pager);
 
-		mViewPager.setAdapter(mDataItemPagerAdapter);
+		try
+		{
+			mViewPager.setAdapter(mDataItemPagerAdapter);
 
-		mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
-		mTabLayout.setupWithViewPager(mViewPager);
+			mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+			mTabLayout.setupWithViewPager(mViewPager);
+		}
+		catch (Exception e)
+		{
+			Log.e("ERROR", e.getMessage());
+		}
 	}
 }

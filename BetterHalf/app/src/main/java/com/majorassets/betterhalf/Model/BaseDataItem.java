@@ -23,6 +23,7 @@ public abstract class BaseDataItem implements IDataItem
 	public BaseDataItem(String label, String value) {
 		mLabel = label;
 		mValue = value;
+		mID = UUID.randomUUID();
 	}
 
 	public UUID getID() {

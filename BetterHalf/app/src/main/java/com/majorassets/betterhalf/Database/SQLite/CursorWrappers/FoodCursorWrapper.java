@@ -1,4 +1,4 @@
-package com.majorassets.betterhalf.Database.SQLite;
+package com.majorassets.betterhalf.Database.SQLite.CursorWrappers;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;

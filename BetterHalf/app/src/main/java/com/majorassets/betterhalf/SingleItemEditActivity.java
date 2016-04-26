@@ -11,8 +11,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.majorassets.betterhalf.DataItemController.DataItemActivity;
+
 public class SingleItemEditActivity extends AppCompatActivity
 {
+    private String mTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -20,6 +24,9 @@ public class SingleItemEditActivity extends AppCompatActivity
         setContentView(R.layout.activity_single_item_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mTitle = getIntent().getStringExtra(DataItemActivity.SUBCAT_EXTRA);
+        setTitle(mTitle);
     }
 
     @Override

@@ -1,8 +1,9 @@
-package com.majorassets.betterhalf.Database.SQLite;
+package com.majorassets.betterhalf.Database.SQLite.CursorWrappers;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
+import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Model.Entertainment.EntertainmentItem;
 
 import java.util.UUID;
@@ -24,10 +25,10 @@ public class EntertainmentCursorWrapper extends CursorWrapper {
             ex: BooksTable.Cols.VALUE
         colID = UUID from schema
  */
-    public EntertainmentItem getItem(String colUUID, String colLabel, String colValue){
-        String userID = getString(getColumnIndex(colUUID));
-        String label = getString(getColumnIndex(colLabel));
-        String value = getString(getColumnIndex(colValue));
+    public EntertainmentItem getItem(){
+        String userID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
+        String label = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.LABEL));
+        String value = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.VALUE));
 
         EntertainmentItem item = new EntertainmentItem(label, value);
         item.setID(UUID.fromString(userID));

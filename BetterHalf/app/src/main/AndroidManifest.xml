@@ -33,6 +33,7 @@
         </activity>
         <activity
             android:name=".SingleItemEditActivity"
+            android:parentActivityName=".DataItemController.DataItemActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".LoginHelperActivity">

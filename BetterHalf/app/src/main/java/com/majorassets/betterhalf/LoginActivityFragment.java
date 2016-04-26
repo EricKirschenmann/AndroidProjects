@@ -189,7 +189,7 @@ public class LoginActivityFragment extends Fragment {
     private void loginWithPassword(String email, String password, final boolean postCreationLogin)
     {
         //first check if user with specified email exists in SQLite db
-         appUser = dal.getUser(email);
+        appUser = dal.getUser(email);
         GlobalResources.AppUser = appUser;
 
         //if user is not in SQLite OR this a login after creating an account
