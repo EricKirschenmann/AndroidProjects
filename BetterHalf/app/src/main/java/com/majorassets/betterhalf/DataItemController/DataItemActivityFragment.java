@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -25,7 +24,6 @@ import com.majorassets.betterhalf.Model.User;
 import com.majorassets.betterhalf.R;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,7 +34,7 @@ import java.util.Map;
  */
 public class DataItemActivityFragment extends Fragment
 {
-    private ArrayList<String> Array = new ArrayList<String>();
+    private ArrayList<String> Array = new ArrayList<>();
     public HashMap stuffs = new HashMap();
     private DataItemPagerAdapter mDataItemPagerAdapter;
     private Map<SubcategoryType, List<BaseDataItem>> data;
@@ -72,8 +70,8 @@ public class DataItemActivityFragment extends Fragment
 		View view =  inflater.inflate(R.layout.fragment_data_list, container, false);
 
 		//setting the tool bar to primary color
-		Window window = getActivity().getWindow();
-		window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
+//		Window window = getActivity().getWindow();
+//		window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
         data = new HashMap<>();
         appUser = GlobalResources.AppUser;
@@ -155,7 +153,6 @@ public class DataItemActivityFragment extends Fragment
 
         if(items != null && items.size() != 0)
         {
-            Arrays.sort(items.toArray());
             for (BaseDataItem item : items)
                 mArrayAdapter.add(item.getValue());
         }
