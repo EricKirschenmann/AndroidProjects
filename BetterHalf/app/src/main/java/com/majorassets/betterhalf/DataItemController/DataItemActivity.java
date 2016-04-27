@@ -60,13 +60,6 @@ public class DataItemActivity extends AppCompatActivity
 	}
 
 	@Override
-	public void onStop()
-	{
-		super.onStop();
-		finish();
-	}
-
-	@Override
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
 		MenuInflater inflater = getMenuInflater();
