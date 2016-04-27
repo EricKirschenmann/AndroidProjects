@@ -102,6 +102,14 @@ public class DataItemActivityFragment extends Fragment
             }
         });
 
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                return false;
+            }
+        });
+
         return view;
 	}
 
