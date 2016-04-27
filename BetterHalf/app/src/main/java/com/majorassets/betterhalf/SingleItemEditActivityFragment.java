@@ -1,13 +1,15 @@
 package com.majorassets.betterhalf;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.firebase.client.Firebase;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
@@ -28,12 +30,12 @@ import com.majorassets.betterhalf.Model.User;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SingleItemEditActivityFragment extends Fragment
-{
+public class SingleItemEditActivityFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private EditText mItemLabel;
     private EditText mItemValue;
     private Button mAddButton;
+    private Spinner mSpinner;
     private DataItemActivityFragment mDataItemActivityFragment;
 
     private SQLiteProvider sqliteDB;
@@ -45,8 +47,12 @@ public class SingleItemEditActivityFragment extends Fragment
     private User appUser;
     private Subcategory subcategory;
 
+    private String category;
+    private String key;
+
     public SingleItemEditActivityFragment()
     {
+
     }
 
     @Override
@@ -73,10 +79,64 @@ public class SingleItemEditActivityFragment extends Fragment
 
         userDataRef = firebaseDB.getUserDataInstance(appUser.getUsername());
 
-        //UI components
         mItemLabel = (EditText) view.findViewById(R.id.item_name_edit);
         mItemValue = (EditText) view.findViewById(R.id.item_value_edit);
         mAddButton = (Button) view.findViewById(R.id.add_button);
+        mSpinner = (Spinner) view.findViewById(R.id.key_select);
+
+        category = getActivity().getIntent().getStringExtra(DataItemActivity.SUBCAT_EXTRA);
+
+        if(category.equals("Books")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.books_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Games")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.games_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Movies")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.movies_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Music")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.music_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Theater")){
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.theater_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("TV Shows")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.tvshow_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else {
+            mSpinner.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void createEvents()
@@ -112,10 +172,6 @@ public class SingleItemEditActivityFragment extends Fragment
 
                 writeDataToSQLite(subcategory);
 
-                /*Intent intent = new Intent(getContext(), DataItemActivity.class);
-                intent.putExtra(HomeActivityFragment.TITLE_EXTRA, subcat);
-                startActivity(intent);*/
-
                 getActivity().finish();
             }
         });
@@ -134,27 +190,27 @@ public class SingleItemEditActivityFragment extends Fragment
                 dal.addItem(movie, DataDBSchema.MoviesTable.NAME);
                 break;
             case BOOK:
-                BookItem book = new BookItem(label, value);
+                BookItem book = new BookItem(key, value);
                 book.setID(appUser.getID());
                 dal.addItem(book, DataDBSchema.BooksTable.NAME);
                 break;
             case MUSIC:
-                MusicItem music = new MusicItem(label, value);
+                MusicItem music = new MusicItem(key, value);
                 music.setID(appUser.getID());
                 dal.addItem(music, DataDBSchema.MusicTable.NAME);
                 break;
             case GAME:
-                GameItem game = new GameItem(label, value);
+                GameItem game = new GameItem(key, value);
                 game.setID(appUser.getID());
                 dal.addItem(game, DataDBSchema.GamesTable.NAME);
                 break;
             case THEATER:
-                TheaterItem theater = new TheaterItem(label, value);
+                TheaterItem theater = new TheaterItem(key, value);
                 theater.setID(appUser.getID());
                 dal.addItem(theater, DataDBSchema.TheaterTable.NAME);
                 break;
             case TV_SHOW:
-                TVShowItem tvShow = new TVShowItem(label, value);
+                TVShowItem tvShow = new TVShowItem(key, value);
                 tvShow.setID(appUser.getID());
                 dal.addItem(tvShow, DataDBSchema.TVShowsTable.NAME);
                 break;
@@ -163,6 +219,16 @@ public class SingleItemEditActivityFragment extends Fragment
 
     private void writeDatatoFirebase(Subcategory sub)
     {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        key = adapterView.getItemAtPosition(i).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
 }
