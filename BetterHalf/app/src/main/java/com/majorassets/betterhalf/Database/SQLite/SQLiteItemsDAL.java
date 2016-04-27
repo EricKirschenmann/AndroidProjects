@@ -12,6 +12,7 @@ import com.majorassets.betterhalf.Model.Subcategory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Marissa on 4/20/2016.
@@ -74,9 +75,10 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     }
 
     @Override
-    public List<BaseDataItem> getEntertainmentItems(String tableName)
+    public List<BaseDataItem> getEntertainmentItems(String tableName, UUID userId)
     {
-        EntertainmentCursorWrapper cursor = SQLiteProvider.queryEntertainmentItem(tableName, null, null);
+        EntertainmentCursorWrapper cursor = SQLiteProvider.queryEntertainmentItem(tableName,
+                DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
 
         List<BaseDataItem> items = new ArrayList<>();
         try{

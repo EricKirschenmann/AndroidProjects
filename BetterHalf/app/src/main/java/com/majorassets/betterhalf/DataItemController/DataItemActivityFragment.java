@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.firebase.client.Firebase;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.GlobalResources;
@@ -24,6 +25,7 @@ import com.majorassets.betterhalf.Model.User;
 import com.majorassets.betterhalf.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,20 +83,6 @@ public class DataItemActivityFragment extends Fragment
         sqliteDB = SQLiteProvider.getSQLiteProvider(getContext());
         dal = new SQLiteItemsDAL(sqliteDB.getDatabase());
 
-        //SAMPLE DATA
-        ArrayList<String> Movies = new ArrayList<String>();
-        ArrayList<String> Books = new ArrayList<String>();
-        ArrayList<String> Allergies = new ArrayList<String>();
-        Movies.add("The Force Awakens");
-        Movies.add("10 Cloverfield Lane");
-        Books.add("Silmarillion");
-        Books.add("Aftermath");
-        Allergies.add("Banana");
-        Allergies.add("Gluten");
-        //stuffs.put("Books", Books);
-        //stuffs.put("Allergies", Allergies);
-        //stuffs.put("Movies", Movies);
-        //SAMPLE DATA
 
         //DECLARE ADAPTER FOR LISTVIEW
         mArrayAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_expandable_list_item_1, Array);
@@ -104,7 +92,7 @@ public class DataItemActivityFragment extends Fragment
         mDataItemPagerAdapter = new DataItemPagerAdapter(getFragmentManager());
         args = getArguments();
 
-        readDataFromSQLite(view);
+        readDataFromSQLite();
 
         // if user presses an item in the list Google search that item and its subcategory
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -119,44 +107,57 @@ public class DataItemActivityFragment extends Fragment
         return view;
 	}
 
-    private void readDataFromSQLite(View view)
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        readDataFromSQLite();
+    }
+
+    private void readDataFromSQLite()
     {
         List<BaseDataItem> items;
 
         int position = args.getInt(ARG_PAGE)-1;
-        String table = mDataItemPagerAdapter.getPageTitle(position).toString();
-        items = dal.getEntertainmentItems(table);
+        String table = mDataItemPagerAdapter.getPageTitle(position).toString().replace(" ", "");
+
+        items = getItems(table);
 
         SubcategoryType type = SubcategoryType.getTypeFromString(table);
         data.put(type, items);
 
-        updateDisplay(type);
+        updateDisplay(items);
     }
 
-    private void updateDisplay(SubcategoryType type)
+    private List<BaseDataItem> getItems(String table)
     {
-        //DECLARE VARIABLES FOR LISTVIEW
-        String keyString = null;
-        List<BaseDataItem> dataArrayHolder = null;
+        List<BaseDataItem> items = null;
 
-        //FIND CURRENT TAB AND FIND DATA ARRAY TO FILL LIST(IF EXISTS)(SHOULD PULL FROM SQLITE)
-        if(data.containsKey(type))
+        switch (table)
         {
-            for(int j=1 ; j<mDataItemPagerAdapter.getCount() ; j++)
-            {
-                if (args.getInt(ARG_PAGE) == j)
-                {
-                    mArrayAdapter.clear();
-                    keyString = mDataItemPagerAdapter.getPageTitle(j-1).toString();
-                    SubcategoryType keyType = SubcategoryType.getTypeFromString(keyString);
-                    if(data.containsKey(keyType))
-                        dataArrayHolder = data.get(keyType);
+            case DataDBSchema.MoviesTable.NAME:
+            case DataDBSchema.MusicTable.NAME:
+            case DataDBSchema.GamesTable.NAME:
+            case DataDBSchema.BooksTable.NAME:
+            case DataDBSchema.TheaterTable.NAME:
+            case DataDBSchema.TVShowsTable.NAME:
+                items = dal.getEntertainmentItems(table, appUser.getID());
+                break;
 
-                    if (dataArrayHolder != null)
-                        for (int i=0; i < dataArrayHolder.size(); i++)
-                            mArrayAdapter.add((dataArrayHolder).get(i).getValue());
-                }
-            }
+        }
+
+        return items;
+    }
+
+    private void updateDisplay(List<BaseDataItem> items)
+    {
+        mArrayAdapter.clear();
+
+        if(items != null && items.size() != 0)
+        {
+            Arrays.sort(items.toArray());
+            for (BaseDataItem item : items)
+                mArrayAdapter.add(item.getValue());
         }
     }
 

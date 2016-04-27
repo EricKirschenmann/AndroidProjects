@@ -17,7 +17,11 @@ import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Model.Entertainment.BookItem;
+import com.majorassets.betterhalf.Model.Entertainment.GameItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
+import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
+import com.majorassets.betterhalf.Model.Entertainment.TVShowItem;
+import com.majorassets.betterhalf.Model.Entertainment.TheaterItem;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
@@ -101,17 +105,18 @@ public class SingleItemEditActivityFragment extends Fragment
             @Override
             public void onClick(View v)
             {
-                //TODO: store data item in SQLite
                 //TODO: store data item in Firebase
 
-                String subcat = getActivity().getTitle().toString();
+                String subcat = getActivity().getTitle().toString().replace(" ", "");
                 subcategory = new Subcategory(SubcategoryType.getTypeFromString(subcat));
 
                 writeDataToSQLite(subcategory);
 
-                Intent intent = new Intent(getContext(), DataItemActivity.class);
+                /*Intent intent = new Intent(getContext(), DataItemActivity.class);
                 intent.putExtra(HomeActivityFragment.TITLE_EXTRA, subcat);
-                startActivity(intent);
+                startActivity(intent);*/
+
+                getActivity().finish();
             }
         });
     }
@@ -125,12 +130,39 @@ public class SingleItemEditActivityFragment extends Fragment
         {
             case MOVIE:
                 MovieItem movie = new MovieItem(label, value);
+                movie.setID(appUser.getID()); //user to item relationship
                 dal.addItem(movie, DataDBSchema.MoviesTable.NAME);
                 break;
             case BOOK:
                 BookItem book = new BookItem(label, value);
+                book.setID(appUser.getID());
                 dal.addItem(book, DataDBSchema.BooksTable.NAME);
                 break;
+            case MUSIC:
+                MusicItem music = new MusicItem(label, value);
+                music.setID(appUser.getID());
+                dal.addItem(music, DataDBSchema.MusicTable.NAME);
+                break;
+            case GAME:
+                GameItem game = new GameItem(label, value);
+                game.setID(appUser.getID());
+                dal.addItem(game, DataDBSchema.GamesTable.NAME);
+                break;
+            case THEATER:
+                TheaterItem theater = new TheaterItem(label, value);
+                theater.setID(appUser.getID());
+                dal.addItem(theater, DataDBSchema.TheaterTable.NAME);
+                break;
+            case TV_SHOW:
+                TVShowItem tvShow = new TVShowItem(label, value);
+                tvShow.setID(appUser.getID());
+                dal.addItem(tvShow, DataDBSchema.TVShowsTable.NAME);
+                break;
         }
+    }
+
+    private void writeDatatoFirebase(Subcategory sub)
+    {
+
     }
 }
