@@ -3,6 +3,7 @@ package com.majorassets.betterhalf.Database.SQLite.CursorWrappers;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
+import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Model.Fashion.FashionItem;
 
 import java.util.UUID;
@@ -23,10 +24,10 @@ public class FashionCursorWrapper extends CursorWrapper {
     colValue = the value from the schema
         ex: BooksTable.Cols.VALUE
 */
-    public FashionItem getItem(String colUUID,String colLabel, String colValue){
-        String userID = getString(getColumnIndex(colUUID));
-        String label = getString(getColumnIndex(colLabel));
-        String value = getString(getColumnIndex(colValue));
+    public FashionItem getItem(){
+        String userID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
+        String label = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.LABEL));
+        String value = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.VALUE));
 
         FashionItem item = new FashionItem(label, value);
         item.setID(UUID.fromString(userID));

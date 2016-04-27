@@ -17,6 +17,7 @@ import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.GlobalResources;
 import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
@@ -35,9 +36,8 @@ import java.util.Map;
 public class DataItemActivityFragment extends Fragment
 {
     private ArrayList<String> Array = new ArrayList<String>();
-    public HashMap stuffs = new HashMap();
     private DataItemPagerAdapter mDataItemPagerAdapter;
-    private Map<SubcategoryType, List<BaseDataItem>> data;
+    private Map<SubcategoryType, List<BaseLikeableItem>> data;
 
     private SQLiteProvider sqliteDB;
     private FirebaseProvider firebaseDB;
@@ -104,7 +104,7 @@ public class DataItemActivityFragment extends Fragment
 
     private void readDataFromSQLite()
     {
-        List<BaseDataItem> items;
+        List<BaseLikeableItem> items;
 
         int position = args.getInt(ARG_PAGE)-1;
         String table = mDataItemPagerAdapter.getPageTitle(position).toString().replace(" ", "");
@@ -117,9 +117,9 @@ public class DataItemActivityFragment extends Fragment
         updateDisplay(items);
     }
 
-    private List<BaseDataItem> getItems(String table)
+    private List<BaseLikeableItem> getItems(String table)
     {
-        List<BaseDataItem> items = null;
+        List<BaseLikeableItem> items = null;
 
         switch (table)
         {
@@ -131,20 +131,44 @@ public class DataItemActivityFragment extends Fragment
             case DataDBSchema.TVShowsTable.NAME:
                 items = dal.getEntertainmentItems(table, appUser.getID());
                 break;
+            case DataDBSchema.AccessoriesTable.NAME:
+            case DataDBSchema.ClothingTable.NAME:
+            case DataDBSchema.JewelryTable.NAME:
+            case DataDBSchema.ShoesTable.NAME:
+                items = dal.getFashionItems(table, appUser.getID());
+                break;
+            case DataDBSchema.DrinksTable.NAME:
+            case DataDBSchema.EntreesTable.NAME:
+            case DataDBSchema.RestaurantsTable.NAME:
+            case DataDBSchema.SidesTable.NAME:
+            case DataDBSchema.SnacksTable.NAME:
+                items = dal.getFoodItems(table, appUser.getID());
+                break;
+            case DataDBSchema.IndoorTable.NAME:
+            case DataDBSchema.OutdoorTable.NAME:
+            case DataDBSchema.SportsTable.NAME:
+                items = dal.getHobbyItems(table, appUser.getID());
+                break;
+            case DataDBSchema.AllergiesTable.NAME:
+            case DataDBSchema.IllnessesTable.NAME:
+            case DataDBSchema.PhobiasTable.NAME:
+            case DataDBSchema.MedicationTable.NAME:
+                items = dal.getMedicalItems(table, appUser.getID());
+                break;
+            default:
+                return null;
 
         }
-
         return items;
     }
 
-    private void updateDisplay(List<BaseDataItem> items)
+    private void updateDisplay(List<BaseLikeableItem> items)
     {
         mArrayAdapter.clear();
 
         if(items != null && items.size() != 0)
         {
-            Arrays.sort(items.toArray());
-            for (BaseDataItem item : items)
+            for (BaseLikeableItem item : items)
                 mArrayAdapter.add(item.getValue());
         }
     }

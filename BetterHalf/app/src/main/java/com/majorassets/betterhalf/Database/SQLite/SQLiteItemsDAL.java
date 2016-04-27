@@ -7,7 +7,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.EntertainmentCursorWrapper;
+import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.FashionCursorWrapper;
+import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.FoodCursorWrapper;
+import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.HobbiesCursorWrapper;
+import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.MedicalCursorWrapper;
 import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.Subcategory;
 
 import java.util.ArrayList;
@@ -57,8 +62,22 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
         }
     }
 
+    @Override
+    public void addItem(BaseLikeableItem item, String tableName)
+    {
+        ContentValues values = SQLiteProvider.getDataContentValues(item);
+        try
+        {
+            db.insertOrThrow(tableName, null, values);
+        }
+        catch(SQLException ex)
+        {
+            Log.d("ERROR", ex.getMessage());
+        }
+    }
+
     // Change an existing item
-    public void updateItem(BaseDataItem item, String tableName, String colUUID, String colLabel, String colValue){
+    public void updateItem(BaseLikeableItem item, String tableName, String colUUID){
         String itemID = item.getID().toString();
         ContentValues values = SQLiteProvider.getDataContentValues(item);
 
@@ -75,12 +94,12 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     }
 
     @Override
-    public List<BaseDataItem> getEntertainmentItems(String tableName, UUID userId)
+    public List<BaseLikeableItem> getEntertainmentItems(String tableName, UUID userId)
     {
         EntertainmentCursorWrapper cursor = SQLiteProvider.queryEntertainmentItem(tableName,
                 DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
 
-        List<BaseDataItem> items = new ArrayList<>();
+        List<BaseLikeableItem> items = new ArrayList<>();
         try{
             if(cursor.getCount() == 0)
                 return null;
@@ -102,5 +121,116 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
         return items;
     }
 
+    @Override
+    public List<BaseLikeableItem> getFashionItems(String tableName, UUID userId)
+    {
+        FashionCursorWrapper cursor = SQLiteProvider.queryFashionItem(tableName,
+                DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
+
+        List<BaseLikeableItem> items = new ArrayList<>();
+        try{
+            if(cursor.getCount() == 0)
+                return null;
+
+            cursor.moveToFirst();
+
+            //iterate the cursor over each record in DB
+            while(!cursor.isAfterLast())
+            {
+                items.add(cursor.getItem());
+                cursor.moveToNext();
+            }
+        }
+        finally
+        {
+            cursor.close();
+        }
+
+        return items;
+    }
+
+    @Override
+    public List<BaseLikeableItem> getFoodItems(String tableName, UUID userId)
+    {
+        FoodCursorWrapper cursor = SQLiteProvider.queryFoodItem(tableName,
+                DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
+
+        List<BaseLikeableItem> items = new ArrayList<>();
+        try{
+            if(cursor.getCount() == 0)
+                return null;
+
+            cursor.moveToFirst();
+
+            //iterate the cursor over each record in DB
+            while(!cursor.isAfterLast())
+            {
+                items.add(cursor.getItem());
+                cursor.moveToNext();
+            }
+        }
+        finally
+        {
+            cursor.close();
+        }
+
+        return items;
+    }
+
+    @Override
+    public List<BaseLikeableItem> getHobbyItems(String tableName, UUID userId)
+    {
+        HobbiesCursorWrapper cursor = SQLiteProvider.queryHobbyItem(tableName,
+                DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
+
+        List<BaseLikeableItem> items = new ArrayList<>();
+        try{
+            if(cursor.getCount() == 0)
+                return null;
+
+            cursor.moveToFirst();
+
+            //iterate the cursor over each record in DB
+            while(!cursor.isAfterLast())
+            {
+                items.add(cursor.getItem());
+                cursor.moveToNext();
+            }
+        }
+        finally
+        {
+            cursor.close();
+        }
+
+        return items;
+    }
+
+    @Override
+    public List<BaseLikeableItem> getMedicalItems(String tableName, UUID userId)
+    {
+        MedicalCursorWrapper cursor = SQLiteProvider.queryMedicalItem(tableName,
+                DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
+
+        List<BaseLikeableItem> items = new ArrayList<>();
+        try{
+            if(cursor.getCount() == 0)
+                return null;
+
+            cursor.moveToFirst();
+
+            //iterate the cursor over each record in DB
+            while(!cursor.isAfterLast())
+            {
+                items.add(cursor.getItem());
+                cursor.moveToNext();
+            }
+        }
+        finally
+        {
+            cursor.close();
+        }
+
+        return items;
+    }
 
 }

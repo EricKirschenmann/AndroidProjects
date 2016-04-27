@@ -3,6 +3,7 @@ package com.majorassets.betterhalf.Database.SQLite.CursorWrappers;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
+import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Model.Hobbies.HobbyItem;
 
 import java.util.UUID;
@@ -23,10 +24,10 @@ public class HobbiesCursorWrapper extends CursorWrapper {
         colValue = the value from the schema
             ex: BooksTable.Cols.VALUE
     */
-    public HobbyItem getItem(String colUUID, String colLabel, String colValue){
-        String userID = getString(getColumnIndex(colUUID));
-        String label = getString(getColumnIndex(colLabel));
-        String value = getString(getColumnIndex(colValue));
+    public HobbyItem getItem(){
+        String userID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
+        String label = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.LABEL));
+        String value = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.VALUE));
 
         HobbyItem item = new HobbyItem(label, value);
         item.setID(UUID.fromString(userID));

@@ -14,6 +14,7 @@ public class DataDBSchema {
             public static final String UUID = "uuid"; //user foreign key
             public static final String LABEL = "label";
             public static final String VALUE = "value";
+            public static final String FAVORITE = "favorite";
         }
     }
     /*  Entertainment Tables */
@@ -100,17 +101,17 @@ public class DataDBSchema {
     /*  Hobbies */
     public static final class IndoorTable extends BaseTable
     {
-        public static final String NAME = "Indoor";
+        public static final String NAME = "IndoorHobbies";
     }
 
     public static final class OutdoorTable extends BaseTable
     {
-        public static final String NAME = "Outdoor";
+        public static final String NAME = "OutdoorHobbies";
     }
 
     public static final class SportsTable extends BaseTable
     {
-        public static final String NAME = "Sports";
+        public static final String NAME = "SportsTeams";
     }
 
 
@@ -127,7 +128,7 @@ public class DataDBSchema {
 
     public static final class MedicationTable extends BaseTable
     {
-        public static final String NAME = "Medication";
+        public static final String NAME = "Medications";
     }
 
     public static final class PhobiasTable extends BaseTable

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.firebase.client.Firebase;
@@ -16,12 +17,30 @@ import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
+import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.Entertainment.BookItem;
 import com.majorassets.betterhalf.Model.Entertainment.GameItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
 import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
 import com.majorassets.betterhalf.Model.Entertainment.TVShowItem;
 import com.majorassets.betterhalf.Model.Entertainment.TheaterItem;
+import com.majorassets.betterhalf.Model.Fashion.AccessoriesItem;
+import com.majorassets.betterhalf.Model.Fashion.ClothingItem;
+import com.majorassets.betterhalf.Model.Fashion.JewelryItem;
+import com.majorassets.betterhalf.Model.Fashion.ShoesItem;
+import com.majorassets.betterhalf.Model.Food.DrinksItem;
+import com.majorassets.betterhalf.Model.Food.EntreesItem;
+import com.majorassets.betterhalf.Model.Food.RestaurantsItem;
+import com.majorassets.betterhalf.Model.Food.SidesItem;
+import com.majorassets.betterhalf.Model.Food.SnacksItem;
+import com.majorassets.betterhalf.Model.Hobbies.IndoorItem;
+import com.majorassets.betterhalf.Model.Hobbies.OutdoorItem;
+import com.majorassets.betterhalf.Model.Hobbies.SportsItem;
+import com.majorassets.betterhalf.Model.Medical.AllergiesItem;
+import com.majorassets.betterhalf.Model.Medical.IllnessesItem;
+import com.majorassets.betterhalf.Model.Medical.MedicalItem;
+import com.majorassets.betterhalf.Model.Medical.PhobiasItem;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
@@ -34,6 +53,8 @@ public class SingleItemEditActivityFragment extends Fragment
     private EditText mItemLabel;
     private EditText mItemValue;
     private Button mAddButton;
+    private CheckBox mFavorite;
+
     private DataItemActivityFragment mDataItemActivityFragment;
 
     private SQLiteProvider sqliteDB;
@@ -77,6 +98,7 @@ public class SingleItemEditActivityFragment extends Fragment
         mItemLabel = (EditText) view.findViewById(R.id.item_name_edit);
         mItemValue = (EditText) view.findViewById(R.id.item_value_edit);
         mAddButton = (Button) view.findViewById(R.id.add_button);
+        mFavorite = (CheckBox) view.findViewById(R.id.favorite_checkbox);
     }
 
     private void createEvents()
@@ -110,7 +132,7 @@ public class SingleItemEditActivityFragment extends Fragment
                 String subcat = getActivity().getTitle().toString().replace(" ", "");
                 subcategory = new Subcategory(SubcategoryType.getTypeFromString(subcat));
 
-                writeDataToSQLite(subcategory);
+                writeDataToSQLite(subcategory, mFavorite.isChecked());
 
                 /*Intent intent = new Intent(getContext(), DataItemActivity.class);
                 intent.putExtra(HomeActivityFragment.TITLE_EXTRA, subcat);
@@ -121,44 +143,113 @@ public class SingleItemEditActivityFragment extends Fragment
         });
     }
 
-    private void writeDataToSQLite(Subcategory sub)
+    private void writeDataToSQLite(Subcategory sub, boolean isFavorite)
     {
         String label = mItemLabel.getText().toString();
         String value = mItemValue.getText().toString();
+        String table = "";
+        BaseLikeableItem item = null;
 
         switch(sub.getType())
         {
+            //ENTERTAINMENT
             case MOVIE:
-                MovieItem movie = new MovieItem(label, value);
-                movie.setID(appUser.getID()); //user to item relationship
-                dal.addItem(movie, DataDBSchema.MoviesTable.NAME);
+                item = new MovieItem(label, value);
+                table = DataDBSchema.MoviesTable.NAME;
                 break;
             case BOOK:
-                BookItem book = new BookItem(label, value);
-                book.setID(appUser.getID());
-                dal.addItem(book, DataDBSchema.BooksTable.NAME);
+                item = new BookItem(label, value);
+                table = DataDBSchema.BooksTable.NAME;
                 break;
             case MUSIC:
-                MusicItem music = new MusicItem(label, value);
-                music.setID(appUser.getID());
-                dal.addItem(music, DataDBSchema.MusicTable.NAME);
+                item = new MusicItem(label, value);
+                table = DataDBSchema.MusicTable.NAME;
                 break;
             case GAME:
-                GameItem game = new GameItem(label, value);
-                game.setID(appUser.getID());
-                dal.addItem(game, DataDBSchema.GamesTable.NAME);
+                item = new GameItem(label, value);
+                table = DataDBSchema.GamesTable.NAME;
                 break;
             case THEATER:
-                TheaterItem theater = new TheaterItem(label, value);
-                theater.setID(appUser.getID());
-                dal.addItem(theater, DataDBSchema.TheaterTable.NAME);
+                item = new TheaterItem(label, value);
+                table = DataDBSchema.TheaterTable.NAME;
                 break;
             case TV_SHOW:
-                TVShowItem tvShow = new TVShowItem(label, value);
-                tvShow.setID(appUser.getID());
-                dal.addItem(tvShow, DataDBSchema.TVShowsTable.NAME);
+                item = new TVShowItem(label, value);
+                table = DataDBSchema.TVShowsTable.NAME;
+                break;
+            //FASHION
+            case ACCESSORY:
+                item = new AccessoriesItem(label, value);
+                table = DataDBSchema.AccessoriesTable.NAME;
+                break;
+            case CLOTHING:
+                item = new ClothingItem(label, value);
+                table = DataDBSchema.ClothingTable.NAME;
+                break;
+            case JEWELRY:
+                item = new JewelryItem(label, value);
+                table = DataDBSchema.JewelryTable.NAME;
+                break;
+            case SHOE:
+                item = new ShoesItem(label, value);
+                table = DataDBSchema.ShoesTable.NAME;
+                break;
+            //FOOD
+            case DRINK:
+                item = new DrinksItem(label, value);
+                table = DataDBSchema.DrinksTable.NAME;
+                break;
+            case ENTREE:
+                item = new EntreesItem(label, value);
+                table = DataDBSchema.EntreesTable.NAME;
+                break;
+            case RESTAURANT:
+                item = new RestaurantsItem(label, value);
+                table = DataDBSchema.RestaurantsTable.NAME;
+                break;
+            case SIDE:
+                item = new SidesItem(label, value);
+                table = DataDBSchema.SidesTable.NAME;
+                break;
+            case SNACK:
+                item = new SnacksItem(label, value);
+                table = DataDBSchema.SnacksTable.NAME;
+                break;
+            //HOBBY
+            case INDOOR:
+                item = new IndoorItem(label, value);
+                table = DataDBSchema.IndoorTable.NAME;
+                break;
+            case OUTDOOR:
+                item = new OutdoorItem(label, value);
+                table = DataDBSchema.OutdoorTable.NAME;
+                break;
+            case SPORT:
+                item = new SportsItem(label, value);
+                table = DataDBSchema.SportsTable.NAME;
+                break;
+            //MEDICAL
+            case ALLERGY:
+                item = new AllergiesItem(label, value);
+                table = DataDBSchema.AllergiesTable.NAME;
+                break;
+            case PHOBIA:
+                item = new PhobiasItem(label, value);
+                table = DataDBSchema.PhobiasTable.NAME;
+                break;
+            case MEDICATION:
+                item = new MedicalItem(label, value);
+                table = DataDBSchema.MedicationTable.NAME;
+                break;
+            case ILLNESS:
+                item = new IllnessesItem(label, value);
+                table = DataDBSchema.IllnessesTable.NAME;
                 break;
         }
+
+        item.setIsFavorite(isFavorite);
+        item.setID(appUser.getID()); //create relationship between user and data tables
+        dal.addItem(item, table);
     }
 
     private void writeDatatoFirebase(Subcategory sub)

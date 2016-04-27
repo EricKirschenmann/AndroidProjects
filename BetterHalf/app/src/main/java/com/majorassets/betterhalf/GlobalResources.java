@@ -20,6 +20,7 @@ public class GlobalResources
     public static Map<MainCategoryType, List<Subcategory>> Subcategories = new HashMap<>();
     public static List<User> Users = new ArrayList<>();
     public static User AppUser;
+
     public static void addToGlobalSubcategories(MainCategoryType main, Subcategory sub)
     {
         List<Subcategory> lst;

@@ -77,11 +77,11 @@ public enum SubcategoryType
             case "snacks":
                 return SNACK;
             //HOBBY
-            case "indoor":
+            case "indoorhobbies":
                 return INDOOR;
-            case "outdoor":
+            case "outdoorhobbies":
                 return OUTDOOR;
-            case "sports":
+            case "sportsteams":
                 return SPORT;
             //MEDICAL
             case "allergies":
@@ -90,7 +90,7 @@ public enum SubcategoryType
                 return ILLNESS;
             case "phobias":
                 return PHOBIA;
-            case "medication":
+            case "medications":
                 return MEDICATION;
             default:
                 return INVALID;
