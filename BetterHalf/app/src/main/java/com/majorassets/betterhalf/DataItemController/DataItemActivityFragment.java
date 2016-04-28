@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -83,7 +85,7 @@ public class DataItemActivityFragment extends Fragment
 
 
         //DECLARE ADAPTER FOR LISTVIEW
-        mArrayAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_expandable_list_item_1, Array);
+        mArrayAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_multiple_choice, Array);
         mListView = (ListView) view.findViewById(android.R.id.text1);
         mListView.setAdapter(mArrayAdapter);
 
@@ -101,6 +103,29 @@ public class DataItemActivityFragment extends Fragment
                 searchWeb(query);
             }
         });
+
+
+        ListView lv = (ListView) view.findViewById(android.R.id.text1);
+        lv.setOnTouchListener(new View.OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
+
+                return false;
+            }
+        });
+
+
+
+
+//        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                return false;
+//            }
+//        });
 
         return view;
 	}
