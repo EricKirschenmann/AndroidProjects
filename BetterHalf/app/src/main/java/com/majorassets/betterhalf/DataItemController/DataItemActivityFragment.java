@@ -37,6 +37,7 @@ import java.util.Map;
 public class DataItemActivityFragment extends Fragment
 {
     private ArrayList<String> Array = new ArrayList<>();
+    //private ArrayList<String> Array2 = new ArrayList<>();
     public HashMap stuffs = new HashMap();
     private DataItemPagerAdapter mDataItemPagerAdapter;
     private Map<SubcategoryType, List<BaseDataItem>> data;
@@ -51,7 +52,9 @@ public class DataItemActivityFragment extends Fragment
 
     private Bundle args;
     private ListView mListView;
-    private ArrayAdapter<String> mArrayAdapter;
+    private ListView mListView2;
+    private DataItemActivityAdapter mArrayAdapter;
+    private ArrayAdapter<String> mArrayAdapter2;
 
 	public static final String ARG_PAGE = "com.majorassets.betterhalf.page";
 
@@ -85,7 +88,13 @@ public class DataItemActivityFragment extends Fragment
 
 
         //DECLARE ADAPTER FOR LISTVIEW
-        mArrayAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_list_item_multiple_choice, Array);
+
+
+//        mArrayAdapter2 = new ArrayAdapter<String>(this.getContext(), R.layout.list_item_display, R.id.text_value, Array2);
+//        mListView2 = (ListView) view.findViewById(android.R.id.text1);
+//        mListView2.setAdapter(mArrayAdapter2);
+
+        mArrayAdapter = new DataItemActivityAdapter(this.getContext(), R.layout.list_item_display, R.id.text_label, Array);
         mListView = (ListView) view.findViewById(android.R.id.text1);
         mListView.setAdapter(mArrayAdapter);
 
@@ -98,8 +107,8 @@ public class DataItemActivityFragment extends Fragment
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String query = mArrayAdapter.getItem(position);
-                query += " " + mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE) - 1);
+                String query = mArrayAdapter.getItem(position).getLabel();
+                query += " " + mArrayAdapter.getItem(position).getValue() + " " + mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE) - 1);
                 searchWeb(query);
             }
         });
@@ -175,11 +184,14 @@ public class DataItemActivityFragment extends Fragment
     private void updateDisplay(List<BaseDataItem> items)
     {
         mArrayAdapter.clear();
+        //mArrayAdapter2.clear();
 
         if(items != null && items.size() != 0)
         {
-            for (BaseDataItem item : items)
-                mArrayAdapter.add(item.getValue());
+            for (BaseDataItem item : items) {
+                mArrayAdapter.add(item);
+                //mArrayAdapter2.add(item.getLabel());
+            }
         }
     }
 
