@@ -1,7 +1,9 @@
 package com.majorassets.betterhalf.DataItemController;
 
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,7 @@ import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.GlobalResources;
 import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 import com.majorassets.betterhalf.R;
@@ -27,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 /**
@@ -99,6 +103,53 @@ public class DataItemActivityFragment extends Fragment
                 String query = mArrayAdapter.getItem(position);
                 query += " " + mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE) - 1);
                 searchWeb(query);
+            }
+        });
+
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+
+                final String title = mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE)-1).toString();
+                final SubcategoryType type = SubcategoryType.getTypeFromString(title.replace(" ", ""));
+                final BaseDataItem item = data.get(type).get(position);
+                final UUID id = item.getID();
+                final MainCategoryType mainCat = MainCategoryType.getTypeFromString(getActivity().getTitle().toString());
+
+                final String tableName = SubcategoryType.getStringFromType(mainCat, type);
+
+                final SQLiteItemsDAL itemsDAL = dal;
+
+
+                AlertDialog.Builder bobTheBuilder = new AlertDialog.Builder(getActivity());
+                bobTheBuilder.setMessage(R.string.dialog_delete_item)
+                        .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Delete Item here
+                                //Call SQLite delete fn
+                                itemsDAL.deleteItem(item, tableName, "uuid");
+
+                                Intent intent = getActivity().getIntent();
+                                getActivity().finish();
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton(R.string.edit, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Edit here
+                                //Go to update page
+                            }
+                        });
+                // Creating the alertDialog
+                AlertDialog alertDialog = bobTheBuilder.create();
+
+                // Show the alert
+                alertDialog.show();
+
+                return true;
             }
         });
 
