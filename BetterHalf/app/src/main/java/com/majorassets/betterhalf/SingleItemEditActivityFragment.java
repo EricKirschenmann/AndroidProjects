@@ -86,6 +86,10 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
 
         category = getActivity().getIntent().getStringExtra(DataItemActivity.SUBCAT_EXTRA);
 
+        setSpinner();
+    }
+
+    private void setSpinner() {
         if(category.equals("Books")) {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
@@ -118,7 +122,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
-        } else if(category.equals("Theater")){
+        } else if(category.equals("Theater")) {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -139,8 +143,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         }
     }
 
-    private void createEvents()
-    {
+    private void createEvents() {
         mItemLabel.setOnClickListener(new View.OnClickListener()
         {
             @Override
