@@ -36,8 +36,7 @@ import java.util.UUID;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class DataItemActivityFragment extends Fragment
-{
+public class DataItemActivityFragment extends Fragment {
     private ArrayList<String> Array = new ArrayList<>();
     public HashMap stuffs = new HashMap();
     private DataItemPagerAdapter mDataItemPagerAdapter;
@@ -58,8 +57,7 @@ public class DataItemActivityFragment extends Fragment
 	public static final String ARG_PAGE = "com.majorassets.betterhalf.page";
 
 	//create a new instance of the fragment identifying it by an int argument
-	public static DataItemActivityFragment newInstance(int page)
-	{
+	public static DataItemActivityFragment newInstance(int page) {
 		Bundle args = new Bundle();
 		args.putInt(ARG_PAGE, page);
 		DataItemActivityFragment fragment = new DataItemActivityFragment();
@@ -69,8 +67,7 @@ public class DataItemActivityFragment extends Fragment
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState)
-	{
+							 Bundle savedInstanceState) {
 		View view =  inflater.inflate(R.layout.fragment_data_list, container, false);
 
 		//setting the tool bar to primary color
@@ -157,14 +154,12 @@ public class DataItemActivityFragment extends Fragment
 	}
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         readDataFromSQLite();
     }
 
-    private void readDataFromSQLite()
-    {
+    private void readDataFromSQLite() {
         List<BaseDataItem> items;
 
         int position = args.getInt(ARG_PAGE)-1;
@@ -178,12 +173,10 @@ public class DataItemActivityFragment extends Fragment
         updateDisplay(items);
     }
 
-    private List<BaseDataItem> getItems(String table)
-    {
+    private List<BaseDataItem> getItems(String table) {
         List<BaseDataItem> items = null;
 
-        switch (table)
-        {
+        switch (table) {
             case DataDBSchema.MoviesTable.NAME:
             case DataDBSchema.MusicTable.NAME:
             case DataDBSchema.GamesTable.NAME:
@@ -198,12 +191,10 @@ public class DataItemActivityFragment extends Fragment
         return items;
     }
 
-    private void updateDisplay(List<BaseDataItem> items)
-    {
+    private void updateDisplay(List<BaseDataItem> items) {
         mArrayAdapter.clear();
 
-        if(items != null && items.size() != 0)
-        {
+        if(items != null && items.size() != 0) {
             for (BaseDataItem item : items)
                 mArrayAdapter.add(item.getValue());
         }

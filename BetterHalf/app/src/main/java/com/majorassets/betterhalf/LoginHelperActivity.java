@@ -25,8 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LoginHelperActivity extends AppCompatActivity
-{
+public class LoginHelperActivity extends AppCompatActivity {
     private FirebaseProvider firebaseDB;
     private SQLiteProvider sqliteDB;
     private SQLiteUserDAL dal;
@@ -36,8 +35,7 @@ public class LoginHelperActivity extends AppCompatActivity
     private DataItemRepository userRepo;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Firebase.setAndroidContext(this);
 
@@ -54,8 +52,7 @@ public class LoginHelperActivity extends AppCompatActivity
         GlobalResources.AppUser = getLastLoggedInUser(GlobalResources.Users);
 
         //first check if SQLite had user data (someone was last logged in on device)
-        if(GlobalResources.AppUser != null)
-        {
+        if(GlobalResources.AppUser != null) {
             appUser = GlobalResources.AppUser;
             //initialize repository
             userRepo = DataItemRepository.getDataItemRepository();
@@ -73,33 +70,27 @@ public class LoginHelperActivity extends AppCompatActivity
             //retrieve datasnapshot of user instance (includes info and data sub trees)
             Firebase ref = firebaseDB.getUserInstance(username);
 
-            try
-            {
-                ref.addListenerForSingleValueEvent(new ValueEventListener()
-                {
+            try {
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot)
-                    {
+                    public void onDataChange(DataSnapshot dataSnapshot) {
                         //if user is not in firebase, launch new login page
                         if(dataSnapshot.getValue() == null)
                             startLoginActivity();
                         //otherwise retrieve the user's data and go straight to the home screen
-                        else
-                        {
+                        else {
                             getUserData(firebaseDB.getUserDataInstance(appUser.getUsername()));
                             startHomeActivity();
                         }
                     }
 
                     @Override
-                    public void onCancelled(FirebaseError firebaseError)
-                    {
+                    public void onCancelled(FirebaseError firebaseError) {
                         Log.d("ERROR", firebaseError.getMessage());
                     }
                 });
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 throw e;
             }
         }
@@ -109,16 +100,14 @@ public class LoginHelperActivity extends AppCompatActivity
     }
 
     //Ensure that we can only return one last logged in user
-    private User getLastLoggedInUser(List<User> users)
-    {
+    private User getLastLoggedInUser(List<User> users) {
         if(users == null)
             return null;
 
         if(users.isEmpty())
             return null;
 
-        for(User user : users)
-        {
+        for(User user : users) {
             if(user.isLoggedOnLast())
                 return user;
         }
@@ -126,41 +115,34 @@ public class LoginHelperActivity extends AppCompatActivity
         return null;
     }
 
-    private void startHomeActivity()
-    {
+    private void startHomeActivity() {
         Intent homeScreen = new Intent(LoginHelperActivity.this, HomeActivity.class);
         homeScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(homeScreen);
         finish();
     }
 
-    private void startLoginActivity()
-    {
+    private void startLoginActivity() {
         Intent loginScreen = new Intent(LoginHelperActivity.this, LoginActivity.class);
         loginScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginScreen);
         finish();
     }
 
-    public void getUserData(Firebase ref)
-    {
-        ref.addListenerForSingleValueEvent(new ValueEventListener()
-        {
+    public void getUserData(Firebase ref) {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
+            public void onDataChange(DataSnapshot dataSnapshot) {
                 String parent;
                 DataSnapshot next;
                 SubcategoryType subcategory;
                 BaseDataItem item;
                 //"drill down" to leaf nodes
-                while(dataSnapshot.hasChildren())
-                {
+                while(dataSnapshot.hasChildren()) {
                     parent = dataSnapshot.getKey();
                     next = dataSnapshot.getChildren().iterator().next();
                     subcategory = SubcategoryType.getTypeFromString(parent);
-                    switch (subcategory)
-                    {
+                    switch (subcategory) {
                         //TODO: parse out datasnapshot into separate objects
                         case MOVIE:
                             item = new MovieItem(next.getKey(), next.getValue().toString());
@@ -180,15 +162,13 @@ public class LoginHelperActivity extends AppCompatActivity
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError)
-            {
+            public void onCancelled(FirebaseError firebaseError) {
 
             }
         });
     }
 
-    private void addDataItem(SubcategoryType subcategory, BaseDataItem item)
-    {
+    private void addDataItem(SubcategoryType subcategory, BaseDataItem item) {
         List<BaseDataItem> list;
         //if there are no entries for a movie then the list will be null
         if(appUserData.get(subcategory) == null)
@@ -209,8 +189,7 @@ public class LoginHelperActivity extends AppCompatActivity
     /**
      * Derive a username from a user's email address
      */
-    public static String generateUsername(String email)
-    {
+    public static String generateUsername(String email) {
         String emailProvider = email.substring(email.indexOf('@') + 1, email.indexOf('.')); //e.g. yahoo, gmail
         email = email.substring(0, email.indexOf('@'));
 

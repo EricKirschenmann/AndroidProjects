@@ -50,15 +50,13 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
     private String category;
     private String key;
 
-    public SingleItemEditActivityFragment()
-    {
+    public SingleItemEditActivityFragment() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_single_item_edit, container, false);
         Firebase.setAndroidContext(getContext());
 
@@ -68,8 +66,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         return view;
     }
 
-    private void initializeComponents(View view)
-    {
+    private void initializeComponents(View view) {
         appUser = GlobalResources.AppUser;
 
         //data layer components
@@ -220,8 +217,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         }
     }
 
-    private void writeDatatoFirebase(Subcategory sub)
-    {
+    private void writeDatatoFirebase(Subcategory sub) {
 
     }
 

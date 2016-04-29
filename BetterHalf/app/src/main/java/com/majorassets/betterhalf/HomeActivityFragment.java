@@ -3,9 +3,8 @@ package com.majorassets.betterhalf;
 
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ import com.majorassets.betterhalf.DataItemController.DataItemActivity;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Model.BaseDataItem;
-import com.majorassets.betterhalf.Model.MainCategory;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
@@ -31,8 +29,7 @@ import java.util.Map;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class HomeActivityFragment extends Fragment
-{
+public class HomeActivityFragment extends Fragment {
 	private TextView mEntertainmentText;
 	private TextView mFashionText;
 	private TextView mFoodText;
@@ -61,8 +58,7 @@ public class HomeActivityFragment extends Fragment
 		return view;
 	}
 
-	private void initializeComponents(View view)
-	{
+	private void initializeComponents(View view) {
 		mEntertainmentText = (TextView) view.findViewById(R.id.entertainment_txt);
 		mFashionText = (TextView) view.findViewById(R.id.fashion_text);
 		mFoodText = (TextView) view.findViewById(R.id.food_text);
@@ -87,84 +83,66 @@ public class HomeActivityFragment extends Fragment
 		getSubcategoryData(db.getSubcategoryInstance(mMedicalText.getText().toString()));
 	}
 
-	private void createEvents()
-	{
-		mEntertainmentCardView.setOnClickListener(new View.OnClickListener()
-		{
+	private void createEvents() {
+		mEntertainmentCardView.setOnClickListener(new View.OnClickListener() {
 		@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				String title = mEntertainmentText.getText().toString();
 				launchDataItemActivity(title);
 			}
 		});
 
-		mFashionCardView.setOnClickListener(new View.OnClickListener()
-		{
+		mFashionCardView.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				String title = mFashionText.getText().toString();
 				launchDataItemActivity(title);
 			}
 		});
 
-		mFoodCardView.setOnClickListener(new View.OnClickListener()
-		{
+		mFoodCardView.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				String title = mFoodText.getText().toString();
 				launchDataItemActivity(title);
 			}
 		});
 
-		mHobbyCardView.setOnClickListener(new View.OnClickListener()
-		{
+		mHobbyCardView.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				String title = mHobbyText.getText().toString();
 				launchDataItemActivity(title);
 			}
 		});
 
-		mMedicalCardView.setOnClickListener(new View.OnClickListener()
-		{
+		mMedicalCardView.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				String title = mMedicalText.getText().toString();
 				launchDataItemActivity(title);
 			}
 		});
 	}
 
-	private void launchDataItemActivity(String title)
-	{
+	private void launchDataItemActivity(String title) {
 		GlobalResources.mainTypePressed = MainCategoryType.getTypeFromString(title);
 
 		Intent intent = newIntent(title);
 		startActivity(intent);
 	}
 
-	private void getSubcategoryData(Firebase ref)
-	{
-		ref.addListenerForSingleValueEvent(new ValueEventListener()
-		{
+	private void getSubcategoryData(Firebase ref) {
+		ref.addListenerForSingleValueEvent(new ValueEventListener() {
 			@Override
-			public void onDataChange(DataSnapshot dataSnapshot)
-			{
+			public void onDataChange(DataSnapshot dataSnapshot) {
 				Subcategory subcategory;
-				if (dataSnapshot.hasChildren())
-				{
+				if (dataSnapshot.hasChildren()) {
 					//should only have one child
-					for (DataSnapshot child : dataSnapshot.getChildren())
-					{
+					for (DataSnapshot child : dataSnapshot.getChildren()) {
 						String mainCategory = dataSnapshot.getKey();
 						//next level should be subcategories
-						for (DataSnapshot subChild : child.getChildren())
-						{
+						for (DataSnapshot subChild : child.getChildren()) {
 							subcategory = new Subcategory();
 							subcategory.setType(SubcategoryType.getTypeFromString(subChild.getKey().toLowerCase()));
 							subcategory.setMainType(MainCategoryType.getTypeFromString(mainCategory.toLowerCase()));
@@ -176,15 +154,13 @@ public class HomeActivityFragment extends Fragment
 			}
 
 			@Override
-			public void onCancelled(FirebaseError firebaseError)
-			{
+			public void onCancelled(FirebaseError firebaseError) {
 
 			}
 		});
 	}
 
-	private Intent newIntent(String title)
-	{
+	private Intent newIntent(String title) {
 		Intent intent = new Intent(getContext(), DataItemActivity.class);
 		intent.putExtra(TITLE_EXTRA, title);
 		return intent;

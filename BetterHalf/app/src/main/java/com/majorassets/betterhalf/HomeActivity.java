@@ -15,8 +15,7 @@ import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.User;
 
-public class HomeActivity extends AppCompatActivity
-{
+public class HomeActivity extends AppCompatActivity {
 	private SQLiteUserDAL dal;
 	private SQLiteProvider sqliteDB;
 	private FirebaseProvider firebaseDB;
@@ -25,8 +24,7 @@ public class HomeActivity extends AppCompatActivity
 	private User appUser;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -43,19 +41,16 @@ public class HomeActivity extends AppCompatActivity
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_home, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent;
-		switch(item.getItemId())
-		{
+		switch(item.getItemId()) {
 			case R.id.action_settings:
 				intent = new Intent(HomeActivity.this, SettingsActivity.class);
 				startActivity(intent);

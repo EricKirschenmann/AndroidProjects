@@ -61,8 +61,7 @@ public class LoginActivityFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
 
         //setup
@@ -83,8 +82,7 @@ public class LoginActivityFragment extends Fragment {
     }
 
     //wire up all the view components from the layout XMLs
-    private void initializeUIComponents(View view)
-    {
+    private void initializeUIComponents(View view) {
         mNewUserLbl = getResources().getString(R.string.newuser_txt);
         mExistingLbl = getResources().getString(R.string.existing_txt);
         mLoginLbl = getResources().getString(R.string.login_txt);
@@ -100,31 +98,25 @@ public class LoginActivityFragment extends Fragment {
     }
 
     //establish event listeners as anonymous inner classes
-    private void createAndControlEvents()
-    {
+    private void createAndControlEvents() {
         ////// SETTING ONCLICK LISTENERS ////////
-        mEmailEdit.setOnClickListener(new View.OnClickListener()
-        {
+        mEmailEdit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 mEmailEdit.setText("dgblanks@gmail.com"); //temp for testing
             }
         });
 
-        mPasswordEdit.setOnClickListener(new View.OnClickListener()
-        {
+        mPasswordEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPasswordEdit.setText("test"); //temp password for testing
             }
         });
 
-        mLoginButton.setOnClickListener(new View.OnClickListener()
-        {
+        mLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 //get the current entered text
                 String checkEmail = mEmailEdit.getText().toString();
                 String checkPass = mPasswordEdit.getText().toString();
@@ -140,21 +132,17 @@ public class LoginActivityFragment extends Fragment {
             }
         });
 
-        mNewUserTxt.setOnClickListener(new View.OnClickListener()
-        {
+        mNewUserTxt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 //alternate text depending on which is clicked
-                if(mNewUserTxt.getText().toString().equals(mNewUserLbl))
-                {
+                if(mNewUserTxt.getText().toString().equals(mNewUserLbl)) {
                     mLoginButton.setText(R.string.signup_txt);
                     mNewUserTxt.setText(mExistingLbl);
                     mForgotPwdTxt.setText("");
                     ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.signup_txt));
                 }
-                else if(mNewUserTxt.getText().toString().equals(mExistingLbl))
-                {
+                else if(mNewUserTxt.getText().toString().equals(mExistingLbl)) {
                     mLoginButton.setText(R.string.login_txt);
                     mNewUserTxt.setText(mNewUserLbl);
                     mForgotPwdTxt.setText(R.string.forgot_pwd_txt);
@@ -163,19 +151,16 @@ public class LoginActivityFragment extends Fragment {
             }
         });
 
-        mForgotPwdTxt.setOnClickListener(new View.OnClickListener()
-        {
+        mForgotPwdTxt.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 //TODO: dialog for new password
             }
         });
     }
 
     //either login or create an account
-    private void attemptLogin()
-    {
+    private void attemptLogin() {
         mRootRef = firebaseDB.getFirebaseInstance();
 
         mEmail = mEmailEdit.getText().toString();
@@ -192,20 +177,16 @@ public class LoginActivityFragment extends Fragment {
     }
 
     //use Firebase user authentication with an email and password
-    private void loginWithPassword(String email, String password, final boolean postCreationLogin)
-    {
+    private void loginWithPassword(String email, String password, final boolean postCreationLogin) {
         //first check if user with specified email exists in SQLite db
         appUser = dal.getUser(email);
         GlobalResources.AppUser = appUser;
 
         //if user is not in SQLite OR this a login after creating an account
-        if(appUser == null || postCreationLogin)
-        {
-            mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler()
-            {
+        if(appUser == null || postCreationLogin) {
+            mRootRef.authWithPassword(email, password, new Firebase.AuthResultHandler() {
                 @Override
-                public void onAuthenticated(AuthData authData)
-                {
+                public void onAuthenticated(AuthData authData) {
 
                     //create new user
                     appUser = new User(mEmail, mPassword);
@@ -224,28 +205,22 @@ public class LoginActivityFragment extends Fragment {
                 }
 
                 @Override
-                public void onAuthenticationError(FirebaseError firebaseError)
-                {
+                public void onAuthenticationError(FirebaseError firebaseError) {
                     //TODO: handle invalid credentials or no account
                     mResponseTxt.setText(firebaseError.getMessage());
                 }
             });
-        }
-        else
-        {
+        } else {
             appUser.setLoggedOnLast(true);
 
             userRef = firebaseDB.getUserInstance(mUsername);
-            userRef.addListenerForSingleValueEvent(new ValueEventListener()
-            {
+            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot)
-                {
+                public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.getValue() == null)
                         createNewAccount(mEmail, mPassword);
 
-                    else
-                    {
+                    else {
                         if(!mEmail.equals(appUser.getEmail()))
                             mResponseTxt.setText(R.string.invalid_email);
                         else if(!mPassword.equals(appUser.getPassword()))
@@ -256,8 +231,7 @@ public class LoginActivityFragment extends Fragment {
                 }
 
                 @Override
-                public void onCancelled(FirebaseError firebaseError)
-                {
+                public void onCancelled(FirebaseError firebaseError) {
 
                 }
             });
@@ -266,21 +240,17 @@ public class LoginActivityFragment extends Fragment {
     }
 
     //use Firebase account creation with email and password
-    private void createNewAccount(String email, String password)
-    {
+    private void createNewAccount(String email, String password) {
         //Attempt to create a new user
-        mRootRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>()
-        {
+        mRootRef.createUser(email, password, new Firebase.ValueResultHandler<Map<String, Object>>() {
             @Override
-            public void onSuccess(Map<String, Object> result)
-            {
+            public void onSuccess(Map<String, Object> result) {
                 //TODO: log user in with first-time welcome screen
                 mLoginButton.setText(R.string.login_txt);
 
                 //Ensure we only add User to SQLite database once
                 boolean shouldLogin = false;
-                if(appUser == null)
-                {
+                if(appUser == null) {
                     shouldLogin = true;
                     appUser = new User();
                     GlobalResources.AppUser = appUser;
@@ -296,16 +266,14 @@ public class LoginActivityFragment extends Fragment {
             }
 
             @Override
-            public void onError(FirebaseError firebaseError)
-            {
+            public void onError(FirebaseError firebaseError) {
                 //TODO: handle account creation errors
                 mResponseTxt.setText(firebaseError.getMessage());
             }
         });
     }
 
-    private void createNewUserFirebaseStructure(User user)
-    {
+    private void createNewUserFirebaseStructure(User user) {
         /*
         Create new user in Firebase, with username child of "users", info being child of "username",
         and specific data "id" and "email" being children of "info"
@@ -325,8 +293,7 @@ public class LoginActivityFragment extends Fragment {
         newUserRef.setValue(newUserInfoMap);
     }
 
-    private void startHomeActivity()
-    {
+    private void startHomeActivity() {
         Intent homeIntent = new Intent(this.getContext(), HomeActivity.class);
         startActivity(homeIntent);
     }
