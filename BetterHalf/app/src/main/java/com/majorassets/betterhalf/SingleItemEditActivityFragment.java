@@ -186,32 +186,32 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         {
             case MOVIE:
                 MovieItem movie = new MovieItem(label, value);
-                movie.setID(appUser.getID()); //user to item relationship
+                movie.setUserID(appUser.getID()); //user to item relationship
                 dal.addItem(movie, DataDBSchema.MoviesTable.NAME);
                 break;
             case BOOK:
                 BookItem book = new BookItem(key, value);
-                book.setID(appUser.getID());
+                book.setUserID(appUser.getID());
                 dal.addItem(book, DataDBSchema.BooksTable.NAME);
                 break;
             case MUSIC:
                 MusicItem music = new MusicItem(key, value);
-                music.setID(appUser.getID());
+                music.setUserID(appUser.getID());
                 dal.addItem(music, DataDBSchema.MusicTable.NAME);
                 break;
             case GAME:
                 GameItem game = new GameItem(key, value);
-                game.setID(appUser.getID());
+                game.setUserID(appUser.getID());
                 dal.addItem(game, DataDBSchema.GamesTable.NAME);
                 break;
             case THEATER:
                 TheaterItem theater = new TheaterItem(key, value);
-                theater.setID(appUser.getID());
+                theater.setUserID(appUser.getID());
                 dal.addItem(theater, DataDBSchema.TheaterTable.NAME);
                 break;
             case TV_SHOW:
                 TVShowItem tvShow = new TVShowItem(key, value);
-                tvShow.setID(appUser.getID());
+                tvShow.setUserID(appUser.getID());
                 dal.addItem(tvShow, DataDBSchema.TVShowsTable.NAME);
                 break;
         }

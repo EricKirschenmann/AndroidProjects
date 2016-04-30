@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.R;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
 public class DataItemArrayAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
-    private List<BaseDataItem> objects;
+    private List<BaseLikeableItem> objects;
 
     private class ViewHolder {
         TextView key;
@@ -27,7 +28,7 @@ public class DataItemArrayAdapter extends BaseAdapter {
         ImageView star;
     }
 
-    public DataItemArrayAdapter(Context context, List<BaseDataItem> objects) {
+    public DataItemArrayAdapter(Context context, List<BaseLikeableItem> objects) {
         inflater = inflater.from(context);
         this.objects = objects;
     }

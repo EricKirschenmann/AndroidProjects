@@ -20,6 +20,7 @@ import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.GlobalResources;
 import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
@@ -37,7 +38,7 @@ import java.util.UUID;
 public class DataItemActivityFragment extends Fragment {
 
     private ArrayList<String> itemList = new ArrayList<>();
-    private Map<SubcategoryType, List<BaseDataItem>> data;
+    private Map<SubcategoryType, List<BaseLikeableItem>> data;
 
     private SQLiteProvider sqliteDB;
     private FirebaseProvider firebaseDB;
@@ -119,7 +120,6 @@ public class DataItemActivityFragment extends Fragment {
                 final String title = mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE)-1).toString();
                 final SubcategoryType type = SubcategoryType.getTypeFromString(title.replace(" ", ""));
                 final BaseDataItem item = data.get(type).get(position);
-                final UUID id = item.getID();
                 final MainCategoryType mainCat = MainCategoryType.getTypeFromString(getActivity().getTitle().toString());
 
                 final String tableName = SubcategoryType.getStringFromType(mainCat, type);
@@ -167,21 +167,21 @@ public class DataItemActivityFragment extends Fragment {
     }
 
     private void readDataFromSQLite() {
-        List<BaseDataItem> items;
+        List<BaseLikeableItem> items;
 
         int position = args.getInt(ARG_PAGE)-1;
         String table = mDataItemPagerAdapter.getPageTitle(position).toString().replace(" ", "");
 
         items = getItems(table);
 
-        SubcategoryType type = SubcategoryType.getTypeFromString(table);
+        SubcategoryType type = SubcategoryType.getTypeFromTitle(table);
         data.put(type, items);
 
         updateDisplay(items);
     }
 
-    private List<BaseDataItem> getItems(String table) {
-        List<BaseDataItem> items = null;
+    private List<BaseLikeableItem> getItems(String table) {
+        List<BaseLikeableItem> items = null;
 
         switch (table) {
             case DataDBSchema.MoviesTable.NAME:
@@ -192,13 +192,39 @@ public class DataItemActivityFragment extends Fragment {
             case DataDBSchema.TVShowsTable.NAME:
                 items = dal.getEntertainmentItems(table, appUser.getID());
                 break;
+            case DataDBSchema.AccessoriesTable.NAME:
+            case DataDBSchema.ClothingTable.NAME:
+            case DataDBSchema.JewelryTable.NAME:
+            case DataDBSchema.ShoesTable.NAME:
+                items = dal.getFashionItems(table, appUser.getID());
+                break;
+            case DataDBSchema.DrinksTable.NAME:
+            case DataDBSchema.EntreesTable.NAME:
+            case DataDBSchema.RestaurantsTable.NAME:
+            case DataDBSchema.SidesTable.NAME:
+            case DataDBSchema.SnacksTable.NAME:
+                items = dal.getFoodItems(table, appUser.getID());
+                break;
+            case DataDBSchema.IndoorTable.NAME:
+            case DataDBSchema.OutdoorTable.NAME:
+            case DataDBSchema.SportsTable.NAME:
+                items = dal.getHobbyItems(table, appUser.getID());
+                break;
+            case DataDBSchema.AllergiesTable.NAME:
+            case DataDBSchema.IllnessesTable.NAME:
+            case DataDBSchema.PhobiasTable.NAME:
+            case DataDBSchema.MedicationTable.NAME:
+                items = dal.getMedicalItems(table, appUser.getID());
+                break;
+            default:
+                return null;
 
         }
 
         return items;
     }
 
-    private void updateDisplay(List<BaseDataItem> items) {
+    private void updateDisplay(List<BaseLikeableItem> items) {
         mDataItemArrayAdapter = new DataItemArrayAdapter(getContext(), items);
         mListView.setAdapter(mDataItemArrayAdapter);
     }
