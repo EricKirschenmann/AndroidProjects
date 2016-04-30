@@ -26,12 +26,14 @@ public class EntertainmentCursorWrapper extends CursorWrapper {
         colID = UUID from schema
  */
     public EntertainmentItem getItem(){
-        String userID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
+        String ID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
+        String userID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.USER_ID));
         String label = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.LABEL));
         String value = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.VALUE));
 
         EntertainmentItem item = new EntertainmentItem(label, value);
-        item.setID(UUID.fromString(userID));
+        item.setID(ID);
+        item.setUserID(UUID.fromString(userID));
         return item;
     }
 }

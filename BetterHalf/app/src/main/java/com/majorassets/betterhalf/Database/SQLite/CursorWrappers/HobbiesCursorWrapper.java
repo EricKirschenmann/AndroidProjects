@@ -25,12 +25,12 @@ public class HobbiesCursorWrapper extends CursorWrapper {
             ex: BooksTable.Cols.VALUE
     */
     public HobbyItem getItem(){
-        String userID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
+        String ID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
         String label = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.LABEL));
         String value = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.VALUE));
 
         HobbyItem item = new HobbyItem(label, value);
-        item.setID(UUID.fromString(userID));
+        item.setID(ID);
         return item;
     }
 }

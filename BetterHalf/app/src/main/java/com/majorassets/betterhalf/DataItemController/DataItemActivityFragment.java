@@ -1,12 +1,15 @@
 package com.majorassets.betterhalf.DataItemController;
 
 
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -37,7 +40,6 @@ public class DataItemActivityFragment extends Fragment
 {
     private ArrayList<String> Array = new ArrayList<String>();
     private DataItemPagerAdapter mDataItemPagerAdapter;
-    private Map<SubcategoryType, List<BaseLikeableItem>> data;
 
     private SQLiteProvider sqliteDB;
     private FirebaseProvider firebaseDB;
@@ -69,11 +71,12 @@ public class DataItemActivityFragment extends Fragment
 	{
 		View view =  inflater.inflate(R.layout.fragment_data_list, container, false);
 
+        Firebase.setAndroidContext(getContext());
+
 		//setting the tool bar to primary color
 		Window window = getActivity().getWindow();
 		window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
 
-        data = new HashMap<>();
         appUser = GlobalResources.AppUser;
 
         //data layer components
@@ -91,6 +94,15 @@ public class DataItemActivityFragment extends Fragment
         args = getArguments();
 
         readDataFromSQLite();
+
+        //Add listener for the click on a list item to search the web
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                String query = mArrayAdapter.getItem(position);
+                searchWeb(query);
+            }
+        });
 
         return view;
 	}
@@ -111,8 +123,7 @@ public class DataItemActivityFragment extends Fragment
 
         items = getItems(table);
 
-        SubcategoryType type = SubcategoryType.getTypeFromString(table);
-        data.put(type, items);
+        SubcategoryType type = SubcategoryType.getTypeFromTitle(table);
 
         updateDisplay(items);
     }
@@ -170,6 +181,14 @@ public class DataItemActivityFragment extends Fragment
         {
             for (BaseLikeableItem item : items)
                 mArrayAdapter.add(item.getValue());
+        }
+    }
+
+    public void searchWeb(String query) {
+        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+        intent.putExtra(SearchManager.QUERY, query);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
         }
     }
 }

@@ -97,7 +97,7 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     public List<BaseLikeableItem> getEntertainmentItems(String tableName, UUID userId)
     {
         EntertainmentCursorWrapper cursor = SQLiteProvider.queryEntertainmentItem(tableName,
-                DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
+                DataDBSchema.BaseTable.Cols.USER_ID + "= ?", new String[]{userId.toString()});
 
         List<BaseLikeableItem> items = new ArrayList<>();
         try{

@@ -44,6 +44,64 @@ public enum SubcategoryType
         switch(subcategory.toLowerCase())
         {
             //ENTERTAINMENT
+            case "movie":
+                return MOVIE;
+            case "music":
+                return MUSIC;
+            case "book":
+                return BOOK;
+            case "game":
+                return GAME;
+            case "theater":
+                return THEATER;
+            case "tvshow":
+                return TV_SHOW;
+            //FASHION
+            case "accessory":
+                return ACCESSORY;
+            case "clothing":
+                return CLOTHING;
+            case "jewelry":
+                return JEWELRY;
+            case "shoe":
+                return SHOE;
+            //FOOD
+            case "restaurant":
+                return RESTAURANT;
+            case "drink":
+                return DRINK;
+            case "entree":
+                return ENTREE;
+            case "side":
+                return SIDE;
+            case "snack":
+                return SNACK;
+            //HOBBY
+            case "indoorhobbies":
+                return INDOOR;
+            case "outdoorhobbies":
+                return OUTDOOR;
+            case "sportsteams":
+                return SPORT;
+            //MEDICAL
+            case "allergy":
+                return ALLERGY;
+            case "illness":
+                return ILLNESS;
+            case "phobia":
+                return PHOBIA;
+            case "medication":
+                return MEDICATION;
+            default:
+                return INVALID;
+        }
+    }
+
+    public static SubcategoryType getTypeFromTitle(String title)
+    {
+        switch(title.toLowerCase())
+        {
+            //ENTERTAINMENT
             case "movies":
                 return MOVIE;
             case "music":

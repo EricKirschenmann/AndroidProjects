@@ -62,36 +62,42 @@ public class DataBaseHelper extends SQLiteOpenHelper
         String createBooksTable = "CREATE TABLE " + BooksTable.NAME + "(" +
                 "_id integer primary key autoincrement, " +
                 BooksTable.Cols.UUID + ", " +
+                BooksTable.Cols.USER_ID + ", " +
                 BooksTable.Cols.LABEL + ", " +
                 BooksTable.Cols.VALUE + ", " +
                 BooksTable.Cols.FAVORITE + ")";
         String createGamesTable = "CREATE TABLE " + GamesTable.NAME + "(" +
                 "_id integer primary key autoincrement, " +
                 GamesTable.Cols.UUID + ", " +
+                GamesTable.Cols.USER_ID + ", " +
                 GamesTable.Cols.LABEL + ", " +
                 GamesTable.Cols.VALUE + ", " +
                 GamesTable.Cols.FAVORITE + ")";
         String createMoviesTable = "CREATE TABLE " + MoviesTable.NAME + "(" +
                 "_id integer primary key autoincrement, " +
                 MoviesTable.Cols.UUID + ", " +
+                MoviesTable.Cols.USER_ID + ", " +
                 MoviesTable.Cols.LABEL + ", " +
                 MoviesTable.Cols.VALUE + ", " +
                 MoviesTable.Cols.FAVORITE + ")";
         String createMusicTable = "CREATE TABLE " + MusicTable.NAME + "(" +
                 "_id integer primary key autoincrement, " +
                 MusicTable.Cols.UUID + ", " +
+                MusicTable.Cols.USER_ID + ", " +
                 MusicTable.Cols.LABEL + ", " +
                 MusicTable.Cols.VALUE + ", " +
                 MusicTable.Cols.FAVORITE + ")";
         String createTheaterTable = "CREATE TABLE " + TheaterTable.NAME + "(" +
                 "_id integer primary key autoincrement, " +
                 TheaterTable.Cols.UUID + ", " +
+                TheaterTable.Cols.USER_ID + ", " +
                 TheaterTable.Cols.LABEL + ", " +
                 TheaterTable.Cols.VALUE + ", " +
                 TheaterTable.Cols.FAVORITE + ")";
         String createTVShowsTable = "CREATE TABLE " + TVShowsTable.NAME + "(" +
                 "_id integer primary key autoincrement, " +
                 TVShowsTable.Cols.UUID  + ", " +
+                TVShowsTable.Cols.USER_ID + ", " +
                 TVShowsTable.Cols.LABEL + ", " +
                 TVShowsTable.Cols.VALUE + ", " +
                 TVShowsTable.Cols.FAVORITE + ")";

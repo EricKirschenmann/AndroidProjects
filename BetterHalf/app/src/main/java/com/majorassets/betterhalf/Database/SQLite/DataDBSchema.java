@@ -11,7 +11,8 @@ public class DataDBSchema {
     {
         public static final class Cols
         {
-            public static final String UUID = "uuid"; //user foreign key
+            public static final String UUID = "uuid"; //unique item id
+            public static final String USER_ID = "userid"; //user foreign key
             public static final String LABEL = "label";
             public static final String VALUE = "value";
             public static final String FAVORITE = "favorite";

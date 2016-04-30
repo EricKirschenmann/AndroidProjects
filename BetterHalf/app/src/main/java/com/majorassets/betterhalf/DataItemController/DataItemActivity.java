@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 
+import com.firebase.client.Firebase;
 import com.majorassets.betterhalf.HomeActivityFragment;
 import com.majorassets.betterhalf.R;
 import com.majorassets.betterhalf.SingleItemEditActivity;

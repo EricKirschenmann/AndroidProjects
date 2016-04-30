@@ -57,7 +57,8 @@ public class SQLiteProvider
      */
     public static ContentValues getDataContentValues(BaseLikeableItem item){
         ContentValues values = new ContentValues();
-        values.put(BaseTable.Cols.UUID, item.getID().toString());
+        values.put(BaseTable.Cols.UUID, item.getID());
+        values.put(BaseTable.Cols.USER_ID, item.getUserID().toString());
         values.put(BaseTable.Cols.LABEL, item.getLabel());
         values.put(BaseTable.Cols.VALUE, item.getValue());
         values.put(BaseTable.Cols.FAVORITE, item.isFavorite());
@@ -66,7 +67,8 @@ public class SQLiteProvider
 
     public static ContentValues getDataContentValues(BaseDataItem item){
         ContentValues values = new ContentValues();
-        values.put(BaseTable.Cols.UUID, item.getID().toString());
+        values.put(BaseTable.Cols.UUID, item.getID());
+        values.put(BaseTable.Cols.USER_ID, item.getUserID().toString());
         values.put(BaseTable.Cols.LABEL, item.getLabel());
         values.put(BaseTable.Cols.VALUE, item.getValue());
         return values;

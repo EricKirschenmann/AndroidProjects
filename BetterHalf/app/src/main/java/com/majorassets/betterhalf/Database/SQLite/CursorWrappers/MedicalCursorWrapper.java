@@ -25,12 +25,12 @@ public class MedicalCursorWrapper extends CursorWrapper {
             ex: BooksTable.Cols.VALUE
     */
     public MedicalItem getItem(){
-        String userID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
+        String ID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
         String label = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.LABEL));
         String value = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.VALUE));
 
         MedicalItem item = new MedicalItem(label, value);
-        item.setID(UUID.fromString(userID));
+        item.setID(ID);
         return item;
     }
 }
