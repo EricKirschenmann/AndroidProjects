@@ -83,7 +83,7 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
 
     // Change an existing item
     public void updateItem(BaseLikeableItem item, String tableName, String colUUID){
-        String itemID = item.getID().toString();
+        String itemID = item.getID();
         ContentValues values = SQLiteProvider.getDataContentValues(item);
 
         db.update(tableName, values, colUUID + " = ?", new String[] {itemID});

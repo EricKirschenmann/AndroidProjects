@@ -107,7 +107,8 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
     }
 
     private void setSpinner() {
-        if(category.equals("Books")) {
+        if(category.equals("Books"))
+        {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -115,7 +116,9 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
-        } else if(category.equals("Games")) {
+        }
+        else if(category.equals("Games"))
+        {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -123,7 +126,9 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
-        } else if(category.equals("Movies")) {
+        }
+        else if(category.equals("Movies"))
+        {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -131,7 +136,9 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
-        } else if(category.equals("Music")) {
+        }
+        else if(category.equals("Music"))
+        {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -139,7 +146,9 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
-        } else if(category.equals("Theater")) {
+        }
+        else if(category.equals("Theater"))
+        {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -147,7 +156,9 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
-        } else if(category.equals("TV Shows")) {
+        }
+        else if(category.equals("TV Shows"))
+        {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -155,7 +166,8 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
-        } else {
+        }
+        else {
             mSpinner.setVisibility(View.INVISIBLE);
         }
     }
