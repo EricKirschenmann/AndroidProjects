@@ -51,6 +51,8 @@ public class HomeActivity extends AppCompatActivity
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
+		Firebase.setAndroidContext(this);
+
 		//data providers
 		sqliteDB = SQLiteProvider.getSQLiteProvider(this.getApplicationContext());
 		firebaseDB = FirebaseProvider.getDataProvider();
@@ -63,14 +65,14 @@ public class HomeActivity extends AppCompatActivity
 		userRepo = appUser.getDataItemRepository();
 		appUserData = userRepo.getDataItems();
 
-		syncSQLiteToFirebase();
+		//syncSQLiteToFirebase();
 	}
 
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
-		syncSQLiteToFirebase();
+		//syncSQLiteToFirebase();
 	}
 
 	@Override

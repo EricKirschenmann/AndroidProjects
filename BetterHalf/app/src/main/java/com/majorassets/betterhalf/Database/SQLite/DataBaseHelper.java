@@ -98,104 +98,104 @@ public class DataBaseHelper extends SQLiteOpenHelper
 
         // Fashion Tables
         String createAccessoriesTable = "CREATE TABLE " + AccessoriesTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                AccessoriesTable.Cols.UUID  + ", " +
+                AccessoriesTable.Cols.UUID + " integer primary key autoincrement, " +
+                AccessoriesTable.Cols.USER_ID + ", " +
                 AccessoriesTable.Cols.LABEL + ", " +
                 AccessoriesTable.Cols.VALUE + ", " +
                 AccessoriesTable.Cols.FAVORITE + ")";
         String createClothingTable = "CREATE TABLE " + ClothingTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                ClothingTable.Cols.UUID  + ", " +
+                ClothingTable.Cols.UUID + " integer primary key autoincrement, " +
+                ClothingTable.Cols.USER_ID + ", " +
                 ClothingTable.Cols.LABEL + ", " +
                 ClothingTable.Cols.VALUE + ", " +
                 ClothingTable.Cols.FAVORITE + ")";
         String createJewelryTable = "CREATE TABLE " + JewelryTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                JewelryTable.Cols.UUID  + ", " +
+                JewelryTable.Cols.UUID + " integer primary key autoincrement, " +
+                JewelryTable.Cols.USER_ID + ", " +
                 JewelryTable.Cols.LABEL + ", " +
                 JewelryTable.Cols.VALUE + ", " +
                 JewelryTable.Cols.FAVORITE + ")";
         String createShoesTable = "CREATE TABLE " + ShoesTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                ShoesTable.Cols.UUID  + ", " +
+                ShoesTable.Cols.UUID + " integer primary key autoincrement, " +
+                ShoesTable.Cols.USER_ID + ", " +
                 ShoesTable.Cols.LABEL + ", " +
                 ShoesTable.Cols.VALUE + ", " +
                 ShoesTable.Cols.FAVORITE + ")";
 
         // Food Tables
         String createDrinksTable = "CREATE TABLE " + DrinksTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                DrinksTable.Cols.UUID  + ", " +
+                DrinksTable.Cols.UUID + " integer primary key autoincrement, " +
+                DrinksTable.Cols.USER_ID + ", " +
                 DrinksTable.Cols.LABEL + ", " +
                 DrinksTable.Cols.VALUE + ", " +
                 DrinksTable.Cols.FAVORITE + ")";
         String createEntreesTable = "CREATE TABLE " + EntreesTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                EntreesTable.Cols.UUID  + ", " +
+                EntreesTable.Cols.UUID + " integer primary key autoincrement, " +
+                EntreesTable.Cols.USER_ID + ", " +
                 EntreesTable.Cols.LABEL + ", " +
                 EntreesTable.Cols.VALUE + ", " +
                 EntreesTable.Cols.FAVORITE + ")";
         String createRestaurantsTable = "CREATE TABLE " + RestaurantsTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                RestaurantsTable.Cols.UUID  + ", " +
+                RestaurantsTable.Cols.UUID + " integer primary key autoincrement, " +
+                RestaurantsTable.Cols.USER_ID + ", " +
                 RestaurantsTable.Cols.LABEL + ", " +
                 RestaurantsTable.Cols.VALUE + ", " +
                 RestaurantsTable.Cols.FAVORITE + ")";
         String createSidesTable = "CREATE TABLE " + SidesTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                SidesTable.Cols.UUID  + ", " +
+                SidesTable.Cols.UUID + " integer primary key autoincrement, " +
+                SidesTable.Cols.USER_ID + ", " +
                 SidesTable.Cols.LABEL + ", " +
                 SidesTable.Cols.VALUE + ", " +
                 SidesTable.Cols.FAVORITE + ")";
         String createSnacksTable = "CREATE TABLE " + SnacksTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                SnacksTable.Cols.UUID  + ", " +
+                SnacksTable.Cols.UUID + " integer primary key autoincrement, " +
+                SnacksTable.Cols.USER_ID + ", " +
                 SnacksTable.Cols.LABEL + ", " +
                 SnacksTable.Cols.VALUE + ", " +
                 SnacksTable.Cols.FAVORITE + ")";
 
         // Hobby Tables
         String createIndoorTable = "CREATE TABLE " + IndoorTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                IndoorTable.Cols.UUID  + ", " +
+                IndoorTable.Cols.UUID + " integer primary key autoincrement, " +
+                IndoorTable.Cols.USER_ID + ", " +
                 IndoorTable.Cols.LABEL + ", " +
                 IndoorTable.Cols.VALUE + ", " +
                 IndoorTable.Cols.FAVORITE + ")";
         String createOutdoorTable = "CREATE TABLE " + OutdoorTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                OutdoorTable.Cols.UUID  + ", " +
+                OutdoorTable.Cols.UUID + " integer primary key autoincrement, " +
+                OutdoorTable.Cols.USER_ID + ", " +
                 OutdoorTable.Cols.LABEL + ", " +
                 OutdoorTable.Cols.VALUE + ", " +
                 OutdoorTable.Cols.FAVORITE + ")";
         String createSportsTable = "CREATE TABLE " + SportsTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                SportsTable.Cols.UUID  + ", " +
+                SportsTable.Cols.UUID + " integer primary key autoincrement, " +
+                SportsTable.Cols.USER_ID + ", " +
                 SportsTable.Cols.LABEL + ", " +
                 SportsTable.Cols.VALUE + ", " +
                 SportsTable.Cols.FAVORITE + ")";
 
         // Medical Tables
         String createAllergiesTable = "CREATE TABLE " + AllergiesTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                AllergiesTable.Cols.UUID  + ", " +
+                AllergiesTable.Cols.UUID + " integer primary key autoincrement, " +
+                AllergiesTable.Cols.USER_ID + ", " +
                 AllergiesTable.Cols.LABEL + ", " +
                 AllergiesTable.Cols.VALUE + ", " +
                 AllergiesTable.Cols.FAVORITE + ")";
         String createIllnessesTable = "CREATE TABLE " + IllnessesTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                IllnessesTable.Cols.UUID  + ", " +
+                IllnessesTable.Cols.UUID + " integer primary key autoincrement, " +
+                IllnessesTable.Cols.USER_ID + ", " +
                 IllnessesTable.Cols.LABEL + ", " +
                 IllnessesTable.Cols.VALUE + ", " +
                 IllnessesTable.Cols.FAVORITE + ")";
         String createMedicationTable = "CREATE TABLE " + MedicationTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                MedicationTable.Cols.UUID  + ", " +
+                MedicationTable.Cols.UUID + " integer primary key autoincrement, " +
+                MedicationTable.Cols.USER_ID + ", " +
                 MedicationTable.Cols.LABEL + ", " +
                 MedicationTable.Cols.VALUE + ", " +
                 MedicationTable.Cols.FAVORITE + ")";
         String createPhobiasTable = "CREATE TABLE " + PhobiasTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                PhobiasTable.Cols.UUID  + ", " +
+                PhobiasTable.Cols.UUID + " integer primary key autoincrement, " +
+                PhobiasTable.Cols.USER_ID + ", " +
                 PhobiasTable.Cols.LABEL + ", " +
                 PhobiasTable.Cols.VALUE + ", " +
                 PhobiasTable.Cols.FAVORITE + ")";

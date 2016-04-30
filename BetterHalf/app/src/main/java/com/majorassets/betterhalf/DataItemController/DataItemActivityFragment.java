@@ -118,7 +118,7 @@ public class DataItemActivityFragment extends Fragment {
 
 
                 final String title = mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE)-1).toString();
-                final SubcategoryType type = SubcategoryType.getTypeFromString(title.replace(" ", ""));
+                final SubcategoryType type = SubcategoryType.getTypeFromTitle(title.replace(" ", ""));
                 final BaseDataItem item = data.get(type).get(position);
                 final MainCategoryType mainCat = MainCategoryType.getTypeFromString(getActivity().getTitle().toString());
 

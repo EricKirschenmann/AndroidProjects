@@ -130,7 +130,7 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     public List<BaseLikeableItem> getFashionItems(String tableName, UUID userId)
     {
         FashionCursorWrapper cursor = SQLiteProvider.queryFashionItem(tableName,
-                DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
+                DataDBSchema.BaseTable.Cols.USER_ID + "= ?", new String[]{userId.toString()});
 
         List<BaseLikeableItem> items = new ArrayList<>();
         try{
@@ -158,7 +158,7 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     public List<BaseLikeableItem> getFoodItems(String tableName, UUID userId)
     {
         FoodCursorWrapper cursor = SQLiteProvider.queryFoodItem(tableName,
-                DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
+                DataDBSchema.BaseTable.Cols.USER_ID + "= ?", new String[]{userId.toString()});
 
         List<BaseLikeableItem> items = new ArrayList<>();
         try{
@@ -186,7 +186,7 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     public List<BaseLikeableItem> getHobbyItems(String tableName, UUID userId)
     {
         HobbiesCursorWrapper cursor = SQLiteProvider.queryHobbyItem(tableName,
-                DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
+                DataDBSchema.BaseTable.Cols.USER_ID + "= ?", new String[]{userId.toString()});
 
         List<BaseLikeableItem> items = new ArrayList<>();
         try{
@@ -214,7 +214,7 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     public List<BaseLikeableItem> getMedicalItems(String tableName, UUID userId)
     {
         MedicalCursorWrapper cursor = SQLiteProvider.queryMedicalItem(tableName,
-                DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{userId.toString()});
+                DataDBSchema.BaseTable.Cols.USER_ID + "= ?", new String[]{userId.toString()});
 
         List<BaseLikeableItem> items = new ArrayList<>();
         try{
