@@ -85,10 +85,17 @@ public class HomeActivityFragment extends Fragment {
 
 	private void createEvents() {
 		mEntertainmentCardView.setOnClickListener(new View.OnClickListener() {
-		@Override
+			@Override
 			public void onClick(View v) {
 				String title = mEntertainmentText.getText().toString();
-				launchDataItemActivity(title);
+
+				GlobalResources.mainTypePressed = MainCategoryType.getTypeFromString(title);
+				Intent intent = new Intent(getContext(), com.majorassets.betterhalf.SectionPagerController.DataItemActivity.class);
+				intent.putExtra(TITLE_EXTRA, title);
+				startActivity(intent);
+
+
+				//launchDataItemActivity(title);
 			}
 		});
 
