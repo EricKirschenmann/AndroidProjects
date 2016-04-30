@@ -1,6 +1,5 @@
 package com.majorassets.betterhalf.DataItemController;
 
-
 import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.content.DialogInterface;
@@ -32,13 +31,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-
 /**
  * A placeholder fragment containing a simple view.
  */
 public class DataItemActivityFragment extends Fragment {
+
     private ArrayList<String> itemList = new ArrayList<>();
-    private DataItemPagerAdapter mDataItemPagerAdapter;
     private Map<SubcategoryType, List<BaseDataItem>> data;
 
     private SQLiteProvider sqliteDB;
@@ -51,24 +49,40 @@ public class DataItemActivityFragment extends Fragment {
 
     private Bundle args;
     private ListView mListView;
+    //private RecyclerView mListView;
     private ArrayAdapter<String> mArrayAdapter;
     private DataItemArrayAdapter mDataItemArrayAdapter;
+    private DataItemPagerAdapter mDataItemPagerAdapter;
 
-	public static final String ARG_PAGE = "com.majorassets.betterhalf.page";
 
-	//create a new instance of the fragment identifying it by an int argument
-	public static DataItemActivityFragment newInstance(int page) {
-		Bundle args = new Bundle();
-		args.putInt(ARG_PAGE, page);
-		DataItemActivityFragment fragment = new DataItemActivityFragment();
-		fragment.setArguments(args);
-		return fragment;
-	}
+    /**
+     * The fragment argument representing the section number for this
+     * fragment.
+     */
+    private static final String ARG_PAGE = "com.majorassets.betterhalf.page";
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
-		View view =  inflater.inflate(R.layout.fragment_data_list, container, false);
+    public DataItemActivityFragment() {
+    }
+
+    /**
+     * Returns a new instance of this fragment for the given section
+     * number.
+     */
+    public static DataItemActivityFragment newInstance(int sectionNumber) {
+        DataItemActivityFragment fragment = new DataItemActivityFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PAGE, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_data_item, container, false);
+//        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
+//        textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+
 
         data = new HashMap<>();
         appUser = GlobalResources.AppUser;
@@ -80,9 +94,7 @@ public class DataItemActivityFragment extends Fragment {
 
 
         //DECLARE ADAPTER FOR LISTVIEW
-        mArrayAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_expandable_list_item_1, itemList);
-        mListView = (ListView) view.findViewById(android.R.id.text1);
-        //mListView.setAdapter(mArrayAdapter);
+        mListView = (ListView) rootView.findViewById(android.R.id.text2);
 
         mDataItemPagerAdapter = new DataItemPagerAdapter(getFragmentManager());
         args = getArguments();
@@ -101,7 +113,7 @@ public class DataItemActivityFragment extends Fragment {
 
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+            public boolean onItemLongClick(AdapterView<?> adapterView, final View view, final int position, long l) {
 
 
                 final String title = mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE)-1).toString();
@@ -124,9 +136,8 @@ public class DataItemActivityFragment extends Fragment {
                                 //Call SQLite delete fn
                                 itemsDAL.deleteItem(item, tableName, "uuid");
 
-                                Intent intent = getActivity().getIntent();
-                                getActivity().finish();
-                                startActivity(intent);
+                                //refresh data within the listview without restarting the activity
+                                readDataFromSQLite();
                             }
                         })
                         .setNegativeButton(R.string.edit, new DialogInterface.OnClickListener() {
@@ -146,8 +157,8 @@ public class DataItemActivityFragment extends Fragment {
             }
         });
 
-        return view;
-	}
+        return rootView;
+    }
 
     @Override
     public void onResume() {
@@ -166,8 +177,7 @@ public class DataItemActivityFragment extends Fragment {
         SubcategoryType type = SubcategoryType.getTypeFromString(table);
         data.put(type, items);
 
-        //updateDisplay(items);
-        updateDisplay2(items);
+        updateDisplay(items);
     }
 
     private List<BaseDataItem> getItems(String table) {
@@ -189,16 +199,6 @@ public class DataItemActivityFragment extends Fragment {
     }
 
     private void updateDisplay(List<BaseDataItem> items) {
-        mArrayAdapter.clear();
-
-        if(items != null && items.size() != 0) {
-            for (BaseDataItem item : items)
-                mArrayAdapter.add(item.getValue() + "\t\t\t-\t\t\t" + item.getLabel());
-        }
-    }
-
-    private void updateDisplay2(List<BaseDataItem> items) {
-        //ArrayList<BaseDataItem> objects = (ArrayList<BaseDataItem>) items;
         mDataItemArrayAdapter = new DataItemArrayAdapter(getContext(), items);
         mListView.setAdapter(mDataItemArrayAdapter);
     }
@@ -211,5 +211,6 @@ public class DataItemActivityFragment extends Fragment {
             startActivity(intent);
         }
     }
-}
 
+
+}

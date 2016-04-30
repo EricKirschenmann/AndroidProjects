@@ -21,16 +21,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity
-            android:name=".DataItemController.DataItemActivity"
-            android:parentActivityName=".HomeActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="com.google.android.gms.actions.SEARCH_ACTION" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar"></activity>
@@ -52,7 +42,7 @@
             android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".SectionPagerController.DataItemActivity"
+            android:name=".DataItemController.DataItemActivity"
             android:label="@string/title_activity_data_item"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
