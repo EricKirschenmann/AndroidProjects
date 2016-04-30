@@ -22,6 +22,7 @@ import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
 import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
 import com.majorassets.betterhalf.Model.SubcategoryType;
@@ -205,6 +206,8 @@ public class LoginActivityFragment extends Fragment {
                     appUser = new User(mEmail, mPassword);
                     appUser.setID(UUID.fromString(authData.getUid()));
                     appUser.setLoggedOnLast(true);
+                    appUser.setDataItemRepository(DataItemRepository.getDataItemRepository());
+                    appUser.getDataItemRepository().setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
 
                     GlobalResources.AppUser = appUser;
 
@@ -228,6 +231,9 @@ public class LoginActivityFragment extends Fragment {
         else
         {
             appUser.setLoggedOnLast(true);
+            appUser.setDataItemRepository(DataItemRepository.getDataItemRepository());
+            appUser.getDataItemRepository().setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
+
 
             userRef = firebaseDB.getUserInstance(mUsername);
             userRef.addListenerForSingleValueEvent(new ValueEventListener()

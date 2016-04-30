@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.BaseItemCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.EntertainmentCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.FashionCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.FoodCursorWrapper;

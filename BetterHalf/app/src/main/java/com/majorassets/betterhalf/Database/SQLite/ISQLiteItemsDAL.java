@@ -3,8 +3,10 @@ package com.majorassets.betterhalf.Database.SQLite;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.Subcategory;
+import com.majorassets.betterhalf.Model.SubcategoryType;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -21,4 +23,7 @@ public interface ISQLiteItemsDAL {
     List<BaseLikeableItem> getFoodItems(String tableName, UUID userId);
     List<BaseLikeableItem> getHobbyItems(String tableName, UUID userId);
     List<BaseLikeableItem> getMedicalItems(String tableName, UUID userId);
+
+    void getAllUserEntertainmentItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items);
+    void getAllUserFashionItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items);
 }

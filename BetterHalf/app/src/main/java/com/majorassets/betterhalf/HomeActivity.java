@@ -9,11 +9,27 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
+import com.majorassets.betterhalf.Model.Entertainment.BookItem;
+import com.majorassets.betterhalf.Model.Entertainment.GameItem;
+import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
+import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
+import com.majorassets.betterhalf.Model.Subcategory;
+import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
 {
@@ -21,8 +37,11 @@ public class HomeActivity extends AppCompatActivity
 	private SQLiteProvider sqliteDB;
 	private FirebaseProvider firebaseDB;
 	private Firebase ref;
+	private Firebase subcategoryInstance;
 
 	private User appUser;
+	private Map<SubcategoryType, List<BaseLikeableItem>> appUserData;
+	private DataItemRepository userRepo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -39,7 +58,19 @@ public class HomeActivity extends AppCompatActivity
 		dal = new SQLiteUserDAL(sqliteDB.getDatabase());
 
 		ref = firebaseDB.getFirebaseInstance();
+
 		appUser = GlobalResources.AppUser;
+		userRepo = appUser.getDataItemRepository();
+		appUserData = userRepo.getDataItems();
+
+		syncSQLiteToFirebase();
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		syncSQLiteToFirebase();
 	}
 
 	@Override
@@ -77,6 +108,49 @@ public class HomeActivity extends AppCompatActivity
 				startActivity(intent);
 			default:
 				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void addDataItem(SubcategoryType subcategory, BaseLikeableItem item)
+	{
+		List<BaseLikeableItem> list;
+		//if there are no entries for a movie then the list will be null
+		if(appUserData.get(subcategory) == null)
+		{
+			list = new ArrayList<>(); // use an empty list
+			list.add(item);
+			appUserData.put(subcategory, list); //create new entry for movies
+		}
+		else //add to an already define list
+		{
+			list = appUserData.get(subcategory);
+			list.add(item);
+		}
+
+		userRepo.setDataItems(appUserData);
+		appUser.setDataItemRepository(userRepo);
+	}
+
+	private void syncSQLiteToFirebase()
+	{
+		Map<String, Map<String, String>> firebaseMap = new HashMap<>();
+		Map<String, String> internalMap = new HashMap<>();
+
+		for (Map.Entry entry: appUserData.entrySet())
+		{
+			subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(),
+					entry.getKey().toString().toLowerCase());
+
+			List<BaseLikeableItem> items = (List<BaseLikeableItem>) entry.getValue();
+			for (BaseLikeableItem item : items)
+			{
+				internalMap.put(item.getLabel(), item.getValue());
+				firebaseMap.put(item.getID(), internalMap);
+			}
+			subcategoryInstance.setValue(firebaseMap);
+
+			internalMap.clear();
+			firebaseMap.clear();
 		}
 	}
 }

@@ -44,6 +44,12 @@ import com.majorassets.betterhalf.Model.Medical.PhobiasItem;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -59,12 +65,12 @@ public class SingleItemEditActivityFragment extends Fragment
 
     private SQLiteProvider sqliteDB;
     private FirebaseProvider firebaseDB;
+    private Firebase subcategoryInstance;
 
     private SQLiteItemsDAL dal;
-    private Firebase userDataRef;
 
     private User appUser;
-    private Subcategory subcategory;
+    private Map<SubcategoryType, List<BaseLikeableItem>> userDataMap;
 
     public SingleItemEditActivityFragment()
     {
@@ -86,13 +92,12 @@ public class SingleItemEditActivityFragment extends Fragment
     private void initializeComponents(View view)
     {
         appUser = GlobalResources.AppUser;
+        userDataMap = appUser.getDataItemRepository().getDataItems();
 
         //data layer components
         firebaseDB = FirebaseProvider.getDataProvider();
         sqliteDB = SQLiteProvider.getSQLiteProvider(getContext());
         dal = new SQLiteItemsDAL(sqliteDB.getDatabase());
-
-        userDataRef = firebaseDB.getUserDataInstance(appUser.getUsername());
 
         //UI components
         mItemLabel = (EditText) view.findViewById(R.id.item_name_edit);
@@ -129,28 +134,26 @@ public class SingleItemEditActivityFragment extends Fragment
             {
                 //TODO: store data item in Firebase
 
-                String subcat = getActivity().getTitle().toString().replace(" ", "");
-                subcategory = new Subcategory(SubcategoryType.getTypeFromString(subcat));
+                String subcat = getActivity().getTitle().toString().replace(" ", ""); //take out spaces
+                SubcategoryType type = SubcategoryType.getTypeFromTitle(subcat);
 
-                writeDataToSQLite(subcategory, mFavorite.isChecked());
+                //writeDatatoFirebase();
+                writeDataToSQLite(type, mFavorite.isChecked());
 
-                /*Intent intent = new Intent(getContext(), DataItemActivity.class);
-                intent.putExtra(HomeActivityFragment.TITLE_EXTRA, subcat);
-                startActivity(intent);*/
 
                 getActivity().finish();
             }
         });
     }
 
-    private void writeDataToSQLite(Subcategory sub, boolean isFavorite)
+    private void writeDataToSQLite(SubcategoryType type, boolean isFavorite)
     {
         String label = mItemLabel.getText().toString();
         String value = mItemValue.getText().toString();
         String table = "";
         BaseLikeableItem item = null;
 
-        switch(sub.getType())
+        switch(type)
         {
             //ENTERTAINMENT
             case MOVIE:
@@ -248,12 +251,7 @@ public class SingleItemEditActivityFragment extends Fragment
         }
 
         item.setIsFavorite(isFavorite);
-        item.setID(appUser.getID()); //create relationship between user and data tables
+        item.setUserID(appUser.getID()); //create relationship between user and data tables
         dal.addItem(item, table);
-    }
-
-    private void writeDatatoFirebase(Subcategory sub)
-    {
-
     }
 }

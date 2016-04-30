@@ -20,6 +20,7 @@ import com.majorassets.betterhalf.DataItemController.DataItemActivity;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.MainCategory;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.Subcategory;
@@ -45,7 +46,7 @@ public class HomeActivityFragment extends Fragment
 	private CardView mHobbyCardView;
 	private CardView mMedicalCardView;
 
-	private Map<SubcategoryType, List<BaseDataItem>> userDataItems;
+	private Map<SubcategoryType, List<BaseLikeableItem>> userDataItems;
 	private FirebaseProvider db;
 
 	public static final String TITLE_EXTRA = "com.majorassets.betterhalf.title";

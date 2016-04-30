@@ -6,17 +6,22 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.BaseItemCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.EntertainmentCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.FashionCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.FoodCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.HobbiesCursorWrapper;
 import com.majorassets.betterhalf.Database.SQLite.CursorWrappers.MedicalCursorWrapper;
+import com.majorassets.betterhalf.GlobalResources;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.Subcategory;
+import com.majorassets.betterhalf.Model.SubcategoryType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -231,6 +236,98 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
         }
 
         return items;
+    }
+
+    @Override
+    public void getAllUserEntertainmentItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items)
+    {
+        for (String table: GlobalResources.EntertainmentTableNames)
+        {
+            EntertainmentCursorWrapper cursor = SQLiteProvider.queryEntertainmentItem(table,
+                    DataDBSchema.BaseTable.Cols.USER_ID + "= ?", new String[]{userId.toString()});
+
+            try{
+                if(cursor.getCount() == 0)
+                    continue;
+
+                cursor.moveToFirst();
+
+                //iterate the cursor over each record in DB
+                while(!cursor.isAfterLast())
+                {
+                    addEntertainmentItem(table, cursor, items);
+                    cursor.moveToNext();
+                }
+            }
+            finally
+            {
+                cursor.close();
+            }
+        }
+    }
+
+    private void addEntertainmentItem(String tableName, EntertainmentCursorWrapper cursor, Map<SubcategoryType, List<BaseLikeableItem>> items)
+    {
+        List<BaseLikeableItem> list;
+        SubcategoryType subType = SubcategoryType.getTypeFromTitle(tableName);
+        //if there are no entries for a movie then the list will be null
+        if(items.get(subType) == null)
+        {
+            list = new ArrayList<>(); // use an empty list
+            list.add(cursor.getItem());
+            items.put(subType, list); //create new entry for movies
+        }
+        else //add to an already define list
+        {
+            list = items.get(subType);
+            list.add(cursor.getItem());
+        }
+    }
+
+    @Override
+    public void getAllUserFashionItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items)
+    {
+        for (String table: GlobalResources.FashionTableNames)
+        {
+            FashionCursorWrapper cursor = SQLiteProvider.queryFashionItem(table,
+                    DataDBSchema.BaseTable.Cols.USER_ID + "= ?", new String[]{userId.toString()});
+
+            try{
+                if(cursor.getCount() == 0)
+                    continue;
+
+                cursor.moveToFirst();
+
+                //iterate the cursor over each record in DB
+                while(!cursor.isAfterLast())
+                {
+                    addFashionItem(table, cursor, items);
+                    cursor.moveToNext();
+                }
+            }
+            finally
+            {
+                cursor.close();
+            }
+        }
+    }
+
+    private void addFashionItem(String tableName, FashionCursorWrapper cursor, Map<SubcategoryType, List<BaseLikeableItem>> items)
+    {
+        List<BaseLikeableItem> list;
+        SubcategoryType subType = SubcategoryType.getTypeFromTitle(tableName);
+        //if there are no entries for a movie then the list will be null
+        if(items.get(subType) == null)
+        {
+            list = new ArrayList<>(); // use an empty list
+            list.add(cursor.getItem());
+            items.put(subType, list); //create new entry for movies
+        }
+        else //add to an already define list
+        {
+            list = items.get(subType);
+            list.add(cursor.getItem());
+        }
     }
 
 }

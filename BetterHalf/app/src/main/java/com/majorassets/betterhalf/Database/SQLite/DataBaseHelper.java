@@ -60,43 +60,37 @@ public class DataBaseHelper extends SQLiteOpenHelper
         //TODO: finish adding UUID column
         // Entertainment Tables
         String createBooksTable = "CREATE TABLE " + BooksTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                BooksTable.Cols.UUID + ", " +
+                BooksTable.Cols.UUID + " integer primary key autoincrement, " +
                 BooksTable.Cols.USER_ID + ", " +
                 BooksTable.Cols.LABEL + ", " +
                 BooksTable.Cols.VALUE + ", " +
                 BooksTable.Cols.FAVORITE + ")";
         String createGamesTable = "CREATE TABLE " + GamesTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                GamesTable.Cols.UUID + ", " +
+                GamesTable.Cols.UUID + " integer primary key autoincrement, " +
                 GamesTable.Cols.USER_ID + ", " +
                 GamesTable.Cols.LABEL + ", " +
                 GamesTable.Cols.VALUE + ", " +
                 GamesTable.Cols.FAVORITE + ")";
         String createMoviesTable = "CREATE TABLE " + MoviesTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                MoviesTable.Cols.UUID + ", " +
+                MoviesTable.Cols.UUID + " integer primary key autoincrement, " +
                 MoviesTable.Cols.USER_ID + ", " +
                 MoviesTable.Cols.LABEL + ", " +
                 MoviesTable.Cols.VALUE + ", " +
                 MoviesTable.Cols.FAVORITE + ")";
         String createMusicTable = "CREATE TABLE " + MusicTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                MusicTable.Cols.UUID + ", " +
+                MusicTable.Cols.UUID + " integer primary key autoincrement, " +
                 MusicTable.Cols.USER_ID + ", " +
                 MusicTable.Cols.LABEL + ", " +
                 MusicTable.Cols.VALUE + ", " +
                 MusicTable.Cols.FAVORITE + ")";
         String createTheaterTable = "CREATE TABLE " + TheaterTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                TheaterTable.Cols.UUID + ", " +
+                TheaterTable.Cols.UUID + " integer primary key autoincrement, " +
                 TheaterTable.Cols.USER_ID + ", " +
                 TheaterTable.Cols.LABEL + ", " +
                 TheaterTable.Cols.VALUE + ", " +
                 TheaterTable.Cols.FAVORITE + ")";
         String createTVShowsTable = "CREATE TABLE " + TVShowsTable.NAME + "(" +
-                "_id integer primary key autoincrement, " +
-                TVShowsTable.Cols.UUID  + ", " +
+                TVShowsTable.Cols.UUID + " integer primary key autoincrement, " +
                 TVShowsTable.Cols.USER_ID + ", " +
                 TVShowsTable.Cols.LABEL + ", " +
                 TVShowsTable.Cols.VALUE + ", " +
