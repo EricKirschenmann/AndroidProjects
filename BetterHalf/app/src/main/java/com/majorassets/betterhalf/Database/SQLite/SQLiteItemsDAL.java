@@ -91,7 +91,7 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
 
     // Remove an existing item
     public BaseDataItem deleteItem(BaseDataItem item, String tableName, String colUUID){
-        String itemID = item.getID().toString();
+        String itemID = item.getID();
 
         db.delete(tableName, colUUID + "= ?", new String[]{itemID});
 
