@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="books_array">
+        <item>Title</item>
+        <item>Author</item>
+        <item>Genre</item>
+    </string-array>
+
+    <string-array name="games_array">
+        <item>Title</item>
+        <item>Genre</item>
+    </string-array>
+
+    <string-array name="movies_array">
+        <item>Title</item>
+        <item>Genre</item>
+        <item>Procedure</item>
+    </string-array>
+
+    <string-array name="music_array">
+        <item>Artist</item>
+        <item>Song</item>
+        <item>Genre</item>
+        <item>Album</item>
+    </string-array>
+
+    <string-array name="theater_array">
+        <item>Play</item>
+        <item>Venue</item>
+        <item>Genre</item>
+        <item>Actor</item>
+    </string-array>
+
+    <string-array name="tvshow_array">
+        <item>Series</item>
+        <item>Genre</item>
+    </string-array>
+
+</resources>

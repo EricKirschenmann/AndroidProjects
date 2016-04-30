@@ -1,14 +1,15 @@
 package com.majorassets.betterhalf;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.firebase.client.Firebase;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
@@ -17,69 +18,45 @@ import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
-import com.majorassets.betterhalf.Model.BaseDataItem;
-import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.Entertainment.BookItem;
 import com.majorassets.betterhalf.Model.Entertainment.GameItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
 import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
 import com.majorassets.betterhalf.Model.Entertainment.TVShowItem;
 import com.majorassets.betterhalf.Model.Entertainment.TheaterItem;
-import com.majorassets.betterhalf.Model.Fashion.AccessoriesItem;
-import com.majorassets.betterhalf.Model.Fashion.ClothingItem;
-import com.majorassets.betterhalf.Model.Fashion.JewelryItem;
-import com.majorassets.betterhalf.Model.Fashion.ShoesItem;
-import com.majorassets.betterhalf.Model.Food.DrinksItem;
-import com.majorassets.betterhalf.Model.Food.EntreesItem;
-import com.majorassets.betterhalf.Model.Food.RestaurantsItem;
-import com.majorassets.betterhalf.Model.Food.SidesItem;
-import com.majorassets.betterhalf.Model.Food.SnacksItem;
-import com.majorassets.betterhalf.Model.Hobbies.IndoorItem;
-import com.majorassets.betterhalf.Model.Hobbies.OutdoorItem;
-import com.majorassets.betterhalf.Model.Hobbies.SportsItem;
-import com.majorassets.betterhalf.Model.Medical.AllergiesItem;
-import com.majorassets.betterhalf.Model.Medical.IllnessesItem;
-import com.majorassets.betterhalf.Model.Medical.MedicalItem;
-import com.majorassets.betterhalf.Model.Medical.PhobiasItem;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SingleItemEditActivityFragment extends Fragment
-{
+public class SingleItemEditActivityFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private EditText mItemLabel;
     private EditText mItemValue;
     private Button mAddButton;
-    private CheckBox mFavorite;
-
+    private Spinner mSpinner;
     private DataItemActivityFragment mDataItemActivityFragment;
 
     private SQLiteProvider sqliteDB;
     private FirebaseProvider firebaseDB;
-    private Firebase subcategoryInstance;
 
     private SQLiteItemsDAL dal;
+    private Firebase userDataRef;
 
     private User appUser;
-    private Map<SubcategoryType, List<BaseLikeableItem>> userDataMap;
+    private Subcategory subcategory;
 
-    public SingleItemEditActivityFragment()
-    {
+    private String category;
+    private String key;
+
+    public SingleItemEditActivityFragment() {
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_single_item_edit, container, false);
         Firebase.setAndroidContext(getContext());
 
@@ -89,25 +66,81 @@ public class SingleItemEditActivityFragment extends Fragment
         return view;
     }
 
-    private void initializeComponents(View view)
-    {
+    private void initializeComponents(View view) {
         appUser = GlobalResources.AppUser;
-        userDataMap = appUser.getDataItemRepository().getDataItems();
 
         //data layer components
         firebaseDB = FirebaseProvider.getDataProvider();
         sqliteDB = SQLiteProvider.getSQLiteProvider(getContext());
         dal = new SQLiteItemsDAL(sqliteDB.getDatabase());
 
-        //UI components
+        userDataRef = firebaseDB.getUserDataInstance(appUser.getUsername());
+
         mItemLabel = (EditText) view.findViewById(R.id.item_name_edit);
         mItemValue = (EditText) view.findViewById(R.id.item_value_edit);
         mAddButton = (Button) view.findViewById(R.id.add_button);
-        mFavorite = (CheckBox) view.findViewById(R.id.favorite_checkbox);
+        mSpinner = (Spinner) view.findViewById(R.id.key_select);
+
+        category = getActivity().getIntent().getStringExtra(DataItemActivity.SUBCAT_EXTRA);
+
+        setSpinner();
     }
 
-    private void createEvents()
-    {
+    private void setSpinner() {
+        if(category.equals("Books")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.books_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Games")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.games_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Movies")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.movies_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Music")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.music_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Theater")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.theater_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("TV Shows")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.tvshow_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else {
+            mSpinner.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    private void createEvents() {
         mItemLabel.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -134,124 +167,67 @@ public class SingleItemEditActivityFragment extends Fragment
             {
                 //TODO: store data item in Firebase
 
-                String subcat = getActivity().getTitle().toString().replace(" ", ""); //take out spaces
-                SubcategoryType type = SubcategoryType.getTypeFromTitle(subcat);
+                String subcat = getActivity().getTitle().toString().replace(" ", "");
+                subcategory = new Subcategory(SubcategoryType.getTypeFromString(subcat));
 
-                //writeDatatoFirebase();
-                writeDataToSQLite(type, mFavorite.isChecked());
-
+                writeDataToSQLite(subcategory);
 
                 getActivity().finish();
             }
         });
     }
 
-    private void writeDataToSQLite(SubcategoryType type, boolean isFavorite)
+    private void writeDataToSQLite(Subcategory sub)
     {
         String label = mItemLabel.getText().toString();
         String value = mItemValue.getText().toString();
-        String table = "";
-        BaseLikeableItem item = null;
 
-        switch(type)
+        switch(sub.getType())
         {
-            //ENTERTAINMENT
             case MOVIE:
-                item = new MovieItem(label, value);
-                table = DataDBSchema.MoviesTable.NAME;
+                MovieItem movie = new MovieItem(label, value);
+                movie.setID(appUser.getID()); //user to item relationship
+                dal.addItem(movie, DataDBSchema.MoviesTable.NAME);
                 break;
             case BOOK:
-                item = new BookItem(label, value);
-                table = DataDBSchema.BooksTable.NAME;
+                BookItem book = new BookItem(key, value);
+                book.setID(appUser.getID());
+                dal.addItem(book, DataDBSchema.BooksTable.NAME);
                 break;
             case MUSIC:
-                item = new MusicItem(label, value);
-                table = DataDBSchema.MusicTable.NAME;
+                MusicItem music = new MusicItem(key, value);
+                music.setID(appUser.getID());
+                dal.addItem(music, DataDBSchema.MusicTable.NAME);
                 break;
             case GAME:
-                item = new GameItem(label, value);
-                table = DataDBSchema.GamesTable.NAME;
+                GameItem game = new GameItem(key, value);
+                game.setID(appUser.getID());
+                dal.addItem(game, DataDBSchema.GamesTable.NAME);
                 break;
             case THEATER:
-                item = new TheaterItem(label, value);
-                table = DataDBSchema.TheaterTable.NAME;
+                TheaterItem theater = new TheaterItem(key, value);
+                theater.setID(appUser.getID());
+                dal.addItem(theater, DataDBSchema.TheaterTable.NAME);
                 break;
             case TV_SHOW:
-                item = new TVShowItem(label, value);
-                table = DataDBSchema.TVShowsTable.NAME;
-                break;
-            //FASHION
-            case ACCESSORY:
-                item = new AccessoriesItem(label, value);
-                table = DataDBSchema.AccessoriesTable.NAME;
-                break;
-            case CLOTHING:
-                item = new ClothingItem(label, value);
-                table = DataDBSchema.ClothingTable.NAME;
-                break;
-            case JEWELRY:
-                item = new JewelryItem(label, value);
-                table = DataDBSchema.JewelryTable.NAME;
-                break;
-            case SHOE:
-                item = new ShoesItem(label, value);
-                table = DataDBSchema.ShoesTable.NAME;
-                break;
-            //FOOD
-            case DRINK:
-                item = new DrinksItem(label, value);
-                table = DataDBSchema.DrinksTable.NAME;
-                break;
-            case ENTREE:
-                item = new EntreesItem(label, value);
-                table = DataDBSchema.EntreesTable.NAME;
-                break;
-            case RESTAURANT:
-                item = new RestaurantsItem(label, value);
-                table = DataDBSchema.RestaurantsTable.NAME;
-                break;
-            case SIDE:
-                item = new SidesItem(label, value);
-                table = DataDBSchema.SidesTable.NAME;
-                break;
-            case SNACK:
-                item = new SnacksItem(label, value);
-                table = DataDBSchema.SnacksTable.NAME;
-                break;
-            //HOBBY
-            case INDOOR:
-                item = new IndoorItem(label, value);
-                table = DataDBSchema.IndoorTable.NAME;
-                break;
-            case OUTDOOR:
-                item = new OutdoorItem(label, value);
-                table = DataDBSchema.OutdoorTable.NAME;
-                break;
-            case SPORT:
-                item = new SportsItem(label, value);
-                table = DataDBSchema.SportsTable.NAME;
-                break;
-            //MEDICAL
-            case ALLERGY:
-                item = new AllergiesItem(label, value);
-                table = DataDBSchema.AllergiesTable.NAME;
-                break;
-            case PHOBIA:
-                item = new PhobiasItem(label, value);
-                table = DataDBSchema.PhobiasTable.NAME;
-                break;
-            case MEDICATION:
-                item = new MedicalItem(label, value);
-                table = DataDBSchema.MedicationTable.NAME;
-                break;
-            case ILLNESS:
-                item = new IllnessesItem(label, value);
-                table = DataDBSchema.IllnessesTable.NAME;
+                TVShowItem tvShow = new TVShowItem(key, value);
+                tvShow.setID(appUser.getID());
+                dal.addItem(tvShow, DataDBSchema.TVShowsTable.NAME);
                 break;
         }
+    }
 
-        item.setIsFavorite(isFavorite);
-        item.setUserID(appUser.getID()); //create relationship between user and data tables
-        dal.addItem(item, table);
+    private void writeDatatoFirebase(Subcategory sub) {
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        key = adapterView.getItemAtPosition(i).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }
