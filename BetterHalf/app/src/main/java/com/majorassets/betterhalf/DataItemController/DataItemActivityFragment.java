@@ -37,8 +37,7 @@ import java.util.UUID;
  * A placeholder fragment containing a simple view.
  */
 public class DataItemActivityFragment extends Fragment {
-    private ArrayList<String> Array = new ArrayList<>();
-    public HashMap stuffs = new HashMap();
+    private ArrayList<String> itemList = new ArrayList<>();
     private DataItemPagerAdapter mDataItemPagerAdapter;
     private Map<SubcategoryType, List<BaseDataItem>> data;
 
@@ -53,6 +52,7 @@ public class DataItemActivityFragment extends Fragment {
     private Bundle args;
     private ListView mListView;
     private ArrayAdapter<String> mArrayAdapter;
+    private DataItemArrayAdapter mDataItemArrayAdapter;
 
 	public static final String ARG_PAGE = "com.majorassets.betterhalf.page";
 
@@ -70,10 +70,6 @@ public class DataItemActivityFragment extends Fragment {
 							 Bundle savedInstanceState) {
 		View view =  inflater.inflate(R.layout.fragment_data_list, container, false);
 
-		//setting the tool bar to primary color
-//		Window window = getActivity().getWindow();
-//		window.setStatusBarColor(getActivity().getResources().getColor(R.color.colorPrimaryDark));
-
         data = new HashMap<>();
         appUser = GlobalResources.AppUser;
 
@@ -84,9 +80,9 @@ public class DataItemActivityFragment extends Fragment {
 
 
         //DECLARE ADAPTER FOR LISTVIEW
-        mArrayAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_expandable_list_item_1, Array);
+        mArrayAdapter = new ArrayAdapter<>(this.getContext(), android.R.layout.simple_expandable_list_item_1, itemList);
         mListView = (ListView) view.findViewById(android.R.id.text1);
-        mListView.setAdapter(mArrayAdapter);
+        //mListView.setAdapter(mArrayAdapter);
 
         mDataItemPagerAdapter = new DataItemPagerAdapter(getFragmentManager());
         args = getArguments();
@@ -97,7 +93,7 @@ public class DataItemActivityFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                String query = mArrayAdapter.getItem(position);
+                String query = mDataItemArrayAdapter.getValue(position);
                 query += " " + mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE) - 1);
                 searchWeb(query);
             }
@@ -170,7 +166,8 @@ public class DataItemActivityFragment extends Fragment {
         SubcategoryType type = SubcategoryType.getTypeFromString(table);
         data.put(type, items);
 
-        updateDisplay(items);
+        //updateDisplay(items);
+        updateDisplay2(items);
     }
 
     private List<BaseDataItem> getItems(String table) {
@@ -196,8 +193,14 @@ public class DataItemActivityFragment extends Fragment {
 
         if(items != null && items.size() != 0) {
             for (BaseDataItem item : items)
-                mArrayAdapter.add(item.getValue());
+                mArrayAdapter.add(item.getValue() + "\t\t\t-\t\t\t" + item.getLabel());
         }
+    }
+
+    private void updateDisplay2(List<BaseDataItem> items) {
+        //ArrayList<BaseDataItem> objects = (ArrayList<BaseDataItem>) items;
+        mDataItemArrayAdapter = new DataItemArrayAdapter(getContext(), items);
+        mListView.setAdapter(mDataItemArrayAdapter);
     }
 
     //using implicit intents create a web search with a given string
