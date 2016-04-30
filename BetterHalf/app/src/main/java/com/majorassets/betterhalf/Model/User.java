@@ -17,8 +17,9 @@ public class User
     private String email;
     private String password;
     private String username;
-
     private boolean loggedOnLast;
+
+    private User significantOther;
 
     private DataItemRepository mDataItemRepository;
 
@@ -70,8 +71,7 @@ public class User
 
     public String getUsername()
     {
-        username = LoginHelperActivity.generateUsername(email);
-        return username;
+        return LoginHelperActivity.generateUsername(email);
     }
 
     public void setUsername(String username)
@@ -117,5 +117,15 @@ public class User
     public void setLoggedOnLast(boolean loggedOnLast)
     {
         this.loggedOnLast = loggedOnLast;
+    }
+
+    public User getSignificantOther()
+    {
+        return significantOther;
+    }
+
+    public void setSignificantOther(User significantOther)
+    {
+        this.significantOther = significantOther;
     }
 }

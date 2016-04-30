@@ -15,8 +15,11 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.User;
+
+import java.util.UUID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -75,6 +78,13 @@ public class ConnectionActivityFragment extends Fragment
 
             }
         });
+
+        connectAccountsEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                connectAccountsEdit.setText("testuser8verizon");
+            }
+        });
     }
 
     private class ConnectAccountsTask extends AsyncTask<Void, Void, Void>
@@ -94,21 +104,56 @@ public class ConnectionActivityFragment extends Fragment
                         String user;
                         String parent;
                         String child;
-                        DataSnapshot next;
                         BaseDataItem item;
 
                         User SO = new User(); //TODO RYAN - read out User object from Firebase
                         SO.setUsername(dataSnapshot.getKey());
-                        user = dataSnapshot.getKey();
-
-                       while (dataSnapshot.hasChildren()) {
-                           parent = dataSnapshot.getKey();
-                           next = dataSnapshot.getChildren().iterator().next();
-                           child = next.getKey();
-
-
-                       }
                         appUser.setSignificantOther(SO);
+
+                        user = dataSnapshot.getKey();
+                        parent = dataSnapshot.getKey();
+
+                           for (DataSnapshot childThis: dataSnapshot.getChildren()) {
+                               child = childThis.getKey();
+                               if (child == "info") {
+                                   String infoChildKey;
+                                   Object infoChildValue;
+                                   Iterable<DataSnapshot> infoChildren = childThis.getChildren();
+                                   for (DataSnapshot infoChild : infoChildren) {
+                                       infoChildKey = infoChild.getKey();
+                                       infoChildValue = infoChild.getValue();
+
+                                       switch (infoChildKey) {
+                                           case FirebaseStructure.EMAIL:
+                                               SO.setEmail(infoChildValue.toString());
+                                               break;
+                                           case FirebaseStructure.FIRSTNAME:
+                                               SO.setFirstName(infoChildValue.toString());
+                                               break;
+                                           case FirebaseStructure.LASTNAME:
+                                               SO.setLastName(infoChildValue.toString());
+                                               break;
+                                           case FirebaseStructure.ID:
+                                               SO.setID(UUID.fromString(infoChildValue.toString()));
+                                               break;
+                                           default:
+                                               break;
+                                       }
+                                   }
+                               }
+                               else if(child == "data"){
+
+                               }
+                           }
+
+                        appUser.setSignificantOther(SO);
+                        String cEmail = SO.getEmail();
+                        String cUsername = LoginHelperActivity.generateUsername(cEmail);
+                        userRef.child("connection").child("status").setValue("pending");
+                        userRef.child("connection").child("user").setValue(appUser.getUsername());
+                        userRef = db.getUserInstance(appUser.getUsername());
+                        userRef.child("connection").child("user").setValue(cUsername);
+                        userRef.child("connection").child("status").setValue("requesting");
                     }
                 }
 
