@@ -212,7 +212,12 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
 
     private void writeDataToSQLite(SubcategoryType type, boolean isFavorite)
     {
-        String label = mItemLabel.getText().toString();
+        String label = "";
+        if(mItemLabel.getVisibility() == View.VISIBLE)
+            label = mItemLabel.getText().toString();
+        else
+            label = mSpinner.getSelectedItem().toString();
+
         String value = mItemValue.getText().toString();
         String table = "";
         BaseLikeableItem item = null;

@@ -35,6 +35,8 @@ public class GlobalResources
     public static final String[] HobbyTableNames = new String[] {"IndoorHobbies", "OutdoorHobbies", "SportsTeams"};
     public static final String[] MedicalTableNames = new String[] {"Allergies", "Phobias"};
 
+    public static final String[] MainCategories = new String[] {"Entertainment", "Fashion", "Food", "Hobby", "Medical"};
+
     public static void addToGlobalSubcategories(MainCategoryType main, Subcategory sub)
     {
         List<Subcategory> lst;

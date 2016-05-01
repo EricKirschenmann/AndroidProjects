@@ -113,26 +113,6 @@ public class HomeActivity extends AppCompatActivity
 		}
 	}
 
-	private void addDataItem(SubcategoryType subcategory, BaseLikeableItem item)
-	{
-		List<BaseLikeableItem> list;
-		//if there are no entries for a movie then the list will be null
-		if(appUserData.get(subcategory) == null)
-		{
-			list = new ArrayList<>(); // use an empty list
-			list.add(item);
-			appUserData.put(subcategory, list); //create new entry for movies
-		}
-		else //add to an already define list
-		{
-			list = appUserData.get(subcategory);
-			list.add(item);
-		}
-
-		userRepo.setDataItems(appUserData);
-		appUser.setDataItemRepository(userRepo);
-	}
-
 	private void syncSQLiteToFirebase()
 	{
 		Map<String, Map<String, String>> firebaseMap = new HashMap<>();
@@ -140,8 +120,9 @@ public class HomeActivity extends AppCompatActivity
 
 		for (Map.Entry entry: appUserData.entrySet())
 		{
+			String sub = SubcategoryType.getFirebaseStringFromType((SubcategoryType)entry.getKey());
 			subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(),
-					entry.getKey().toString().toLowerCase());
+					sub);
 
 			List<BaseLikeableItem> items = (List<BaseLikeableItem>) entry.getValue();
 			for (BaseLikeableItem item : items)
