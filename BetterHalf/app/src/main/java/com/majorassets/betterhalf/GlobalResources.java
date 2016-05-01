@@ -1,10 +1,8 @@
 package com.majorassets.betterhalf;
 
 import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
-import com.majorassets.betterhalf.Model.MainCategory;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.Subcategory;
-import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
 import java.util.ArrayList;
