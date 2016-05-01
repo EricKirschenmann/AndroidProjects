@@ -116,7 +116,7 @@ public class LoginHelperActivity extends AppCompatActivity
         return null;
     }
 
-    private void readUserDataFromSQLite(User user)
+    public void readUserDataFromSQLite(User user)
     {
         try
         {
@@ -127,6 +127,10 @@ public class LoginHelperActivity extends AppCompatActivity
             }
 
             itemsDAL.getAllUserEntertainmentItems(user.getID(), user.getDataItemRepository().getDataItems());
+            itemsDAL.getAllUserFashionItems(user.getID(), user.getDataItemRepository().getDataItems());
+            itemsDAL.getAllUserFoodItems(user.getID(), user.getDataItemRepository().getDataItems());
+            itemsDAL.getAllUserHobbyItems(user.getID(), user.getDataItemRepository().getDataItems());
+            itemsDAL.getAllUserMedicalItems(user.getID(), user.getDataItemRepository().getDataItems());
         }
         catch (Exception e)
         {

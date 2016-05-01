@@ -65,14 +65,15 @@ public class HomeActivity extends AppCompatActivity
 		userRepo = appUser.getDataItemRepository();
 		appUserData = userRepo.getDataItems();
 
-		//syncSQLiteToFirebase();
+		syncSQLiteToFirebase();
 	}
 
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
-		//syncSQLiteToFirebase();
+
+		syncSQLiteToFirebase();
 	}
 
 	@Override
@@ -113,45 +114,26 @@ public class HomeActivity extends AppCompatActivity
 		}
 	}
 
-	private void addDataItem(SubcategoryType subcategory, BaseLikeableItem item)
-	{
-		List<BaseLikeableItem> list;
-		//if there are no entries for a movie then the list will be null
-		if(appUserData.get(subcategory) == null)
-		{
-			list = new ArrayList<>(); // use an empty list
-			list.add(item);
-			appUserData.put(subcategory, list); //create new entry for movies
-		}
-		else //add to an already define list
-		{
-			list = appUserData.get(subcategory);
-			list.add(item);
-		}
-
-		userRepo.setDataItems(appUserData);
-		appUser.setDataItemRepository(userRepo);
-	}
-
 	private void syncSQLiteToFirebase()
 	{
 		Map<String, Map<String, String>> firebaseMap = new HashMap<>();
-		Map<String, String> internalMap = new HashMap<>();
+		Map<String, String> internalMap;
 
 		for (Map.Entry entry: appUserData.entrySet())
 		{
-			subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(),
-					entry.getKey().toString().toLowerCase());
+			String sub = SubcategoryType.getFirebaseStringFromType((SubcategoryType)entry.getKey());
+			subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(), sub);
 
 			List<BaseLikeableItem> items = (List<BaseLikeableItem>) entry.getValue();
 			for (BaseLikeableItem item : items)
 			{
+				internalMap = new HashMap<>();
 				internalMap.put(item.getLabel(), item.getValue());
 				firebaseMap.put(item.getID(), internalMap);
 			}
+
 			subcategoryInstance.setValue(firebaseMap);
 
-			internalMap.clear();
 			firebaseMap.clear();
 		}
 	}

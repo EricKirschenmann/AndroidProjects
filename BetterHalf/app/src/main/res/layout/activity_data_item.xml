@@ -47,5 +47,5 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
         android:src="@mipmap/ic_add_item"
-        app:layout_behavior="com.majorassets.betterhalf.ScrollAwareFABBehavior"/>
+        app:layout_behavior="com.majorassets.betterhalf.ScrollAwareFabBehavior"/>
 </android.support.design.widget.CoordinatorLayout>

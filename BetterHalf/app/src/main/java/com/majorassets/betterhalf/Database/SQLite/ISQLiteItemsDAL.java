@@ -12,7 +12,9 @@ import java.util.UUID;
 /**
  * Created by Marissa on 4/20/2016.
  */
-public interface ISQLiteItemsDAL {
+public interface ISQLiteItemsDAL
+{
+    int getItemID(BaseLikeableItem item, String tableName);
     void addItem(BaseLikeableItem item, String tableName);
     void addItem(BaseDataItem item, String tableName);
     void updateItem(BaseLikeableItem item, String tableName, String colUUID);
@@ -26,4 +28,7 @@ public interface ISQLiteItemsDAL {
 
     void getAllUserEntertainmentItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items);
     void getAllUserFashionItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items);
+    void getAllUserFoodItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items);
+    void getAllUserHobbyItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items);
+    void getAllUserMedicalItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items);
 }

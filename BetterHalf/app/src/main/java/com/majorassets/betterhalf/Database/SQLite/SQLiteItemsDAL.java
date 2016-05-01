@@ -1,6 +1,7 @@
 package com.majorassets.betterhalf.Database.SQLite;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.CursorWrapper;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -53,6 +54,26 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     */
 
 
+    public int getItemID(BaseLikeableItem item, String tableName)
+    {
+        int ID = 0;
+        BaseItemCursorWrapper cursor = SQLiteProvider.queryItemID(tableName,
+                            DataDBSchema.BaseTable.Cols.VALUE + "= ?", new String[] {item.getValue()});
+        try
+        {
+            if(cursor.getCount() == 0)
+                return -1;
+
+            cursor.moveToFirst();
+            ID = Integer.parseInt(cursor.getItem().getID());
+        }
+        catch (SQLException ex)
+        {
+            Log.d("ERROR", ex.getMessage());
+        }
+
+        return ID;
+    }
 
     // Add an item to database
     public void addItem(BaseDataItem item, String tableName){
@@ -83,7 +104,7 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
 
     // Change an existing item
     public void updateItem(BaseLikeableItem item, String tableName, String colUUID){
-        String itemID = item.getID().toString();
+        String itemID = item.getID();
         ContentValues values = SQLiteProvider.getDataContentValues(item);
 
         db.update(tableName, values, colUUID + " = ?", new String[] {itemID});
@@ -270,17 +291,20 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     {
         List<BaseLikeableItem> list;
         SubcategoryType subType = SubcategoryType.getTypeFromTitle(tableName);
+
+        BaseLikeableItem itemToAdd = cursor.getItem();
         //if there are no entries for a movie then the list will be null
         if(items.get(subType) == null)
         {
             list = new ArrayList<>(); // use an empty list
-            list.add(cursor.getItem());
+            list.add(itemToAdd);
+
             items.put(subType, list); //create new entry for movies
         }
         else //add to an already define list
         {
             list = items.get(subType);
-            list.add(cursor.getItem());
+            list.add(itemToAdd);
         }
     }
 
@@ -316,17 +340,164 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     {
         List<BaseLikeableItem> list;
         SubcategoryType subType = SubcategoryType.getTypeFromTitle(tableName);
-        //if there are no entries for a movie then the list will be null
+
         if(items.get(subType) == null)
         {
             list = new ArrayList<>(); // use an empty list
             list.add(cursor.getItem());
-            items.put(subType, list); //create new entry for movies
+            items.put(subType, list); //create new entry
         }
         else //add to an already define list
         {
             list = items.get(subType);
             list.add(cursor.getItem());
+        }
+    }
+
+    @Override
+    public void getAllUserFoodItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items)
+    {
+        for (String table: GlobalResources.FoodTableNames)
+        {
+            FoodCursorWrapper cursor = SQLiteProvider.queryFoodItem(table,
+                    DataDBSchema.BaseTable.Cols.USER_ID + "= ?", new String[]{userId.toString()});
+
+            try
+            {
+                if (cursor.getCount() == 0)
+                    continue;
+
+                cursor.moveToFirst();
+
+                //iterate the cursor over each record in DB
+                while (!cursor.isAfterLast())
+                {
+                    addFoodItem(table, cursor, items);
+                    cursor.moveToNext();
+                }
+            } finally
+            {
+                cursor.close();
+            }
+        }
+    }
+
+    private void addFoodItem(String tableName, FoodCursorWrapper cursor, Map<SubcategoryType, List<BaseLikeableItem>> items)
+    {
+        List<BaseLikeableItem> list;
+        SubcategoryType subType = SubcategoryType.getTypeFromTitle(tableName);
+
+        BaseLikeableItem itemToAdd = cursor.getItem();
+        //if there are no entries for a movie then the list will be null
+        if(items.get(subType) == null)
+        {
+            list = new ArrayList<>(); // use an empty list
+            list.add(itemToAdd);
+
+            items.put(subType, list); //create new entry for movies
+        }
+        else //add to an already define list
+        {
+            list = items.get(subType);
+            list.add(itemToAdd);
+        }
+    }
+
+    @Override
+    public void getAllUserHobbyItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items)
+    {
+        for (String table: GlobalResources.HobbyTableNames)
+        {
+            HobbiesCursorWrapper cursor = SQLiteProvider.queryHobbyItem(table,
+                    DataDBSchema.BaseTable.Cols.USER_ID + "= ?", new String[]{userId.toString()});
+
+            try
+            {
+                if (cursor.getCount() == 0)
+                    continue;
+
+                cursor.moveToFirst();
+
+                //iterate the cursor over each record in DB
+                while (!cursor.isAfterLast())
+                {
+                    addHobbyItem(table, cursor, items);
+                    cursor.moveToNext();
+                }
+            } finally
+            {
+                cursor.close();
+            }
+        }
+    }
+
+    private void addHobbyItem(String tableName, HobbiesCursorWrapper cursor, Map<SubcategoryType, List<BaseLikeableItem>> items)
+    {
+        List<BaseLikeableItem> list;
+        SubcategoryType subType = SubcategoryType.getTypeFromTitle(tableName);
+
+        BaseLikeableItem itemToAdd = cursor.getItem();
+        //if there are no entries for a movie then the list will be null
+        if(items.get(subType) == null)
+        {
+            list = new ArrayList<>(); // use an empty list
+            list.add(itemToAdd);
+
+            items.put(subType, list); //create new entry for movies
+        }
+        else //add to an already define list
+        {
+            list = items.get(subType);
+            list.add(itemToAdd);
+        }
+    }
+
+    @Override
+    public void getAllUserMedicalItems(UUID userId, Map<SubcategoryType, List<BaseLikeableItem>> items)
+    {
+        for (String table: GlobalResources.MedicalTableNames)
+        {
+            MedicalCursorWrapper cursor = SQLiteProvider.queryMedicalItem(table,
+                    DataDBSchema.BaseTable.Cols.USER_ID + "= ?", new String[]{userId.toString()});
+
+            try
+            {
+                if (cursor.getCount() == 0)
+                    continue;
+
+                cursor.moveToFirst();
+
+                //iterate the cursor over each record in DB
+                while (!cursor.isAfterLast())
+                {
+                    addMedicalItem(table, cursor, items);
+                    cursor.moveToNext();
+                }
+            } finally
+            {
+                cursor.close();
+            }
+        }
+    }
+
+    private void addMedicalItem(String tableName, MedicalCursorWrapper cursor, Map<SubcategoryType, List<BaseLikeableItem>> items)
+    {
+        List<BaseLikeableItem> list;
+        SubcategoryType subType = SubcategoryType.getTypeFromTitle(tableName);
+
+        BaseLikeableItem itemToAdd = cursor.getItem();
+        //if there are no entries for a movie then the list will be null
+        if(items.get(subType) == null)
+        {
+            list = new ArrayList<>(); // use an empty list
+            list.add(itemToAdd);
+
+            items.put(subType, list); //create new entry for movies
+        }
+        else //add to an already define list
+        {
+            list = items.get(subType);
+            list.add(itemToAdd);
         }
     }
 

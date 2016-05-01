@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.R;
 
@@ -73,10 +72,12 @@ public class DataItemArrayAdapter extends BaseAdapter {
 
         holder.key.setText(objects.get(i).getLabel());
         holder.label.setText(objects.get(i).getValue());
-        if(!objects.get(i).getValue().equals("Phil Collins")) {
+
+        if(!objects.get(i).isFavorite()) {
             holder.star.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
-            holder.star.setColorFilter(view.getResources().getColor(R.color.secondary_text));
+            holder.star.setColorFilter(R.color.secondary_text);
         }
+
         return view;
 
     }

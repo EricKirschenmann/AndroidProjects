@@ -25,6 +25,7 @@ import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 import com.majorassets.betterhalf.R;
+import com.majorassets.betterhalf.SingleItemEditActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,8 +51,6 @@ public class DataItemActivityFragment extends Fragment {
 
     private Bundle args;
     private ListView mListView;
-    //private RecyclerView mListView;
-    private ArrayAdapter<String> mArrayAdapter;
     private DataItemArrayAdapter mDataItemArrayAdapter;
     private DataItemPagerAdapter mDataItemPagerAdapter;
 
@@ -61,6 +60,12 @@ public class DataItemActivityFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_PAGE = "com.majorassets.betterhalf.page";
+
+    /**
+     * Argument when a user wishes to edit a specific item. The current data is passed forward to
+     * SingleItemEditActivty
+     */
+    private static final String EDIT = "com.majorassets.betterhalf.edit";
 
     public DataItemActivityFragment() {
     }
@@ -120,9 +125,8 @@ public class DataItemActivityFragment extends Fragment {
                 final String title = mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE)-1).toString();
                 final SubcategoryType type = SubcategoryType.getTypeFromTitle(title.replace(" ", ""));
                 final BaseDataItem item = data.get(type).get(position);
-                final MainCategoryType mainCat = MainCategoryType.getTypeFromString(getActivity().getTitle().toString());
 
-                final String tableName = SubcategoryType.getStringFromType(mainCat, type);
+                final String tableName = SubcategoryType.getDisplayableStringsFromType(type, true);
 
                 final SQLiteItemsDAL itemsDAL = dal;
 
@@ -144,7 +148,8 @@ public class DataItemActivityFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Edit here
-                                //Go to update page
+                                Intent editIntent = new Intent(getContext(), SingleItemEditActivity.class);
+                                editIntent.putExtra(EDIT, item.getValue());
                             }
                         });
                 // Creating the alertDialog
