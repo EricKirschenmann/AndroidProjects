@@ -107,8 +107,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
     }
 
     private void setSpinner() {
-        if(category.equals("Books"))
-        {
+        if(category.equals("Books")) {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -117,8 +116,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
         }
-        else if(category.equals("Games"))
-        {
+        else if(category.equals("Games")) {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -127,8 +125,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
         }
-        else if(category.equals("Movies"))
-        {
+        else if(category.equals("Movies")) {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -137,8 +134,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
         }
-        else if(category.equals("Music"))
-        {
+        else if(category.equals("Music")) {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -147,8 +143,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
         }
-        else if(category.equals("Theater"))
-        {
+        else if(category.equals("Theater")) {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -157,8 +152,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
         }
-        else if(category.equals("TV Shows"))
-        {
+        else if(category.equals("TV Shows")) {
             mItemLabel.setVisibility(View.INVISIBLE);
             mSpinner.setVisibility(View.VISIBLE);
             ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
@@ -202,7 +196,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
                 String subcat = getActivity().getTitle().toString().replace(" ", ""); //take out spaces
                 SubcategoryType type = SubcategoryType.getTypeFromTitle(subcat);
 
-                //writeDatatoFirebase();
+                //writeDataToFirebase();
                 writeDataToSQLite(type, mFavorite.isChecked());
 
                 getActivity().finish();
@@ -212,7 +206,13 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
 
     private void writeDataToSQLite(SubcategoryType type, boolean isFavorite)
     {
-        String label = mItemLabel.getText().toString();
+        String label = "";
+        if(mItemLabel.getVisibility() == View.VISIBLE) {
+            label = mItemLabel.getText().toString();
+        } else {
+            label = key;
+        }
+
         String value = mItemValue.getText().toString();
         String table = "";
         BaseLikeableItem item = null;
