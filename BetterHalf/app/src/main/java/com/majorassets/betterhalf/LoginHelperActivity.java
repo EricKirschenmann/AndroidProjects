@@ -19,7 +19,6 @@ import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
