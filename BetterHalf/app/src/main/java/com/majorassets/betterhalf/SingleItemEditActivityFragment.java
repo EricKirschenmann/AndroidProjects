@@ -314,9 +314,11 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
                 break;
         }
 
-        item.setIsFavorite(isFavorite);
-        item.setUserID(appUser.getID()); //create relationship between user and data tables
-        dal.addItem(item, table);
+        if(item != null) {
+            item.setIsFavorite(isFavorite);
+            item.setUserID(appUser.getID()); //create relationship between user and data tables
+            dal.addItem(item, table);
+        }
     }
 
     private void writeDatatoFirebase(Subcategory sub) {
