@@ -1,7 +1,8 @@
 package com.majorassets.betterhalf;
 
 
-
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,7 @@ import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
+import com.majorassets.betterhalf.Model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -45,6 +47,9 @@ public class HomeActivityFragment extends Fragment
 
 	private Map<SubcategoryType, List<BaseLikeableItem>> userDataItems;
 	private FirebaseProvider db;
+	private Firebase mRootRef;
+
+	private User appUser;
 
 	public static final String TITLE_EXTRA = "com.majorassets.betterhalf.title";
 
@@ -55,8 +60,9 @@ public class HomeActivityFragment extends Fragment
 
 		initializeComponents(view);
 		createEvents();
-
+		checkConnectionRequest();
 		return view;
+
 	}
 
 	private void initializeComponents(View view)
@@ -184,5 +190,52 @@ public class HomeActivityFragment extends Fragment
 		Intent intent = new Intent(getContext(), DataItemActivity.class);
 		intent.putExtra(TITLE_EXTRA, title);
 		return intent;
+	}
+
+	//Check if a request to connect has been made
+	public void checkConnectionRequest() {
+		//Instantiate necessary resources
+		final FirebaseProvider db = FirebaseProvider.getDataProvider();
+		final User appUser = GlobalResources.AppUser;
+		final Firebase thisUserRef = db.getUserInstance(appUser.getUsername());
+
+		thisUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot) {
+				String statusString = dataSnapshot.child("connection").child("status").getValue().toString();
+				if(statusString.equals("pending")){
+					String userRequesting = dataSnapshot.child("connection").child("user").getValue().toString();
+					final Firebase userRequestingRef = db.getUserInstance(userRequesting);
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+					builder.setMessage("Connect with " + userRequesting + "?")
+							.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int id) {
+									thisUserRef.child("connection").child("status").setValue("connected");
+									userRequestingRef.child("connection").child("status").setValue("connected");
+								}
+							})
+							.setNegativeButton("Ignore", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int id) {
+									thisUserRef.child("connection").removeValue();
+									userRequestingRef.child("connection").removeValue();
+								}
+							});
+
+					AlertDialog dialog = builder.create();
+					dialog.show();
+				}
+				else{
+					//Fill with SO data?
+				}
+			}
+
+			@Override
+			public void onCancelled(FirebaseError firebaseError) {
+
+			}
+		});
+
 	}
 }

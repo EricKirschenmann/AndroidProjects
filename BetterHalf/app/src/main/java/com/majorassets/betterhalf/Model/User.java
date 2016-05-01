@@ -3,7 +3,6 @@ package com.majorassets.betterhalf.Model;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.LoginHelperActivity;
 
-import java.util.List;
 import java.util.UUID;
 
 
