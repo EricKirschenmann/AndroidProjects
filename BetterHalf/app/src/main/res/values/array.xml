@@ -42,24 +42,26 @@
 
     <!--string arrays for Fashion category-->
     <string-array name="accessories_array">
-
+        <item>Brand</item>
     </string-array>
 
     <string-array name="clothing_array">
-
+        <item>Brand</item>
     </string-array>
 
     <string-array name="jewelry_array">
-
+        <item>Brand</item>
     </string-array>
 
     <string-array name="shoes_array">
-
+        <item>Brand</item>
+        <item>Size</item>
     </string-array>
 
     <!--string arrays for Food category-->
     <string-array name="drinks_array">
-
+        <item>Hot</item>
+        <item>Cold</item>
     </string-array>
 
     <string-array name="entrees_array">
@@ -67,7 +69,8 @@
     </string-array>
 
     <string-array name="restaurants_array">
-
+        <item>Type</item>
+        <item>Name</item>
     </string-array>
 
     <string-array name="sides_array">
@@ -88,7 +91,9 @@
     </string-array>
 
     <string-array name="sports_array">
-
+        <item>Baseball</item>
+        <item>Football</item>
+        <item>Soccer</item>
     </string-array>
 
     <!--strings array for Medical category-->
@@ -97,11 +102,15 @@
     </string-array>
 
     <string-array name="illnesses_array">
-
+        <item>Disability</item>
+        <item>Chronic</item>
+        <item>Viral</item>
+        <item>Bacterial</item>
     </string-array>
 
     <string-array name="medications_array">
-
+        <item>Prescriptions</item>
+        <item>Pain Killers</item>
     </string-array>
 
     <string-array name="phobias_array">
