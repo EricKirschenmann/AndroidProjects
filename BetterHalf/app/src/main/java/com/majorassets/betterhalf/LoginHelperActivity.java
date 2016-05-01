@@ -1,9 +1,9 @@
 package com.majorassets.betterhalf;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.firebase.client.DataSnapshot;
@@ -12,28 +12,26 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
-import com.majorassets.betterhalf.Model.BaseDataItem;
-import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
-import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class LoginHelperActivity extends AppCompatActivity
 {
     private FirebaseProvider firebaseDB;
     private SQLiteProvider sqliteDB;
-    private SQLiteUserDAL dal;
+    private SQLiteUserDAL userDAL;
+    private SQLiteItemsDAL itemsDAL;
 
     private User appUser;
-    private Map<SubcategoryType, List<BaseDataItem>> appUserData;
-    private DataItemRepository userRepo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,10 +44,11 @@ public class LoginHelperActivity extends AppCompatActivity
         sqliteDB = SQLiteProvider.getSQLiteProvider(this.getApplicationContext());
 
         //to query sqlite
-        dal = new SQLiteUserDAL(sqliteDB.getDatabase());
+        userDAL = new SQLiteUserDAL(sqliteDB.getDatabase());
+        itemsDAL = new SQLiteItemsDAL(sqliteDB.getDatabase());
 
         //these represent all users that have ever logged in on the same device
-        GlobalResources.Users = dal.getAllUsers();
+        GlobalResources.Users = userDAL.getAllUsers();
         //this represents the global user - the one last logged in, using the app - accessible from anywhere
         GlobalResources.AppUser = getLastLoggedInUser(GlobalResources.Users);
 
@@ -57,18 +56,12 @@ public class LoginHelperActivity extends AppCompatActivity
         if(GlobalResources.AppUser != null)
         {
             appUser = GlobalResources.AppUser;
-            //initialize repository
-            userRepo = DataItemRepository.getDataItemRepository();
-            //initialize item hashmap
-            userRepo.setDataItems(new HashMap<SubcategoryType, List<BaseDataItem>>());
-            //assign repo to app user
-            appUser.setDataItemRepository(userRepo);
-            //use variable for data instead of get method...
-            appUserData = userRepo.getDataItems();
 
             //generate the username from user's email
-            String username = generateUsername(appUser.getEmail());
+            String username = appUser.getUsername();
             appUser.setUsername(username);
+
+            readUserDataFromSQLite(appUser);
 
             //retrieve datasnapshot of user instance (includes info and data sub trees)
             Firebase ref = firebaseDB.getUserInstance(username);
@@ -85,10 +78,7 @@ public class LoginHelperActivity extends AppCompatActivity
                             startLoginActivity();
                         //otherwise retrieve the user's data and go straight to the home screen
                         else
-                        {
-                            getUserData(firebaseDB.getUserDataInstance(appUser.getUsername()));
                             startHomeActivity();
-                        }
                     }
 
                     @Override
@@ -126,6 +116,28 @@ public class LoginHelperActivity extends AppCompatActivity
         return null;
     }
 
+    public void readUserDataFromSQLite(User user)
+    {
+        try
+        {
+            if (user.getDataItemRepository() == null)
+            {
+                user.setDataItemRepository(DataItemRepository.getDataItemRepository());
+                user.getDataItemRepository().setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
+            }
+
+            itemsDAL.getAllUserEntertainmentItems(user.getID(), user.getDataItemRepository().getDataItems());
+            itemsDAL.getAllUserFashionItems(user.getID(), user.getDataItemRepository().getDataItems());
+            itemsDAL.getAllUserFoodItems(user.getID(), user.getDataItemRepository().getDataItems());
+            itemsDAL.getAllUserHobbyItems(user.getID(), user.getDataItemRepository().getDataItems());
+            itemsDAL.getAllUserMedicalItems(user.getID(), user.getDataItemRepository().getDataItems());
+        }
+        catch (Exception e)
+        {
+            Log.e("Error", e.getMessage());
+        }
+    }
+
     private void startHomeActivity()
     {
         Intent homeScreen = new Intent(LoginHelperActivity.this, HomeActivity.class);
@@ -140,68 +152,6 @@ public class LoginHelperActivity extends AppCompatActivity
         loginScreen.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(loginScreen);
         finish();
-    }
-
-    public void getUserData(Firebase ref)
-    {
-        ref.addListenerForSingleValueEvent(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                String parent;
-                DataSnapshot next;
-                SubcategoryType subcategory;
-                BaseDataItem item;
-                //"drill down" to leaf nodes
-                while(dataSnapshot.hasChildren())
-                {
-                    parent = dataSnapshot.getKey();
-                    next = dataSnapshot.getChildren().iterator().next();
-                    subcategory = SubcategoryType.getTypeFromString(parent);
-                    switch (subcategory)
-                    {
-                        //TODO: parse out datasnapshot into separate objects
-                        case MOVIE:
-                            item = new MovieItem(next.getKey(), next.getValue().toString());
-                            addDataItem(subcategory, item);
-                            dataSnapshot = next;
-                            break;
-                        case MUSIC:
-                            item = new MusicItem(next.getKey(), next.getValue().toString());
-                            addDataItem(subcategory, item);
-                            dataSnapshot = next;
-                            break;
-                        default:
-                            dataSnapshot = next; //parent was some other folder; keep going
-                            break; //error check here
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError)
-            {
-
-            }
-        });
-    }
-
-    private void addDataItem(SubcategoryType subcategory, BaseDataItem item)
-    {
-        List<BaseDataItem> list;
-        //if there are no entries for a movie then the list will be null
-        if(appUserData.get(subcategory) == null)
-        {
-            list = new ArrayList<>(); // use an empty list
-            list.add(item);
-            appUserData.put(subcategory, list); //create new entry for movies
-        }
-        else //add to an already define list
-        {
-            list = appUserData.get(subcategory);
-            list.add(item);
-        }
     }
 
     /* UTILITY */

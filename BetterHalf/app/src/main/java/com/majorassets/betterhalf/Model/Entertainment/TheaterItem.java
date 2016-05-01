@@ -5,9 +5,9 @@ import com.majorassets.betterhalf.Model.BaseLikeableItem;
 /**
  * Created by dgbla on 1/29/2016.
  */
-public class TheatreItem extends EntertainmentItem
+public class TheaterItem extends EntertainmentItem
 {
-	public TheatreItem(String label, String value) {
+	public TheaterItem(String label, String value) {
 		super(label, value);
 	}
 }

@@ -18,6 +18,12 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin">
 
+                <Spinner
+                    android:id="@+id/key_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"/>
+
                 <EditText
                     android:id="@+id/item_name_edit"
                     android:layout_width="match_parent"
@@ -29,6 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/item_name_edit"
+                    android:inputType="textCapWords"
                     android:hint="@string/item_value_prompt"/>
 
                 <CheckBox
@@ -45,5 +52,10 @@
                     android:layout_below="@+id/favorite_checkbox"
                     android:text="Add"/>
             </RelativeLayout>
+
+    <!--Spinner
+        android:id="@+id/key_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/-->
 
 </LinearLayout>

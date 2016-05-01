@@ -1,10 +1,10 @@
 package com.example.android.alertdialogs;
 
-        import android.app.AlertDialog;
-        import android.app.Dialog;
-        import android.app.DialogFragment;
-        import android.content.DialogInterface;
-        import android.os.Bundle;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.os.Bundle;
 
 /**
  * Created by Eric on 4/19/16.

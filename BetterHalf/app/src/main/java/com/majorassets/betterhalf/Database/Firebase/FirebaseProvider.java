@@ -71,6 +71,12 @@ public class FirebaseProvider
         return userDataInstance;
     }
 
+    public Firebase getUserDataSubcategoryInstance(String username, String subcategory)
+    {
+        subcategoryInstance = new Firebase(FIREBASE_URL + "users/" + username + "/data/" + subcategory);
+        return subcategoryInstance;
+    }
+
     //return all the attributes of the subcategories
     public Firebase getSubcategoryInstance(String mainCategory)
     {

@@ -14,27 +14,25 @@ import java.util.UUID;
  * Temporary class to create a dummy list of data items
  * Used for debugging before database was connected
  */
-public class TestDataItemList
-{
+public class TestDataItemList {
 	private List<BaseDataItem> mItemList;
 	private static TestDataItemList mTestList;
 
 
-	private TestDataItemList(){
+	private TestDataItemList() {
 		mItemList = new ArrayList<BaseDataItem>();
 		populateList();
 	}
 
 	//use of a singleton
-	public static TestDataItemList get(Context context)
-	{
+	public static TestDataItemList get(Context context) {
 		if(mTestList == null)
 			mTestList = new TestDataItemList();
 
 		return mTestList;
 	}
 
-	private void populateList(){
+	private void populateList() {
 		MovieItem favMovie = new MovieItem("Movie", "Inception");
 		favMovie.setIsFavorite(true);
 		MovieItem favDirector = new MovieItem("Director", "Christopher Nolan");
@@ -52,8 +50,7 @@ public class TestDataItemList
 	 * @param id - the ID we are looking for
 	 * @return The item with the associated id
 	 */
-	public BaseDataItem getItem(UUID id)
-	{
+	public BaseDataItem getItem(UUID id) {
 		for(BaseDataItem item : mItemList)
 			if(item.getID().equals(id))
 				return item;

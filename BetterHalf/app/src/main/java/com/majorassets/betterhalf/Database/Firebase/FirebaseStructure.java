@@ -11,4 +11,5 @@ public class FirebaseStructure
     public static final String FIRSTNAME = "firstName";
     public static final String LASTNAME = "lastName";
     public static final String INFO = "info";
+    public static final String DATA = "data";
 }

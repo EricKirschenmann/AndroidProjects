@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Better Half</string>
+    <string name="app_name">Otter Half</string>
     <string name="welcome_txt">Welcome to Better Half!</string>
     <string name="action_settings">Settings</string>
     <string name="action_logout">Logout</string>
@@ -49,5 +49,17 @@
     <string name="connect_with_txt">Please enter the username of the user you would like to link accounts with:</string>
     <string name="connect_input_txt">Username:</string>
     <string name="connect_button">Connect</string>
+
+    <!--strings for Sorting -->
+    <string name="action_sort">Sort</string>
+    <string name="action_sort_val">Sort by name</string>
+    <string name="action_sort_cat">Sort by type</string>
+    <string name="action_sort_fav">Sort by favorite</string>
+
+    <string name="dialog_delete_item">Would you like to delete or edit this item?</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="title_activity_data_item">DataItemActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>

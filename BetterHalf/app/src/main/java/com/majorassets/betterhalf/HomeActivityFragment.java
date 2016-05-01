@@ -19,8 +19,7 @@ import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
-import com.majorassets.betterhalf.Model.BaseDataItem;
-import com.majorassets.betterhalf.Model.MainCategory;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
@@ -46,7 +45,7 @@ public class HomeActivityFragment extends Fragment
 	private CardView mHobbyCardView;
 	private CardView mMedicalCardView;
 
-	private Map<SubcategoryType, List<BaseDataItem>> userDataItems;
+	private Map<SubcategoryType, List<BaseLikeableItem>> userDataItems;
 	private FirebaseProvider db;
 	private Firebase mRootRef;
 
@@ -85,11 +84,9 @@ public class HomeActivityFragment extends Fragment
 
 		//right now have to call this 5 times - TODO: make dynamic
 		//String mainCategory = mEntertainmentButton.getText().toString().toLowerCase();
-		getSubcategoryData(db.getSubcategoryInstance(mEntertainmentText.getText().toString()));
-		getSubcategoryData(db.getSubcategoryInstance(mFashionText.getText().toString()));
-		getSubcategoryData(db.getSubcategoryInstance(mFoodText.getText().toString()));
-		getSubcategoryData(db.getSubcategoryInstance(mHobbyText.getText().toString()));
-		getSubcategoryData(db.getSubcategoryInstance(mMedicalText.getText().toString()));
+
+		for(String mainCategory : GlobalResources.MainCategories)
+			getSubcategoryData(db.getSubcategoryInstance(mainCategory));
 	}
 
 	private void createEvents()
@@ -147,10 +144,9 @@ public class HomeActivityFragment extends Fragment
 
 	private void launchDataItemActivity(String title)
 	{
-		MainCategoryType type = MainCategoryType.getTypeFromString(title);
-		GlobalResources.mainTypePressed = type;
+		GlobalResources.mainTypePressed = MainCategoryType.getTypeFromString(title);
 
-		Intent intent = newIntent(new MainCategory(type));
+		Intent intent = newIntent(title);
 		startActivity(intent);
 	}
 
@@ -189,12 +185,10 @@ public class HomeActivityFragment extends Fragment
 		});
 	}
 
-	private Intent newIntent(MainCategory mainCategory)
+	private Intent newIntent(String title)
 	{
-		Bundle args = new Bundle();
 		Intent intent = new Intent(getContext(), DataItemActivity.class);
-		//args.putSerializable(TITLE_EXTRA, (Serializable)mainCategory);
-		//intent.putExtras(args);
+		intent.putExtra(TITLE_EXTRA, title);
 		return intent;
 	}
 
