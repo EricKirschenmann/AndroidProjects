@@ -60,7 +60,6 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
     private Button mAddButton;
     private Spinner mSpinner;
     private CheckBox mFavorite;
-    private DataItemActivityFragment mDataItemActivityFragment;
 
     private SQLiteProvider sqliteDB;
     private FirebaseProvider firebaseDB;
@@ -172,8 +171,135 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             mSpinner.setAdapter(adapter);
             mSpinner.setOnItemSelectedListener(this);
-        }
-        else {
+        } else if(category.equals("Accessories")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.accessories_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Clothing")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.clothing_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Jewelry")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.jewelry_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Shoes")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.shoes_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Drinks")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.drinks_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Entrees")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.entrees_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Restaurants")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.restaurants_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Sides")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.sides_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Snacks")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.snacks_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Indoor Hobbies")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.indoor_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Outdoor Hobbies")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.tvshow_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Sports Teams")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.sports_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Allergies")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.allergies_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Illnesses")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.illnesses_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Medications")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.medications_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else if(category.equals("Phobias")) {
+            mItemLabel.setVisibility(View.INVISIBLE);
+            mSpinner.setVisibility(View.VISIBLE);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                    R.array.phobias_array, android.R.layout.simple_spinner_dropdown_item);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            mSpinner.setAdapter(adapter);
+            mSpinner.setOnItemSelectedListener(this);
+        } else {
             mSpinner.setVisibility(View.INVISIBLE);
         }
     }
