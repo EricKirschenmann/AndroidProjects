@@ -65,14 +65,15 @@ public class HomeActivity extends AppCompatActivity
 		userRepo = appUser.getDataItemRepository();
 		appUserData = userRepo.getDataItems();
 
-		//syncSQLiteToFirebase();
+		syncSQLiteToFirebase();
 	}
 
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
-		//syncSQLiteToFirebase();
+
+		syncSQLiteToFirebase();
 	}
 
 	@Override
@@ -116,23 +117,23 @@ public class HomeActivity extends AppCompatActivity
 	private void syncSQLiteToFirebase()
 	{
 		Map<String, Map<String, String>> firebaseMap = new HashMap<>();
-		Map<String, String> internalMap = new HashMap<>();
+		Map<String, String> internalMap;
 
 		for (Map.Entry entry: appUserData.entrySet())
 		{
 			String sub = SubcategoryType.getFirebaseStringFromType((SubcategoryType)entry.getKey());
-			subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(),
-					sub);
+			subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(), sub);
 
 			List<BaseLikeableItem> items = (List<BaseLikeableItem>) entry.getValue();
 			for (BaseLikeableItem item : items)
 			{
+				internalMap = new HashMap<>();
 				internalMap.put(item.getLabel(), item.getValue());
 				firebaseMap.put(item.getID(), internalMap);
 			}
+
 			subcategoryInstance.setValue(firebaseMap);
 
-			internalMap.clear();
 			firebaseMap.clear();
 		}
 	}

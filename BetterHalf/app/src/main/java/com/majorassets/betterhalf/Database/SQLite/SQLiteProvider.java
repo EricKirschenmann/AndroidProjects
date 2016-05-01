@@ -90,6 +90,21 @@ public class SQLiteProvider
         return new UserCursorWrapper(cursor);
     }
 
+    public static BaseItemCursorWrapper queryItemID(String tableName, String whereClause, String[] whereArgs)
+    {
+        Cursor cursor = database.query(
+                tableName,
+                null,
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null
+        );
+
+        return new BaseItemCursorWrapper(cursor);
+    }
+
     public static EntertainmentCursorWrapper queryEntertainmentItem(String tableName, String whereClause, String[] whereArgs)
     {
         Cursor cursor = database.query(

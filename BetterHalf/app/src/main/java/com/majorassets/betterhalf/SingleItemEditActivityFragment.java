@@ -45,6 +45,11 @@ import com.majorassets.betterhalf.Model.Medical.PhobiasItem;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -64,7 +69,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
     private Firebase userDataRef;
 
     private User appUser;
-    private Subcategory subcategory;
+    private Map<SubcategoryType, List<BaseLikeableItem>> userDataMap;
 
     private String category;
     private String key;
@@ -87,6 +92,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
 
     private void initializeComponents(View view) {
         appUser = GlobalResources.AppUser;
+        userDataMap = appUser.getDataItemRepository().getDataItems();
 
         //data layer components
         firebaseDB = FirebaseProvider.getDataProvider();
@@ -202,9 +208,9 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
                 String subcat = getActivity().getTitle().toString().replace(" ", ""); //take out spaces
                 SubcategoryType type = SubcategoryType.getTypeFromTitle(subcat);
 
-                //writeDatatoFirebase();
                 writeDataToSQLite(type, mFavorite.isChecked());
 
+                //quit the activity and return to previous activity
                 getActivity().finish();
             }
         });
@@ -212,7 +218,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
 
     private void writeDataToSQLite(SubcategoryType type, boolean isFavorite)
     {
-        String label = "";
+        String label;
         if(mItemLabel.getVisibility() == View.VISIBLE)
             label = mItemLabel.getText().toString();
         else
@@ -322,10 +328,26 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         item.setIsFavorite(isFavorite);
         item.setUserID(appUser.getID()); //create relationship between user and data tables
         dal.addItem(item, table);
+
+        item.setID(String.valueOf(dal.getItemID(item, table)));
+        addItemToUserMap(type, item);
     }
 
-    private void writeDatatoFirebase(Subcategory sub) {
+    private void addItemToUserMap(SubcategoryType type, BaseLikeableItem item)
+    {
+        List<BaseLikeableItem> list;
 
+        if(userDataMap.get(type) == null)
+        {
+            list = new ArrayList<>();
+            list.add(item);
+            userDataMap.put(type, list);
+        }
+        else
+        {
+            list = userDataMap.get(type);
+            list.add(item);
+        }
     }
 
     @Override

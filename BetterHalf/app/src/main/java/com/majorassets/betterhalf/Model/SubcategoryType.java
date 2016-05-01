@@ -176,7 +176,7 @@ public enum SubcategoryType
             case CLOTHING:
                 return "Clothing";
             case SHOE:
-                return "ShoeS";
+                return "Shoes";
             case ACCESSORY:
                 return "Accessories";
             case JEWELRY:
