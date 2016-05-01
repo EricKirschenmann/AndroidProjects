@@ -3,9 +3,8 @@ package com.majorassets.betterhalf;
 
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +18,7 @@ import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
-import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
-import com.majorassets.betterhalf.Model.MainCategory;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;

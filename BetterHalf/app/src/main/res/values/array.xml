@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--string arrays for Entertainment category-->
     <string-array name="books_array">
         <item>Title</item>
         <item>Author</item>
@@ -14,7 +16,8 @@
     <string-array name="movies_array">
         <item>Title</item>
         <item>Genre</item>
-        <item>Procedure</item>
+        <item>Producer</item>
+        <item>Director</item>
     </string-array>
 
     <string-array name="music_array">
@@ -34,6 +37,75 @@
     <string-array name="tvshow_array">
         <item>Series</item>
         <item>Genre</item>
+    </string-array>
+
+
+    <!--string arrays for Fashion category-->
+    <string-array name="accessories_array">
+
+    </string-array>
+
+    <string-array name="clothing_array">
+
+    </string-array>
+
+    <string-array name="jewelry_array">
+
+    </string-array>
+
+    <string-array name="shoes_array">
+
+    </string-array>
+
+    <!--string arrays for Food category-->
+    <string-array name="drinks_array">
+
+    </string-array>
+
+    <string-array name="entrees_array">
+
+    </string-array>
+
+    <string-array name="restaurants_array">
+
+    </string-array>
+
+    <string-array name="sides_array">
+
+    </string-array>
+
+    <string-array name="snacks_array">
+
+    </string-array>
+
+    <!--strings array for Hobby category-->
+    <string-array name="indoor_array">
+
+    </string-array>
+
+    <string-array name="outdoor_array">
+
+    </string-array>
+
+    <string-array name="sports_array">
+
+    </string-array>
+
+    <!--strings array for Medical category-->
+    <string-array name="allergies_array">
+
+    </string-array>
+
+    <string-array name="illnesses_array">
+
+    </string-array>
+
+    <string-array name="medications_array">
+
+    </string-array>
+
+    <string-array name="phobias_array">
+
     </string-array>
 
 </resources>
