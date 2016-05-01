@@ -14,7 +14,6 @@ import android.widget.Spinner;
 
 import com.firebase.client.Firebase;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
-import com.majorassets.betterhalf.DataItemController.DataItemActivityFragment;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
@@ -55,7 +54,6 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
     private Button mAddButton;
     private Spinner mSpinner;
     private CheckBox mFavorite;
-    private DataItemActivityFragment mDataItemActivityFragment;
 
     private SQLiteProvider sqliteDB;
     private FirebaseProvider firebaseDB;
@@ -106,6 +104,12 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         setSpinner();
     }
 
+    /**
+     *     TODO: move everything they have in common towards the end
+     *     TODO: set spinner visible by default
+     *     TODO: remove top two lines of each if/else-if
+     *     TODO: remove spinner for: indoor/outdoor/phobias/etc and give default value
+     */
     private void setSpinner() {
         if(category.equals("Books")) {
             mItemLabel.setVisibility(View.INVISIBLE);
