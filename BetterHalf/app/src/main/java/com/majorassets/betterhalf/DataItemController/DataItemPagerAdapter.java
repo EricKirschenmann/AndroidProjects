@@ -34,6 +34,6 @@ public class DataItemPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         Subcategory sub = GlobalResources.Subcategories.get(GlobalResources.mainTypePressed).get(position);
-        return SubcategoryType.getStringFromType(sub.getMainType(), sub.getType());
+        return SubcategoryType.getDisplayableStringsFromType(sub.getType(), false);
     }
 }
