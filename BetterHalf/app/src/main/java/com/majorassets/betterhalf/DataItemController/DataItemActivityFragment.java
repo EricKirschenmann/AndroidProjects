@@ -110,7 +110,6 @@ public class DataItemActivityFragment extends Fragment
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-
                 final String title = mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE)-1).toString();
                 final SubcategoryType type = SubcategoryType.getTypeFromString(title.replace(" ", ""));
                 final BaseDataItem item = data.get(type).get(position);
