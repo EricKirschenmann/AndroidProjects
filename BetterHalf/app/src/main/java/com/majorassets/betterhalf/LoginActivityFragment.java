@@ -1,10 +1,9 @@
 package com.majorassets.betterhalf;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,13 +16,22 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
+import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
+import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
+import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
+import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -125,18 +133,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                //get the current entered text
-                String checkEmail = mEmailEdit.getText().toString();
-                String checkPass = mPasswordEdit.getText().toString();
-
-                //check if user has entered information or not
-                if(!checkEmail.equals("") && !checkPass.equals("")) {
-                    attemptLogin();
-                }
-                else {
-                    Snackbar.make(v, "Please enter your email and password", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                }
+                attemptLogin();
             }
         });
 
@@ -151,14 +148,12 @@ public class LoginActivityFragment extends Fragment {
                     mLoginButton.setText(R.string.signup_txt);
                     mNewUserTxt.setText(mExistingLbl);
                     mForgotPwdTxt.setText("");
-                    ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(getString(R.string.signup_txt));
                 }
                 else if(mNewUserTxt.getText().toString().equals(mExistingLbl))
                 {
                     mLoginButton.setText(R.string.login_txt);
                     mNewUserTxt.setText(mNewUserLbl);
                     mForgotPwdTxt.setText(R.string.forgot_pwd_txt);
-                    ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(getString(R.string.login_txt));
                 }
             }
         });
@@ -211,6 +206,8 @@ public class LoginActivityFragment extends Fragment {
                     appUser = new User(mEmail, mPassword);
                     appUser.setID(UUID.fromString(authData.getUid()));
                     appUser.setLoggedOnLast(true);
+                    appUser.setDataItemRepository(DataItemRepository.getDataItemRepository());
+                    appUser.getDataItemRepository().setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
 
                     GlobalResources.AppUser = appUser;
 
@@ -234,6 +231,9 @@ public class LoginActivityFragment extends Fragment {
         else
         {
             appUser.setLoggedOnLast(true);
+            appUser.setDataItemRepository(DataItemRepository.getDataItemRepository());
+            appUser.getDataItemRepository().setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
+
 
             userRef = firebaseDB.getUserInstance(mUsername);
             userRef.addListenerForSingleValueEvent(new ValueEventListener()

@@ -12,7 +12,8 @@ import java.util.UUID;
  */
 public abstract class BaseDataItem implements IDataItem
 {
-	protected UUID mID;
+	protected String mID;
+	protected UUID mUserID;
 	protected String mLabel;
 	protected String mValue;
 
@@ -25,12 +26,22 @@ public abstract class BaseDataItem implements IDataItem
 		mValue = value;
 	}
 
-	public UUID getID() {
+	public String getID() {
 		return mID;
 	}
 
-	public void setID(UUID ID) {
+	public void setID(String ID) {
 		mID = ID;
+	}
+
+	public UUID getUserID()
+	{
+		return mUserID;
+	}
+
+	public void setUserID(UUID userID)
+	{
+		mUserID = userID;
 	}
 
 	public String getLabel() {

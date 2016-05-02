@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" 
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:nestedScrollingEnabled="true">
+    
+    <TextView
+        android:id="@+id/value_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:textColor="@color/primary_text"
+        android:text="Phil Collins"/>
+    <TextView
+        android:id="@+id/key_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/value_text2"
+        android:textSize="13sp"
+        android:paddingLeft="16dp"
+        android:paddingBottom="16dp"
+        android:textColor="@color/secondary_text"
+        android:text="Artist"/>
+
+    <ImageView
+        android:id="@+id/start_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:paddingTop="24dp"
+        android:paddingBottom="24dp"
+        android:paddingRight="16dp"
+        android:tint="@color/colorAccent"
+        android:src="@drawable/ic_star_black_24dp" />
+
+</RelativeLayout>

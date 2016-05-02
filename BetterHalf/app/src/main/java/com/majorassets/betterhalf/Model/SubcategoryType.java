@@ -44,6 +44,64 @@ public enum SubcategoryType
         switch(subcategory.toLowerCase())
         {
             //ENTERTAINMENT
+            case "movie":
+                return MOVIE;
+            case "music":
+                return MUSIC;
+            case "book":
+                return BOOK;
+            case "game":
+                return GAME;
+            case "theater":
+                return THEATER;
+            case "tvshow":
+                return TV_SHOW;
+            //FASHION
+            case "accessory":
+                return ACCESSORY;
+            case "clothing":
+                return CLOTHING;
+            case "jewelry":
+                return JEWELRY;
+            case "shoe":
+                return SHOE;
+            //FOOD
+            case "restaurant":
+                return RESTAURANT;
+            case "drink":
+                return DRINK;
+            case "entree":
+                return ENTREE;
+            case "side":
+                return SIDE;
+            case "snack":
+                return SNACK;
+            //HOBBY
+            case "indoorhobbies":
+                return INDOOR;
+            case "outdoorhobbies":
+                return OUTDOOR;
+            case "sportsteams":
+                return SPORT;
+            //MEDICAL
+            case "allergy":
+                return ALLERGY;
+            case "illness":
+                return ILLNESS;
+            case "phobia":
+                return PHOBIA;
+            case "medication":
+                return MEDICATION;
+            default:
+                return INVALID;
+        }
+    }
+
+    public static SubcategoryType getTypeFromTitle(String title)
+    {
+        switch(title.toLowerCase())
+        {
+            //ENTERTAINMENT
             case "movies":
                 return MOVIE;
             case "music":
@@ -77,11 +135,11 @@ public enum SubcategoryType
             case "snacks":
                 return SNACK;
             //HOBBY
-            case "indoor":
+            case "indoorhobbies":
                 return INDOOR;
-            case "outdoor":
+            case "outdoorhobbies":
                 return OUTDOOR;
-            case "sports":
+            case "sportsteams":
                 return SPORT;
             //MEDICAL
             case "allergies":
@@ -90,35 +148,16 @@ public enum SubcategoryType
                 return ILLNESS;
             case "phobias":
                 return PHOBIA;
-            case "medication":
+            case "medications":
                 return MEDICATION;
             default:
                 return INVALID;
         }
     }
 
-    public static String getStringFromType(MainCategoryType main, SubcategoryType sub)
+    public static String getDisplayableStringsFromType(SubcategoryType type, boolean isTableName)
     {
-        switch (main)
-        {
-            case ENTERTAINMENT:
-                return getEntertainmentString(sub);
-            case FASHION:
-                return getFashionString(sub);
-            case FOOD:
-                return getFoodString(sub);
-            case HOBBY:
-                return getHobbyString(sub);
-            case MEDICAL:
-                return getMedicalString(sub);
-            default:
-                return "invalid";
-        }
-    }
-
-    private static String getEntertainmentString(SubcategoryType sub)
-    {
-        switch (sub)
+        switch (type)
         {
             case MOVIE:
                 return "Movies";
@@ -131,16 +170,9 @@ public enum SubcategoryType
             case THEATER:
                 return "Theater";
             case TV_SHOW:
+                if (isTableName)
+                    return "TVShows";
                 return "TV Shows";
-            default:
-                return "invalid";
-        }
-    }
-
-    private static String getFashionString(SubcategoryType sub)
-    {
-        switch (sub)
-        {
             case CLOTHING:
                 return "Clothing";
             case SHOE:
@@ -149,15 +181,6 @@ public enum SubcategoryType
                 return "Accessories";
             case JEWELRY:
                 return "Jewelry";
-            default:
-                return "invalid";
-        }
-    }
-
-    private static String getFoodString(SubcategoryType sub)
-    {
-        switch(sub)
-        {
             case RESTAURANT:
                 return "Restaurants";
             case DRINK:
@@ -168,30 +191,18 @@ public enum SubcategoryType
                 return "Entrees";
             case SNACK:
                 return "Snacks";
-            default:
-                return "invalid";
-        }
-    }
-
-    private static String getHobbyString(SubcategoryType sub)
-    {
-        switch (sub)
-        {
             case INDOOR:
+                if (isTableName)
+                    return "IndoorHobbies";
                 return "Indoor Hobbies";
             case OUTDOOR:
+                if (isTableName)
+                    return "OutdoorHobbies";
                 return "Outdoor Hobbies";
             case SPORT:
+                if (isTableName)
+                    return "SportsTeams";
                 return "Sports Teams";
-            default:
-                return "invalid";
-        }
-    }
-
-    private static String getMedicalString(SubcategoryType sub)
-    {
-        switch (sub)
-        {
             case ALLERGY:
                 return "Allergies";
             case ILLNESS:
@@ -200,6 +211,59 @@ public enum SubcategoryType
                 return "Phobias";
             case MEDICATION:
                 return "Medications";
+            default:
+                return "invalid";
+        }
+    }
+
+    public static String getFirebaseStringFromType(SubcategoryType type)
+    {
+        switch (type)
+        {
+            case MOVIE:
+                return "movie";
+            case MUSIC:
+                return "music";
+            case BOOK:
+                return "book";
+            case GAME:
+                return "game";
+            case THEATER:
+                return "theater";
+            case TV_SHOW:
+                return "tvShow";
+            case CLOTHING:
+                return "clothing";
+            case SHOE:
+                return "shoe";
+            case ACCESSORY:
+                return "accessory";
+            case JEWELRY:
+                return "jewelry";
+            case RESTAURANT:
+                return "restaurant";
+            case DRINK:
+                return "drink";
+            case SIDE:
+                return "side";
+            case ENTREE:
+                return "entree";
+            case SNACK:
+                return "snack";
+            case INDOOR:
+                return "indoorHobbies";
+            case OUTDOOR:
+                return "outdoorHobbies";
+            case SPORT:
+                return "sportsTeams";
+            case ALLERGY:
+                return "allergy";
+            case ILLNESS:
+                return "illness";
+            case PHOBIA:
+                return "phobia";
+            case MEDICATION:
+                return "medication";
             default:
                 return "invalid";
         }

@@ -10,13 +10,11 @@ import android.view.MenuItem;
 
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
 
-public class SingleItemEditActivity extends AppCompatActivity
-{
+public class SingleItemEditActivity extends AppCompatActivity {
     private String mTitle;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_item_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -34,19 +32,16 @@ public class SingleItemEditActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_single_item_edit, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
-        switch(item.getItemId())
-        {
+        switch(item.getItemId()) {
             case R.id.action_home:
                 intent = new Intent(SingleItemEditActivity.this, HomeActivity.class);
                 startActivity(intent);
