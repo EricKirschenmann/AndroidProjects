@@ -49,6 +49,19 @@ public class DataItemActivity extends AppCompatActivity {
         if(mTitle.equals("Entertainment")) {
             setTheme(R.style.EntertainmentTheme);
         }
+        else if(mTitle.equals("Fashion")) {
+            setTheme(R.style.FashionTheme);
+        }
+        else if(mTitle.equals("Food")) {
+            setTheme(R.style.FoodTheme);
+        }
+        else if(mTitle.equals("Hobby")) {
+            setTheme(R.style.HobbyTheme);
+        }
+        else if(mTitle.equals("Medical")) {
+            setTheme(R.style.MedicalTheme);
+        }
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_item);
