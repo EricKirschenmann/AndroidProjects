@@ -12,8 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.majorassets.betterhalf.HomeActivity;
 import com.majorassets.betterhalf.HomeActivityFragment;
 import com.majorassets.betterhalf.R;
+import com.majorassets.betterhalf.SettingsActivity;
 import com.majorassets.betterhalf.SingleItemEditActivity;
 
 public class DataItemActivity extends AppCompatActivity {
@@ -115,8 +117,16 @@ public class DataItemActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        Intent intent;
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            intent = new Intent(DataItemActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.action_home) {
+            intent = new Intent(DataItemActivity.this, HomeActivity.class);
+            startActivity(intent);
             return true;
         }
 

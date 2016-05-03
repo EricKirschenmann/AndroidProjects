@@ -67,6 +67,10 @@ public class SingleItemEditActivity extends AppCompatActivity {
                 intent = new Intent(SingleItemEditActivity.this, HomeActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.action_settings:
+                intent = new Intent(SingleItemEditActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
