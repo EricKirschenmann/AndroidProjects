@@ -24,4 +24,10 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="EntertainmentTheme" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/colorEntertainment</item>
+        <item name="colorPrimaryDark">@color/colorEntertainment_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
 </resources>
