@@ -22,12 +22,13 @@
                     android:id="@+id/key_select"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible"/>
+                    android:visibility="visible"/>
 
                 <EditText
                     android:id="@+id/item_name_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="invisible"
                     android:hint="@string/item_name_prompt"/>
 
                 <EditText

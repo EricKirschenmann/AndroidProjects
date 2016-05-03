@@ -40,11 +40,22 @@ public class DataItemActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //get and set the title
+        mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
+        setTitle(mTitle);
+
+        //Set theme per activity based on the category
+        if(mTitle.equals("Entertainment")) {
+            setTheme(R.style.EntertainmentTheme);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_item);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mDataItemPagerAdapter = new DataItemPagerAdapter(getSupportFragmentManager());
@@ -73,10 +84,6 @@ public class DataItemActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
-        setTitle(mTitle);
-
     }
 
     @Override
