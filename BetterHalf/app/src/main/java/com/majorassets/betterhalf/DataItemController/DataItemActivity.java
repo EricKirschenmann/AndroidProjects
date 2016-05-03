@@ -54,9 +54,12 @@ public class DataItemActivity extends AppCompatActivity {
     private Firebase ref;
 
     public static final String SUBCAT_EXTRA = "com.majorassets.betterhalf.subcat";
+    public static final String CAT_TITLE_EXTRA = "com.majorassests.betterhalf.cat";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_item);
 
@@ -91,10 +94,11 @@ public class DataItemActivity extends AppCompatActivity {
             {
                 int currentTab = mTabLayout.getSelectedTabPosition();
                 TabLayout.Tab tab = mTabLayout.getTabAt(currentTab);
-                mTitle = tab.getText().toString();
+                String mSubCatTitle = tab.getText().toString();
 
                 Intent intent = new Intent(DataItemActivity.this, SingleItemEditActivity.class);
-                intent.putExtra(SUBCAT_EXTRA, mTitle);
+                intent.putExtra(SUBCAT_EXTRA, mSubCatTitle); //Subcategory title
+                intent.putExtra(CAT_TITLE_EXTRA, mTitle); //Main category title
                 startActivity(intent);
             }
         });
@@ -121,7 +125,24 @@ public class DataItemActivity extends AppCompatActivity {
         Intent intent;
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_settings)
+        {
+            intent = new Intent(DataItemActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.action_logout)
+        {
+            //this user is is officially logged out - was NOT logged on last
+            appUser.setLoggedOnLast(false);
+            //update the user in SQLite
+            userDAL.updateUser(appUser);
+
+            //TODO: popup an "Are you sure?" dialog (fragment) and logout through Firebase API
+            ref.unauth(); //un-authenticate a user from firebase
+            //return to login screen
+            intent = new Intent(DataItemActivity.this, LoginActivity.class);
+            startActivity(intent);
             return true;
         }
 
