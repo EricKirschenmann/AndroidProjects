@@ -37,6 +37,7 @@ public class DataItemActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
 
     public static final String SUBCAT_EXTRA = "com.majorassets.betterhalf.subcat";
+    public static final String CAT_TITLE_EXTRA = "com.majorassests.betterhalf.cat";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +91,11 @@ public class DataItemActivity extends AppCompatActivity {
             {
                 int currentTab = mTabLayout.getSelectedTabPosition();
                 TabLayout.Tab tab = mTabLayout.getTabAt(currentTab);
-                mTitle = tab.getText().toString();
+                String mSubCatTitle = tab.getText().toString();
 
                 Intent intent = new Intent(DataItemActivity.this, SingleItemEditActivity.class);
-                intent.putExtra(SUBCAT_EXTRA, mTitle);
+                intent.putExtra(SUBCAT_EXTRA, mSubCatTitle); //Subcategory title
+                intent.putExtra(CAT_TITLE_EXTRA, mTitle); //Main category title
                 startActivity(intent);
             }
         });
