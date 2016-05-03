@@ -12,8 +12,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.firebase.client.Firebase;
+import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
+import com.majorassets.betterhalf.GlobalResources;
+import com.majorassets.betterhalf.HomeActivity;
 import com.majorassets.betterhalf.HomeActivityFragment;
+import com.majorassets.betterhalf.LoginActivity;
+import com.majorassets.betterhalf.Model.User;
 import com.majorassets.betterhalf.R;
+import com.majorassets.betterhalf.SettingsActivity;
 import com.majorassets.betterhalf.SingleItemEditActivity;
 
 public class DataItemActivity extends AppCompatActivity {
@@ -36,6 +45,14 @@ public class DataItemActivity extends AppCompatActivity {
     private String mTitle;
     private TabLayout mTabLayout;
 
+    private User appUser;
+
+    private SQLiteProvider sqliteDB;
+    private SQLiteUserDAL userDAL;
+
+    private FirebaseProvider firebaseDB;
+    private Firebase ref;
+
     public static final String SUBCAT_EXTRA = "com.majorassets.betterhalf.subcat";
 
     @Override
@@ -45,6 +62,14 @@ public class DataItemActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        appUser = GlobalResources.AppUser;
+        sqliteDB = SQLiteProvider.getSQLiteProvider(this);
+        userDAL = new SQLiteUserDAL(sqliteDB.getDatabase());
+
+        firebaseDB = FirebaseProvider.getDataProvider();
+        ref = firebaseDB.getFirebaseInstance();
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mDataItemPagerAdapter = new DataItemPagerAdapter(getSupportFragmentManager());
@@ -92,6 +117,8 @@ public class DataItemActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        Intent intent;
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

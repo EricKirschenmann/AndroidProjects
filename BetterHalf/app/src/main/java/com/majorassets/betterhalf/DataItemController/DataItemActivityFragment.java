@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.firebase.client.Firebase;
@@ -21,7 +20,6 @@ import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.GlobalResources;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
-import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 import com.majorassets.betterhalf.R;
@@ -53,7 +51,6 @@ public class DataItemActivityFragment extends Fragment {
     private ListView mListView;
     private DataItemArrayAdapter mDataItemArrayAdapter;
     private DataItemPagerAdapter mDataItemPagerAdapter;
-
 
     /**
      * The fragment argument representing the section number for this
@@ -166,7 +163,8 @@ public class DataItemActivityFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
         readDataFromSQLite();
     }
@@ -188,7 +186,8 @@ public class DataItemActivityFragment extends Fragment {
     private List<BaseLikeableItem> getItems(String table) {
         List<BaseLikeableItem> items = null;
 
-        switch (table) {
+        switch (table)
+        {
             case DataDBSchema.MoviesTable.NAME:
             case DataDBSchema.MusicTable.NAME:
             case DataDBSchema.GamesTable.NAME:
@@ -242,6 +241,5 @@ public class DataItemActivityFragment extends Fragment {
             startActivity(intent);
         }
     }
-
-
 }
+

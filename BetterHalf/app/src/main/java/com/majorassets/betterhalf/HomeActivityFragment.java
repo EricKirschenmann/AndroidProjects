@@ -60,7 +60,7 @@ public class HomeActivityFragment extends Fragment
 
 		initializeComponents(view);
 		createEvents();
-		checkConnectionRequest();
+		//checkConnectionRequest();
 		return view;
 
 	}
