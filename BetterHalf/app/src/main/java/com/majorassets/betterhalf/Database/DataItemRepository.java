@@ -1,6 +1,7 @@
 package com.majorassets.betterhalf.Database;
 
 import com.majorassets.betterhalf.Model.BaseDataItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Map;
 public class DataItemRepository
 {
     private static DataItemRepository sDataItemRepository;
-    private Map<SubcategoryType, List<BaseDataItem>> mDataItems;
+    private Map<SubcategoryType, List<BaseLikeableItem>> mDataItems;
 
     private DataItemRepository()
     {}
@@ -25,12 +26,12 @@ public class DataItemRepository
         return sDataItemRepository;
     }
 
-    public Map<SubcategoryType, List<BaseDataItem>> getDataItems()
+    public Map<SubcategoryType, List<BaseLikeableItem>> getDataItems()
     {
         return mDataItems;
     }
 
-    public void setDataItems(Map<SubcategoryType, List<BaseDataItem>> dataItems)
+    public void setDataItems(Map<SubcategoryType, List<BaseLikeableItem>> dataItems)
     {
         this.mDataItems = dataItems;
     }

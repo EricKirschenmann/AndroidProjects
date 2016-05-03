@@ -1,8 +1,7 @@
 package com.majorassets.betterhalf;
 
-import android.database.SQLException;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +18,7 @@ import com.majorassets.betterhalf.Model.User;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SettingsActivityFragment extends Fragment
-{
+public class SettingsActivityFragment extends Fragment {
     private Button mDeleteAccountButton;
     private Button mSaveChangesButton;
     private EditText mFirstNameEdit;
@@ -36,8 +34,7 @@ public class SettingsActivityFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_settings, container, false);
 
         initializeComponents(view);
@@ -52,8 +49,7 @@ public class SettingsActivityFragment extends Fragment
         return view;
     }
 
-    private void initializeComponents(View view)
-    {
+    private void initializeComponents(View view) {
         appUser = GlobalResources.AppUser;
 
         mDeleteAccountButton = (Button) view.findViewById(R.id.delete_account_btn);
@@ -62,8 +58,7 @@ public class SettingsActivityFragment extends Fragment
         mLastNameEdit = (EditText) view.findViewById(R.id.last_name_edit);
     }
 
-    private void createEvents()
-    {
+    private void createEvents() {
         //TODO: pop up "Are you sure?" dialog
         mDeleteAccountButton.setOnClickListener(new View.OnClickListener()
         {

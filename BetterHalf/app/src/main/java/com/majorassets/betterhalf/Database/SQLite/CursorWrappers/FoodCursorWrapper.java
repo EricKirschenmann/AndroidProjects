@@ -3,6 +3,7 @@ package com.majorassets.betterhalf.Database.SQLite.CursorWrappers;
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
+import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Model.Food.FoodItem;
 
 import java.util.UUID;
@@ -23,13 +24,20 @@ public class FoodCursorWrapper extends CursorWrapper {
         colValue = the value from the schema
             ex: BooksTable.Cols.VALUE
     */
-    public FoodItem getItem(String colUUID, String colLabel, String colValue){
-        String userID = getString(getColumnIndex(colUUID));
-        String label = getString(getColumnIndex(colLabel));
-        String value = getString(getColumnIndex(colValue));
+    public FoodItem getItem(){
+        String ID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
+        String userID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.USER_ID));
+        String label = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.LABEL));
+        String value = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.VALUE));
+        String favoriteStr = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.FAVORITE));
+
+        boolean isFavorite = favoriteStr.equals("1");
 
         FoodItem item = new FoodItem(label, value);
-        item.setID(UUID.fromString(userID));
+        item.setID(ID);
+        item.setUserID(UUID.fromString(userID));
+        item.setIsFavorite(isFavorite);
+
         return item;
     }
 }

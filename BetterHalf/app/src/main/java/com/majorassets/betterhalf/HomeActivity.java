@@ -9,11 +9,27 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
+import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
+import com.majorassets.betterhalf.Model.Entertainment.BookItem;
+import com.majorassets.betterhalf.Model.Entertainment.GameItem;
+import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
+import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
+import com.majorassets.betterhalf.Model.Subcategory;
+import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity
 {
@@ -21,8 +37,11 @@ public class HomeActivity extends AppCompatActivity
 	private SQLiteProvider sqliteDB;
 	private FirebaseProvider firebaseDB;
 	private Firebase ref;
+	private Firebase subcategoryInstance;
 
 	private User appUser;
+	private Map<SubcategoryType, List<BaseLikeableItem>> appUserData;
+	private DataItemRepository userRepo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -32,6 +51,8 @@ public class HomeActivity extends AppCompatActivity
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
+		Firebase.setAndroidContext(this);
+
 		//data providers
 		sqliteDB = SQLiteProvider.getSQLiteProvider(this.getApplicationContext());
 		firebaseDB = FirebaseProvider.getDataProvider();
@@ -39,7 +60,20 @@ public class HomeActivity extends AppCompatActivity
 		dal = new SQLiteUserDAL(sqliteDB.getDatabase());
 
 		ref = firebaseDB.getFirebaseInstance();
+
 		appUser = GlobalResources.AppUser;
+		userRepo = appUser.getDataItemRepository();
+		appUserData = userRepo.getDataItems();
+
+		syncSQLiteToFirebase();
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+
+		syncSQLiteToFirebase();
 	}
 
 	@Override
@@ -77,6 +111,30 @@ public class HomeActivity extends AppCompatActivity
 				startActivity(intent);
 			default:
 				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private void syncSQLiteToFirebase()
+	{
+		Map<String, Map<String, String>> firebaseMap = new HashMap<>();
+		Map<String, String> internalMap;
+
+		for (Map.Entry entry: appUserData.entrySet())
+		{
+			String sub = SubcategoryType.getFirebaseStringFromType((SubcategoryType)entry.getKey());
+			subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(), sub);
+
+			List<BaseLikeableItem> items = (List<BaseLikeableItem>) entry.getValue();
+			for (BaseLikeableItem item : items)
+			{
+				internalMap = new HashMap<>();
+				internalMap.put(item.getLabel(), item.getValue());
+				firebaseMap.put(item.getID(), internalMap);
+			}
+
+			subcategoryInstance.setValue(firebaseMap);
+
+			firebaseMap.clear();
 		}
 	}
 }

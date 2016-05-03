@@ -4,16 +4,18 @@ import android.database.Cursor;
 import android.database.CursorWrapper;
 
 import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
-import com.majorassets.betterhalf.Model.Hobbies.HobbyItem;
+import com.majorassets.betterhalf.Model.BaseLikeableItem;
+import com.majorassets.betterhalf.Model.Entertainment.EntertainmentItem;
+import com.majorassets.betterhalf.Model.LikeableItem;
 
 import java.util.UUID;
 
 /**
- * Created by Marissa on 4/19/2016.
+ * Created by dgbla on 4/30/2016.
  */
-public class HobbiesCursorWrapper extends CursorWrapper {
-
-    public HobbiesCursorWrapper(Cursor cursor)
+public class BaseItemCursorWrapper extends CursorWrapper
+{
+    public BaseItemCursorWrapper(Cursor cursor)
     {
         super(cursor);
     }
@@ -23,21 +25,17 @@ public class HobbiesCursorWrapper extends CursorWrapper {
             ex: BooksTable.Cols.LABEL
         colValue = the value from the schema
             ex: BooksTable.Cols.VALUE
-    */
-    public HobbyItem getItem(){
+        colID = UUID from schema
+ */
+    public BaseLikeableItem getItem(){
         String ID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.UUID));
         String userID = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.USER_ID));
         String label = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.LABEL));
         String value = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.VALUE));
-        String favoriteStr = getString(getColumnIndex(DataDBSchema.BaseTable.Cols.FAVORITE));
 
-        boolean isFavorite = favoriteStr.equals("1");
-
-        HobbyItem item = new HobbyItem(label, value);
+        BaseLikeableItem item = new LikeableItem(label, value);
         item.setID(ID);
         item.setUserID(UUID.fromString(userID));
-        item.setIsFavorite(isFavorite);
-
         return item;
     }
 }
