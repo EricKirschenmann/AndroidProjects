@@ -1,5 +1,6 @@
 package com.majorassets.betterhalf;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,10 +15,12 @@ import android.widget.Spinner;
 
 import com.firebase.client.Firebase;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
+import com.majorassets.betterhalf.DataItemController.DataItemActivityFragment;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
+import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.Entertainment.BookItem;
 import com.majorassets.betterhalf.Model.Entertainment.GameItem;
@@ -110,6 +113,26 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
 
             setSpinner();
         }
+
+
+        // Check whether you are updating
+        //If you are updating, then set the spinner, value and favorite box
+        Intent intent = getActivity().getIntent();
+        if(intent.hasExtra(DataItemActivityFragment.ITEM_EXTRA)) {
+            BaseLikeableItem item = (BaseLikeableItem) intent.getSerializableExtra(DataItemActivityFragment.ITEM_EXTRA);
+
+            mItemValue.setText(item.getValue());
+            for(int i = 0; i < mSpinner.getAdapter().getCount(); i++) {
+                if(mSpinner.getItemAtPosition(i).equals(item.getLabel())) {
+                    mSpinner.setSelection(i);
+                    break;
+                }
+            }
+
+            mFavorite.setChecked(item.isFavorite());
+
+        }
+
     }
 
     private void setSpinner() {
@@ -350,7 +373,20 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
 
         item.setIsFavorite(isFavorite);
         item.setUserID(appUser.getID()); //create relationship between user and data tables
-        dal.addItem(item, table);
+
+        //TODO add if stmt for update
+        Intent intent = getActivity().getIntent();
+        if(intent.hasExtra(DataItemActivityFragment.ITEM_EXTRA)) {
+            BaseLikeableItem updateItem = (BaseLikeableItem) intent.getSerializableExtra(DataItemActivityFragment.ITEM_EXTRA);
+            updateItem.setValue(mItemValue.getText().toString());
+            updateItem.setLabel(mSpinner.getSelectedItem().toString());
+            updateItem.setIsFavorite(mFavorite.isChecked());
+            String tableName = intent.getStringExtra(DataItemActivityFragment.TABLE_NAME_EXTRA);
+            dal.updateItem(updateItem, tableName, "uuid");
+        }
+        else {
+            dal.addItem(item, table);
+        }
 
         item.setID(String.valueOf(dal.getItemID(item, table)));
         addItemToUserMap(type, item);
@@ -382,4 +418,5 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
 }

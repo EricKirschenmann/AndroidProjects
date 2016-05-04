@@ -62,7 +62,8 @@ public class DataItemActivityFragment extends Fragment {
      * Argument when a user wishes to edit a specific item. The current data is passed forward to
      * SingleItemEditActivty
      */
-    private static final String EDIT = "com.majorassets.betterhalf.edit";
+    public static final String ITEM_EXTRA = "com.majorassets.betterhalf.labelextra";
+    public static final String TABLE_NAME_EXTRA = "com.majorassets.betterhalf.tablenameextra";
 
     public DataItemActivityFragment() {
     }
@@ -145,9 +146,10 @@ public class DataItemActivityFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Edit here
                                 Intent editIntent = new Intent(getContext(), SingleItemEditActivity.class);
-                                editIntent.putExtra(EDIT, item.getValue());
+                                editIntent.putExtra(ITEM_EXTRA, item);
                                 editIntent.putExtra(DataItemActivity.SUBCAT_EXTRA, title);
                                 editIntent.putExtra(DataItemActivity.CAT_TITLE_EXTRA, catTitle);
+                                editIntent.putExtra(DataItemActivityFragment.TABLE_NAME_EXTRA, tableName);
                                 startActivity(editIntent);
                             }
                         });
