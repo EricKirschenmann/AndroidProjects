@@ -10,21 +10,29 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
+import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
+import com.majorassets.betterhalf.Model.Entertainment.BookItem;
+import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
+import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class LoginHelperActivity extends AppCompatActivity
 {
+    private Firebase currentUserRef; //instance for the app user
+    private Firebase soUserRef; //instance for the significant other
+
     private FirebaseProvider firebaseDB;
     private SQLiteProvider sqliteDB;
     private SQLiteUserDAL userDAL;
@@ -60,22 +68,27 @@ public class LoginHelperActivity extends AppCompatActivity
             String username = appUser.getUsername();
             appUser.setUsername(username);
 
-            readUserDataFromSQLite(appUser);
+            currentUserRef = firebaseDB.getUserInstance(username);
 
-            //retrieve datasnapshot of user instance (includes info and data sub trees)
-            Firebase ref = firebaseDB.getUserInstance(username);
+            //retrieve user's data if they are not connected
+            if (!appUser.isConnected())
+                readUserDataFromSQLite(appUser);
+            else
+                readUserDataFromSQLite(appUser.getSignificantOther());
 
+
+            //continue with starting home screen or login screen
             try
             {
-                ref.addListenerForSingleValueEvent(new ValueEventListener()
+                currentUserRef.addListenerForSingleValueEvent(new ValueEventListener()
                 {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot)
                     {
                         //if user is not in firebase, launch new login page
-                        if(dataSnapshot.getValue() == null)
+                        if (dataSnapshot.getValue() == null)
                             startLoginActivity();
-                        //otherwise retrieve the user's data and go straight to the home screen
+                            //go straight to the home screen
                         else
                             startHomeActivity();
                     }
@@ -86,8 +99,7 @@ public class LoginHelperActivity extends AppCompatActivity
                         Log.d("ERROR", firebaseError.getMessage());
                     }
                 });
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 throw e;
             }
@@ -119,17 +131,16 @@ public class LoginHelperActivity extends AppCompatActivity
     {
         try
         {
-            if (user.getDataItemRepository() == null)
+            if (user.getDataItems() == null)
             {
-                user.setDataItemRepository(DataItemRepository.getDataItemRepository());
-                user.getDataItemRepository().setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
+                user.setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
             }
 
-            itemsDAL.getAllUserEntertainmentItems(user.getID(), user.getDataItemRepository().getDataItems());
-            itemsDAL.getAllUserFashionItems(user.getID(), user.getDataItemRepository().getDataItems());
-            itemsDAL.getAllUserFoodItems(user.getID(), user.getDataItemRepository().getDataItems());
-            itemsDAL.getAllUserHobbyItems(user.getID(), user.getDataItemRepository().getDataItems());
-            itemsDAL.getAllUserMedicalItems(user.getID(), user.getDataItemRepository().getDataItems());
+            itemsDAL.getAllUserEntertainmentItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserFashionItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserFoodItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserHobbyItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserMedicalItems(user.getID(), user.getDataItems());
         }
         catch (Exception e)
         {

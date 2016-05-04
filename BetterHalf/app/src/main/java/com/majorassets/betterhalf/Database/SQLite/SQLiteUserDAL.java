@@ -11,6 +11,7 @@ import com.majorassets.betterhalf.Model.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by dgbla on 3/30/2016.
@@ -72,6 +73,26 @@ public class SQLiteUserDAL implements ISQLiteUserDAL
             return cursor.getUser();
         }
         finally{
+            cursor.close();
+        }
+    }
+
+    @Override
+    public User getSignificantOther(UUID soID)
+    {
+        UserCursorWrapper cursor = SQLiteProvider.queryUser(UserDBTable.Cols.SOID + "= ?",
+                                    new String[] {soID.toString()});
+
+        try
+        {
+            if(cursor.getCount() == 0)
+                return null;
+
+            cursor.moveToFirst();
+            return cursor.getUser();
+        }
+        finally
+        {
             cursor.close();
         }
     }

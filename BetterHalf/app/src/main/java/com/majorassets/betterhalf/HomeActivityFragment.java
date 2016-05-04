@@ -17,16 +17,23 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
-import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
+import com.majorassets.betterhalf.Model.Entertainment.BookItem;
+import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -45,9 +52,15 @@ public class HomeActivityFragment extends Fragment
 	private CardView mHobbyCardView;
 	private CardView mMedicalCardView;
 
-	private Map<SubcategoryType, List<BaseLikeableItem>> userDataItems;
 	private FirebaseProvider db;
-	private Firebase mRootRef;
+
+	private SQLiteProvider sqliteDB;
+	private SQLiteUserDAL userDAL;
+	private SQLiteItemsDAL itemsDAL;
+
+	private FirebaseProvider firebaseDB;
+	private Firebase currentUserRef; //instance for the app user
+	private Firebase soUserRef; //instance for the significant other
 
 	private User appUser;
 
@@ -60,7 +73,7 @@ public class HomeActivityFragment extends Fragment
 
 		initializeComponents(view);
 		createEvents();
-		//checkConnectionRequest();
+		checkConnectionRequest();
 		return view;
 
 	}
@@ -79,8 +92,12 @@ public class HomeActivityFragment extends Fragment
 		mHobbyCardView = (CardView) view.findViewById(R.id.hobby_card_view);
 		mMedicalCardView = (CardView) view.findViewById(R.id.medical_card_view);
 
-		userDataItems = DataItemRepository.getDataItemRepository().getDataItems();
 		db = FirebaseProvider.getDataProvider();
+
+		firebaseDB = FirebaseProvider.getDataProvider();
+		sqliteDB = SQLiteProvider.getSQLiteProvider(getContext());
+		userDAL = new SQLiteUserDAL(sqliteDB.getDatabase());
+		itemsDAL = new SQLiteItemsDAL(sqliteDB.getDatabase());
 
 		//right now have to call this 5 times - TODO: make dynamic
 		//String mainCategory = mEntertainmentButton.getText().toString().toLowerCase();
@@ -193,41 +210,56 @@ public class HomeActivityFragment extends Fragment
 	}
 
 	//Check if a request to connect has been made
-	public void checkConnectionRequest() {
+	public void checkConnectionRequest()
+	{
 		//Instantiate necessary resources
-		final FirebaseProvider db = FirebaseProvider.getDataProvider();
-		final User appUser = GlobalResources.AppUser;
-		final Firebase thisUserRef = db.getUserInstance(appUser.getUsername());
+		appUser = GlobalResources.AppUser;
+		final Firebase currentUserRef = firebaseDB.getUserInstance(appUser.getUsername());
 
-		thisUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+		currentUserRef.addListenerForSingleValueEvent(new ValueEventListener()
+		{
 
 			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				String statusString = dataSnapshot.child("connection").child("status").getValue().toString();
-				if(statusString.equals("pending")){
-					String userRequesting = dataSnapshot.child("connection").child("user").getValue().toString();
-					final Firebase userRequestingRef = db.getUserInstance(userRequesting);
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				if(dataSnapshot.child("connection").getValue() != null)
+				{
+					final String userRequesting = dataSnapshot.child("connection").child("user").getValue().toString();
+					final Firebase soUserRef = firebaseDB.getUserInstance(userRequesting);
 
-					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-					builder.setMessage("Connect with " + userRequesting + "?")
-							.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {
-									thisUserRef.child("connection").child("status").setValue("connected");
-									userRequestingRef.child("connection").child("status").setValue("connected");
-								}
-							})
-							.setNegativeButton("Ignore", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {
-									thisUserRef.child("connection").removeValue();
-									userRequestingRef.child("connection").removeValue();
-								}
-							});
+					String statusString = dataSnapshot.child("connection").child("status").getValue().toString();
+					if (statusString.equals("pending"))
+					{
+						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+						builder.setMessage("Connect with " + userRequesting + "?")
+								.setPositiveButton("Connect", new DialogInterface.OnClickListener()
+								{
+									public void onClick(DialogInterface dialog, int id)
+									{
+										currentUserRef.child("connection").child("status").setValue("connected");
+										soUserRef.child("connection").child("status").setValue("connected");
 
-					AlertDialog dialog = builder.create();
-					dialog.show();
-				}
-				else{
-					//Fill with SO data?
+										assignUserToSO(soUserRef, userRequesting);
+										readSODataFromFirebase(userRequesting);
+									}
+								})
+								.setNegativeButton("Ignore", new DialogInterface.OnClickListener()
+								{
+									public void onClick(DialogInterface dialog, int id)
+									{
+										currentUserRef.removeValue();
+										soUserRef.removeValue();
+									}
+								});
+
+						AlertDialog dialog = builder.create();
+						dialog.show();
+					}
+					else if (statusString.equals("connected"))
+					{
+						if(!appUser.isConnected())
+							assignUserToSO(soUserRef, userRequesting);
+					}
 				}
 			}
 
@@ -237,5 +269,89 @@ public class HomeActivityFragment extends Fragment
 			}
 		});
 
+	}
+
+	private void assignUserToSO(Firebase soRef, final String soUsername)
+	{
+		soRef.addListenerForSingleValueEvent(new ValueEventListener()
+		{
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				UUID soID = UUID.fromString((String)dataSnapshot.child("info").child("id").getValue());
+				String email = (String)dataSnapshot.child("info").child("email").getValue();
+
+				User SO = new User(soID);
+				SO.setUsername(soUsername);
+				SO.setEmail(email);
+
+				appUser.setSignificantOther(SO);
+
+				userDAL.updateUser(appUser);
+			}
+
+			@Override
+			public void onCancelled(FirebaseError firebaseError)
+			{
+
+			}
+		});
+	}
+
+	private void readSODataFromFirebase(final String username)
+	{
+		Firebase soDataRef = firebaseDB.getUserDataInstance(username);
+		soDataRef.addListenerForSingleValueEvent(new ValueEventListener()
+		{
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				if(appUser.getSignificantOther() != null)
+				{
+					SubcategoryType type;
+					for (DataSnapshot subCategory : dataSnapshot.getChildren())
+					{
+						type = SubcategoryType.getTypeFromString(subCategory.getKey());
+						Map<SubcategoryType, List<BaseLikeableItem>> map = appUser.getSignificantOther().getDataItems();
+						List<BaseLikeableItem> innerList = new ArrayList<>();
+
+						for (DataSnapshot id : subCategory.getChildren())
+						{
+							BaseLikeableItem item = null;
+							switch (type)
+							{
+								case BOOK:
+									item = new BookItem(id.getKey());
+									break;
+								case MOVIE:
+									item = new MovieItem(id.getKey());
+							}
+
+							for (DataSnapshot attribute : id.getChildren())
+							{
+								item.setLabel(attribute.getKey());
+								item.setValue(attribute.getValue().toString());
+								item.setUserID(appUser.getSignificantOther().getID());
+							}
+
+							//write data to SQLite
+							itemsDAL.addItem(item, SubcategoryType.getDisplayableStringsFromType(type, true));
+
+							innerList.add(item);
+						}
+
+						map.put(type, innerList);
+						appUser.getSignificantOther().setDataItems(map);
+					}
+				}
+
+			}
+
+			@Override
+			public void onCancelled(FirebaseError firebaseError)
+			{
+
+			}
+		});
 	}
 }

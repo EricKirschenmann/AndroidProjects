@@ -9,24 +9,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
-import com.majorassets.betterhalf.Model.Entertainment.BookItem;
-import com.majorassets.betterhalf.Model.Entertainment.GameItem;
-import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
-import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
-import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +31,6 @@ public class HomeActivity extends AppCompatActivity
 
 	private User appUser;
 	private Map<SubcategoryType, List<BaseLikeableItem>> appUserData;
-	private DataItemRepository userRepo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -62,8 +51,7 @@ public class HomeActivity extends AppCompatActivity
 		ref = firebaseDB.getFirebaseInstance();
 
 		appUser = GlobalResources.AppUser;
-		userRepo = appUser.getDataItemRepository();
-		appUserData = userRepo.getDataItems();
+		appUserData = appUser.getDataItems();
 
 		syncSQLiteToFirebase(); //for data only
 	}
@@ -119,22 +107,25 @@ public class HomeActivity extends AppCompatActivity
 		Map<String, Map<String, String>> firebaseMap = new HashMap<>();
 		Map<String, String> internalMap;
 
-		for (Map.Entry entry: appUserData.entrySet())
+		if(appUserData != null)
 		{
-			String sub = SubcategoryType.getFirebaseStringFromType((SubcategoryType)entry.getKey());
-			subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(), sub);
-
-			List<BaseLikeableItem> items = (List<BaseLikeableItem>) entry.getValue();
-			for (BaseLikeableItem item : items)
+			for (Map.Entry entry : appUserData.entrySet())
 			{
-				internalMap = new HashMap<>();
-				internalMap.put(item.getLabel(), item.getValue());
-				firebaseMap.put(item.getID(), internalMap);
+				String sub = SubcategoryType.getFirebaseStringFromType((SubcategoryType) entry.getKey());
+				subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(), sub);
+
+				List<BaseLikeableItem> items = (List<BaseLikeableItem>) entry.getValue();
+				for (BaseLikeableItem item : items)
+				{
+					internalMap = new HashMap<>();
+					internalMap.put(item.getLabel(), item.getValue());
+					firebaseMap.put(item.getID(), internalMap);
+				}
+
+				subcategoryInstance.setValue(firebaseMap);
+
+				firebaseMap.clear();
 			}
-
-			subcategoryInstance.setValue(firebaseMap);
-
-			firebaseMap.clear();
 		}
 	}
 }

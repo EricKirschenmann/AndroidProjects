@@ -95,7 +95,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
     private void initializeComponents(View view)
     {
         appUser = GlobalResources.AppUser;
-        userDataMap = appUser.getDataItemRepository().getDataItems();
+        userDataMap = appUser.getDataItems();
 
         //data layer components
         firebaseDB = FirebaseProvider.getDataProvider();
@@ -368,24 +368,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         dal.addItem(item, table);
 
         item.setID(String.valueOf(dal.getItemID(item, table)));
-        addItemToUserMap(type, item);
-    }
-
-    private void addItemToUserMap(SubcategoryType type, BaseLikeableItem item)
-    {
-        List<BaseLikeableItem> list;
-
-        if(userDataMap.get(type) == null)
-        {
-            list = new ArrayList<>();
-            list.add(item);
-            userDataMap.put(type, list);
-        }
-        else
-        {
-            list = userDataMap.get(type);
-            list.add(item);
-        }
+        UserMapHelper.addItem(appUser, type, item);
     }
 
     @Override

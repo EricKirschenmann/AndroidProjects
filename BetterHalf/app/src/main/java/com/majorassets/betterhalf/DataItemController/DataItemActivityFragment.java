@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -173,13 +174,13 @@ public class DataItemActivityFragment extends Fragment {
         readDataFromSQLite();
     }
 
-    private void readDataFromSQLite() {
+    private void readDataFromSQLite(UUID ID) {
         List<BaseLikeableItem> items;
 
         int position = args.getInt(ARG_PAGE)-1;
         String table = mDataItemPagerAdapter.getPageTitle(position).toString().replace(" ", "");
 
-        items = getItems(table);
+        items = getItems(table, ID);
 
         SubcategoryType type = SubcategoryType.getTypeFromTitle(table);
         data.put(type, items);
@@ -187,7 +188,17 @@ public class DataItemActivityFragment extends Fragment {
         updateDisplay(items);
     }
 
-    private List<BaseLikeableItem> getItems(String table) {
+    //helper method to prevent having to repeat if/else statement everywhere
+    private void readDataFromSQLite()
+    {
+        //if appUser is connected read data for SO
+        if(appUser.isConnected())
+            readDataFromSQLite(appUser.getSignificantOther().getID());
+        else
+            readDataFromSQLite(appUser.getID());
+    }
+
+    private List<BaseLikeableItem> getItems(String table, UUID ID) {
         List<BaseLikeableItem> items = null;
 
         switch (table)
@@ -198,31 +209,31 @@ public class DataItemActivityFragment extends Fragment {
             case DataDBSchema.BooksTable.NAME:
             case DataDBSchema.TheaterTable.NAME:
             case DataDBSchema.TVShowsTable.NAME:
-                items = dal.getEntertainmentItems(table, appUser.getID());
+                items = dal.getEntertainmentItems(table, ID);
                 break;
             case DataDBSchema.AccessoriesTable.NAME:
             case DataDBSchema.ClothingTable.NAME:
             case DataDBSchema.JewelryTable.NAME:
             case DataDBSchema.ShoesTable.NAME:
-                items = dal.getFashionItems(table, appUser.getID());
+                items = dal.getFashionItems(table, ID);
                 break;
             case DataDBSchema.DrinksTable.NAME:
             case DataDBSchema.EntreesTable.NAME:
             case DataDBSchema.RestaurantsTable.NAME:
             case DataDBSchema.SidesTable.NAME:
             case DataDBSchema.SnacksTable.NAME:
-                items = dal.getFoodItems(table, appUser.getID());
+                items = dal.getFoodItems(table, ID);
                 break;
             case DataDBSchema.IndoorTable.NAME:
             case DataDBSchema.OutdoorTable.NAME:
             case DataDBSchema.SportsTable.NAME:
-                items = dal.getHobbyItems(table, appUser.getID());
+                items = dal.getHobbyItems(table, ID);
                 break;
             case DataDBSchema.AllergiesTable.NAME:
             case DataDBSchema.IllnessesTable.NAME:
             case DataDBSchema.PhobiasTable.NAME:
             case DataDBSchema.MedicationTable.NAME:
-                items = dal.getMedicalItems(table, appUser.getID());
+                items = dal.getMedicalItems(table, ID);
                 break;
             default:
                 return null;

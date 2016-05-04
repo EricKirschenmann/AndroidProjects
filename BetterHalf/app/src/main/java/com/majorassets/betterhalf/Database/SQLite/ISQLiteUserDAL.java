@@ -14,5 +14,6 @@ public interface ISQLiteUserDAL
     void updateUser(User user);
     User deleteUser(User user);
     User getUser(String email);
+    User getSignificantOther(UUID soID);
     List<User> getAllUsers();
 }

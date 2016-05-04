@@ -1,8 +1,10 @@
 package com.majorassets.betterhalf.Model;
 
-import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.LoginHelperActivity;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -21,22 +23,25 @@ public class User
 
     private User significantOther;
 
-    private DataItemRepository mDataItemRepository;
+    private Map<SubcategoryType, List<BaseLikeableItem>> dataItems;
 
     public User()
     {
+        dataItems = new HashMap<>();
         //TODO: hash password
     }
 
     public User(UUID ID)
     {
         this.ID = ID;
+        dataItems = new HashMap<>();
     }
 
     public User(String email, String password)
     {
         this.email = email;
         this.password = password;
+        dataItems = new HashMap<>();
     }
 
     public String getEmail()
@@ -79,16 +84,6 @@ public class User
         this.username = username;
     }
 
-    public DataItemRepository getDataItemRepository()
-    {
-        return mDataItemRepository;
-    }
-
-    public void setDataItemRepository(DataItemRepository dataItemRepository)
-    {
-        mDataItemRepository = dataItemRepository;
-    }
-
     public UUID getID()
     {
         return ID;
@@ -127,5 +122,20 @@ public class User
     public void setSignificantOther(User significantOther)
     {
         this.significantOther = significantOther;
+    }
+
+    public Map<SubcategoryType, List<BaseLikeableItem>> getDataItems()
+    {
+        return dataItems;
+    }
+
+    public void setDataItems(Map<SubcategoryType, List<BaseLikeableItem>> dataItems)
+    {
+        this.dataItems = dataItems;
+    }
+
+    public boolean isConnected()
+    {
+        return significantOther != null;
     }
 }

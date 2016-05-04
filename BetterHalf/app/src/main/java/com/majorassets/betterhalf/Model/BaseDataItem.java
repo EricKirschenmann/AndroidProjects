@@ -20,6 +20,11 @@ public abstract class BaseDataItem implements IDataItem
 	//DEFAULT CONSTRUCTOR
 	public BaseDataItem() {}
 
+	public BaseDataItem(String id)
+	{
+		mID = id;
+	}
+
 	//OVERLOADED CONSTRUCTOR
 	public BaseDataItem(String label, String value) {
 		mLabel = label;

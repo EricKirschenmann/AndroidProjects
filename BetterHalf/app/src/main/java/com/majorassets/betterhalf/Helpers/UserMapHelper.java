@@ -21,7 +21,7 @@ public class UserMapHelper
 
     public static void addItem(User appUser, SubcategoryType type, BaseLikeableItem item)
     {
-        Map<SubcategoryType, List<BaseLikeableItem>> userDataMap = appUser.getDataItemRepository().getDataItems();
+        Map<SubcategoryType, List<BaseLikeableItem>> userDataMap = appUser.getDataItems();
 
         List<BaseLikeableItem> list;
 
@@ -47,7 +47,7 @@ public class UserMapHelper
      */
     public static BaseLikeableItem deleteItem(User appUser, SubcategoryType type, BaseLikeableItem item)
     {
-        Map<SubcategoryType, List<BaseLikeableItem>> userDataMap = appUser.getDataItemRepository().getDataItems();
+        Map<SubcategoryType, List<BaseLikeableItem>> userDataMap = appUser.getDataItems();
 
         try
         {

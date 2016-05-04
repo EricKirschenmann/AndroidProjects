@@ -1,5 +1,7 @@
 package com.majorassets.betterhalf.Model;
 
+import java.util.UUID;
+
 /**
  * Created by dgbla on 1/29/2016.
  */
@@ -7,6 +9,13 @@ public abstract class BaseLikeableItem extends BaseDataItem
 {
 	protected boolean mIsFavorite;
 	protected boolean mIsLeastFavorite;
+
+	public BaseLikeableItem(String id)
+	{
+		super(id);
+		mIsFavorite = false;
+		mIsLeastFavorite = false;
+	}
 
 	public BaseLikeableItem(String label, String value) {
 		super(label, value);

@@ -44,6 +44,10 @@ public class SQLiteProvider
     {
         ContentValues values = new ContentValues();
         values.put(UserDBTable.Cols.UUID, user.getID().toString());
+
+        if (user.getSignificantOther() != null)
+            values.put(UserDBTable.Cols.SOID, user.getSignificantOther().getID().toString());
+
         values.put(UserDBTable.Cols.EMAIL, user.getEmail());
         values.put(UserDBTable.Cols.PASSWORD, user.getPassword());
         values.put(UserDBTable.Cols.LOGGED_ON_LAST, user.isLoggedOnLast());

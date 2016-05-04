@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -29,6 +30,7 @@ public class SettingsActivityFragment extends Fragment
     private Button mSaveChangesButton;
     private EditText mFirstNameEdit;
     private EditText mLastNameEdit;
+    private TextView mSignedInAs;
 
     private SQLiteProvider db;
     private SQLiteUserDAL dal;
@@ -64,6 +66,10 @@ public class SettingsActivityFragment extends Fragment
         mSaveChangesButton = (Button) view.findViewById(R.id.save_account_btn);
         mFirstNameEdit = (EditText) view.findViewById(R.id.first_name_edit);
         mLastNameEdit = (EditText) view.findViewById(R.id.last_name_edit);
+        mSignedInAs = (TextView) view.findViewById(R.id.signed_in_as);
+
+        String signedInAs = mSignedInAs.getText() + " " + GlobalResources.AppUser.getEmail();
+        mSignedInAs.setText(signedInAs);
     }
 
     private void createEvents()
