@@ -18,6 +18,7 @@ import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.GlobalResources;
+import com.majorassets.betterhalf.Helpers.UserMapHelper;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.SubcategoryType;
@@ -121,7 +122,7 @@ public class DataItemActivityFragment extends Fragment {
 
                 final String title = mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE)-1).toString();
                 final SubcategoryType type = SubcategoryType.getTypeFromTitle(title.replace(" ", ""));
-                final BaseDataItem item = data.get(type).get(position);
+                final BaseLikeableItem item = data.get(type).get(position);
 
                 final String tableName = SubcategoryType.getDisplayableStringsFromType(type, true);
 
@@ -136,6 +137,8 @@ public class DataItemActivityFragment extends Fragment {
                                 //Delete Item here
                                 //Call SQLite delete fn
                                 itemsDAL.deleteItem(item, tableName, "uuid");
+
+                                UserMapHelper.deleteItem(appUser, type, item);
 
                                 //refresh data within the listview without restarting the activity
                                 readDataFromSQLite();

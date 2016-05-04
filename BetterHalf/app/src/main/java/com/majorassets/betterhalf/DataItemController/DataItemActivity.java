@@ -73,6 +73,8 @@ public class DataItemActivity extends AppCompatActivity {
         firebaseDB = FirebaseProvider.getDataProvider();
         ref = firebaseDB.getFirebaseInstance();
 
+        Firebase.setAndroidContext(this);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mDataItemPagerAdapter = new DataItemPagerAdapter(getSupportFragmentManager());
