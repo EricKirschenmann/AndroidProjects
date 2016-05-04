@@ -27,8 +27,8 @@ public class DataItemActivityAdapter extends ArrayAdapter<BaseDataItem> {
         String item2 = getItem(position).getValue();
 
         View view = super.getView(position, convertView, parent);
-        ((TextView)view.findViewById(R.id.text_label)).setText(item);
-        ((TextView)view.findViewById(R.id.text_value)).setText(item2);
+       // ((TextView)view.findViewById(R.id.text_label)).setText(item);
+       // ((TextView)view.findViewById(R.id.text_value)).setText(item2);
 
         return view;
     }

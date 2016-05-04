@@ -45,7 +45,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_menu_slideshow"
+                    android:src="@mipmap/ic_ticket"
                     android:tint="#FFFFFF"
                     android:scaleType="fitCenter"/>
             </RelativeLayout>
@@ -80,7 +80,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:src="@mipmap/ic_fashion"
+                    android:src="@mipmap/ic_mall"
                     android:tint="#FFFFFF"
                     android:scaleType="fitCenter"/>
 
@@ -113,7 +113,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:src="@mipmap/ic_food"
+                    android:src="@mipmap/ic_pizza"
                     android:tint="#FFFFFF"
                     android:scaleType="fitCenter"/>
             </RelativeLayout>
@@ -145,7 +145,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:src="@drawable/ic_menu_camera"
+                    android:src="@mipmap/ic_paint"
                     android:tint="#FFFFFF"
                     android:scaleType="fitCenter"/>
             </RelativeLayout>
@@ -177,7 +177,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:src="@mipmap/ic_medical"
+                    android:src="@mipmap/ic_pharmacy"
                     android:tint="#FFFFFF"
                     android:scaleType="fitCenter"/>
             </RelativeLayout>
