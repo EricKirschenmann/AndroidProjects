@@ -32,6 +32,10 @@ public class ConnectionActivity extends AppCompatActivity {
             case R.id.action_home:
                 intent = new Intent(ConnectionActivity.this, HomeActivity.class);
                 startActivity(intent);
+            case R.id.action_settings:
+                intent = new Intent(ConnectionActivity.this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
