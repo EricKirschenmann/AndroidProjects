@@ -12,8 +12,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.majorassets.betterhalf.HomeActivity;
 import com.majorassets.betterhalf.HomeActivityFragment;
 import com.majorassets.betterhalf.R;
+import com.majorassets.betterhalf.SettingsActivity;
 import com.majorassets.betterhalf.SingleItemEditActivity;
 
 public class DataItemActivity extends AppCompatActivity {
@@ -37,14 +39,39 @@ public class DataItemActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
 
     public static final String SUBCAT_EXTRA = "com.majorassets.betterhalf.subcat";
+    public static final String CAT_TITLE_EXTRA = "com.majorassests.betterhalf.cat";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //get and set the title
+        mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
+        setTitle(mTitle);
+
+        //Set theme per activity based on the category
+        if(mTitle.equals("Entertainment")) {
+            setTheme(R.style.EntertainmentTheme);
+        }
+        else if(mTitle.equals("Fashion")) {
+            setTheme(R.style.FashionTheme);
+        }
+        else if(mTitle.equals("Food")) {
+            setTheme(R.style.FoodTheme);
+        }
+        else if(mTitle.equals("Hobby")) {
+            setTheme(R.style.HobbyTheme);
+        }
+        else if(mTitle.equals("Medical")) {
+            setTheme(R.style.MedicalTheme);
+        }
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_item);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mDataItemPagerAdapter = new DataItemPagerAdapter(getSupportFragmentManager());
@@ -66,17 +93,14 @@ public class DataItemActivity extends AppCompatActivity {
             {
                 int currentTab = mTabLayout.getSelectedTabPosition();
                 TabLayout.Tab tab = mTabLayout.getTabAt(currentTab);
-                mTitle = tab.getText().toString();
+                String mSubCatTitle = tab.getText().toString();
 
                 Intent intent = new Intent(DataItemActivity.this, SingleItemEditActivity.class);
-                intent.putExtra(SUBCAT_EXTRA, mTitle);
+                intent.putExtra(SUBCAT_EXTRA, mSubCatTitle); //Subcategory title
+                intent.putExtra(CAT_TITLE_EXTRA, mTitle); //Main category title
                 startActivity(intent);
             }
         });
-
-        mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
-        setTitle(mTitle);
-
     }
 
     @Override
@@ -93,8 +117,16 @@ public class DataItemActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        Intent intent;
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            intent = new Intent(DataItemActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.action_home) {
+            intent = new Intent(DataItemActivity.this, HomeActivity.class);
+            startActivity(intent);
             return true;
         }
 

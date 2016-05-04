@@ -8,7 +8,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:gravity="top|center"
-    tools:context="com.majorassets.betterhalf.LoginActivityFragment">
+    tools:context="com.majorassets.betterhalf.LoginActivityFragment"
     tools:showIn="@layout/activity_login">
 
     <EditText
