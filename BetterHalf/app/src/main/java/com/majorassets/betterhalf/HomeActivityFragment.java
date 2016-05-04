@@ -23,8 +23,28 @@ import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.Entertainment.BookItem;
+import com.majorassets.betterhalf.Model.Entertainment.GameItem;
 import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
+import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
+import com.majorassets.betterhalf.Model.Entertainment.TVShowItem;
+import com.majorassets.betterhalf.Model.Entertainment.TheaterItem;
+import com.majorassets.betterhalf.Model.Fashion.AccessoriesItem;
+import com.majorassets.betterhalf.Model.Fashion.ClothingItem;
+import com.majorassets.betterhalf.Model.Fashion.JewelryItem;
+import com.majorassets.betterhalf.Model.Fashion.ShoesItem;
+import com.majorassets.betterhalf.Model.Food.DrinksItem;
+import com.majorassets.betterhalf.Model.Food.EntreesItem;
+import com.majorassets.betterhalf.Model.Food.RestaurantsItem;
+import com.majorassets.betterhalf.Model.Food.SidesItem;
+import com.majorassets.betterhalf.Model.Food.SnacksItem;
+import com.majorassets.betterhalf.Model.Hobbies.IndoorItem;
+import com.majorassets.betterhalf.Model.Hobbies.OutdoorItem;
+import com.majorassets.betterhalf.Model.Hobbies.SportsItem;
 import com.majorassets.betterhalf.Model.MainCategoryType;
+import com.majorassets.betterhalf.Model.Medical.AllergiesItem;
+import com.majorassets.betterhalf.Model.Medical.IllnessesItem;
+import com.majorassets.betterhalf.Model.Medical.MedicalItem;
+import com.majorassets.betterhalf.Model.Medical.PhobiasItem;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
@@ -320,11 +340,77 @@ public class HomeActivityFragment extends Fragment
 							BaseLikeableItem item = null;
 							switch (type)
 							{
+								//ENTERTAINMENT
 								case BOOK:
 									item = new BookItem(id.getKey());
 									break;
 								case MOVIE:
 									item = new MovieItem(id.getKey());
+									break;
+								case MUSIC:
+									item = new MusicItem(id.getKey());
+									break;
+								case THEATER:
+									item = new GameItem(id.getKey());
+									break;
+								case TV_SHOW:
+									item = new TVShowItem(id.getKey());
+									break;
+								case GAME:
+									item = new TheaterItem(id.getKey());
+									break;
+								//FASHION
+								case CLOTHING:
+									item = new ClothingItem(id.getKey());
+									break;
+								case JEWELRY:
+									item = new JewelryItem(id.getKey());
+									break;
+								case SHOE:
+									item = new ShoesItem(id.getKey());
+									break;
+								case ACCESSORY:
+									item = new AccessoriesItem(id.getKey());
+									break;
+								//FOOD
+								case RESTAURANT:
+									item = new RestaurantsItem(id.getKey());
+									break;
+								case ENTREE:
+									item = new EntreesItem(id.getKey());
+									break;
+								case SIDE:
+									item = new SidesItem(id.getKey());
+									break;
+								case SNACK:
+									item = new SnacksItem(id.getKey());
+									break;
+								case DRINK:
+									item = new DrinksItem(id.getKey());
+									break;
+								//HOBBY
+								case INDOOR:
+									item = new IndoorItem(id.getKey());
+									break;
+								case OUTDOOR:
+									item = new OutdoorItem(id.getKey());
+									break;
+								case SPORT:
+									item = new SportsItem(id.getKey());
+									break;
+								//MEDICAL
+								case ILLNESS:
+									item = new IllnessesItem(id.getKey());
+									break;
+								case PHOBIA:
+									item = new PhobiasItem(id.getKey());
+									break;
+								case MEDICATION:
+									item = new MedicalItem(id.getKey());
+									break;
+								case ALLERGY:
+									item = new AllergiesItem(id.getKey());
+									break;
 							}
 
 							for (DataSnapshot attribute : id.getChildren())

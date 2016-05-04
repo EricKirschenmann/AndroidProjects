@@ -1,5 +1,6 @@
 package com.majorassets.betterhalf;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -119,6 +120,24 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             category = getActivity().getIntent().getStringExtra(DataItemActivity.SUBCAT_EXTRA);
 
             setSpinner();
+        }
+
+        // Check whether you are updating
+        //If you are updating, then set the spinner, value and favorite box
+        Intent intent = getActivity().getIntent();
+        if(intent.hasExtra(DataItemActivityFragment.ITEM_EXTRA)) {
+            BaseLikeableItem item = (BaseLikeableItem) intent.getSerializableExtra(DataItemActivityFragment.ITEM_EXTRA);
+
+            mItemValue.setText(item.getValue());
+            for(int i = 0; i < mSpinner.getAdapter().getCount(); i++) {
+                if(mSpinner.getItemAtPosition(i).equals(item.getLabel())) {
+                    mSpinner.setSelection(i);
+                    break;
+                }
+            }
+
+            mFavorite.setChecked(item.isFavorite());
+
         }
     }
 
@@ -258,7 +277,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         if(mItemLabel.getVisibility() == View.VISIBLE)
             label = mItemLabel.getText().toString();
         else if(mSpinner.getSelectedItem() == null)
-            label = "";
+            label = "temp";
         else
             label = mSpinner.getSelectedItem().toString();
 
@@ -364,11 +383,35 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         }
 
         item.setIsFavorite(isFavorite);
-        item.setUserID(appUser.getID()); //create relationship between user and data tables
-        dal.addItem(item, table);
+
+        //write to SQLite differently if the user is connected
+        if(!appUser.isConnected())
+            item.setUserID(appUser.getID()); //create relationship between user and data tables
+        else
+            item.setUserID(appUser.getSignificantOther().getID());
+
+        //option to update or add new item
+        Intent intent = getActivity().getIntent();
+        if(intent.hasExtra(DataItemActivityFragment.ITEM_EXTRA))
+        {
+            BaseLikeableItem updateItem = (BaseLikeableItem) intent.getSerializableExtra(DataItemActivityFragment.ITEM_EXTRA);
+            updateItem.setValue(mItemValue.getText().toString());
+            updateItem.setLabel(mSpinner.getSelectedItem().toString());
+            updateItem.setIsFavorite(mFavorite.isChecked());
+            String tableName = intent.getStringExtra(DataItemActivityFragment.TABLE_NAME_EXTRA);
+            dal.updateItem(updateItem, tableName, "uuid");
+        }
+        else {
+            dal.addItem(item, table);
+        }
+
 
         item.setID(String.valueOf(dal.getItemID(item, table)));
-        UserMapHelper.addItem(appUser, type, item);
+
+        if(!appUser.isConnected())
+            UserMapHelper.addItem(appUser, type, item);
+        else
+            UserMapHelper.addItem(appUser.getSignificantOther(), type, item);
     }
 
     @Override

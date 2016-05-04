@@ -7,6 +7,7 @@ import com.majorassets.betterhalf.Model.BaseLikeableItem;
  */
 public class FashionItem extends BaseLikeableItem
 {
+	public FashionItem(String id) { super(id);}
 	public FashionItem(String label, String value) {
 		super(label, value);
 	}

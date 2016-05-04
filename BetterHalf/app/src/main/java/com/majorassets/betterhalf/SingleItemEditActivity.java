@@ -66,7 +66,8 @@ public class SingleItemEditActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
-        switch(item.getItemId()) {
+        switch(item.getItemId())
+        {
             case R.id.action_home:
                 intent = new Intent(SingleItemEditActivity.this, HomeActivity.class);
                 startActivity(intent);

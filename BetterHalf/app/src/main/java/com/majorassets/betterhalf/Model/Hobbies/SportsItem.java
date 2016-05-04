@@ -5,9 +5,10 @@ import com.majorassets.betterhalf.Model.BaseLikeableItem;
 /**
  * Created by Marissa on 4/14/2016.
  */
-public class SportsItem extends HobbyItem {
+public class SportsItem extends HobbyItem
+{
+    public SportsItem(String id) { super(id);}
     public SportsItem(String label, String value) {
         super(label, value);
     }
-
 }

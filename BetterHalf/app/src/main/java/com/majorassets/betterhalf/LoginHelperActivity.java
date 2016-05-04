@@ -74,7 +74,25 @@ public class LoginHelperActivity extends AppCompatActivity
             if (!appUser.isConnected())
                 readUserDataFromSQLite(appUser);
             else
+            {
                 readUserDataFromSQLite(appUser.getSignificantOther());
+
+                currentUserRef.addListenerForSingleValueEvent(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        String significantOther = dataSnapshot.child("connection").child("user").getValue().toString();
+                        setUpSignificantOther(significantOther);
+                    }
+
+                    @Override
+                    public void onCancelled(FirebaseError firebaseError)
+                    {
+
+                    }
+                });
+            }
 
 
             //continue with starting home screen or login screen
@@ -146,6 +164,27 @@ public class LoginHelperActivity extends AppCompatActivity
         {
             Log.e("Error", e.getMessage());
         }
+    }
+
+    private void setUpSignificantOther(final String significantOther)
+    {
+        soUserRef = firebaseDB.getUserInstance(significantOther);
+        soUserRef.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                User SO = appUser.getSignificantOther();
+                SO.setUsername(dataSnapshot.getKey());
+                SO.setEmail(dataSnapshot.child("info").child("email").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError)
+            {
+
+            }
+        });
     }
 
     private void startHomeActivity()

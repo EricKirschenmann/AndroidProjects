@@ -58,6 +58,8 @@ public class DataItemActivityFragment extends Fragment {
      * fragment.
      */
     private static final String ARG_PAGE = "com.majorassets.betterhalf.page";
+    public static final String TABLE_NAME_EXTRA = "com.majorassets.betterhalf.tablenameextra";
+    public static final String ITEM_EXTRA = "com.majorassets.betterhalf.labelextra";
 
     /**
      * Argument when a user wishes to edit a specific item. The current data is passed forward to
@@ -137,7 +139,10 @@ public class DataItemActivityFragment extends Fragment {
                                 //Call SQLite delete fn
                                 itemsDAL.deleteItem(item, tableName, "uuid");
 
-                                UserMapHelper.deleteItem(appUser, type, item);
+                                if(!appUser.isConnected())
+                                    UserMapHelper.deleteItem(appUser, type, item);
+                                else
+                                    UserMapHelper.deleteItem(appUser.getSignificantOther(), type, item);
 
                                 //refresh data within the listview without restarting the activity
                                 readDataFromSQLite();
@@ -148,10 +153,12 @@ public class DataItemActivityFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Edit here
                                 Intent editIntent = new Intent(getContext(), SingleItemEditActivity.class);
-                                editIntent.putExtra(EDIT, item.getValue());
+                                editIntent.putExtra(ITEM_EXTRA, item);
                                 editIntent.putExtra(DataItemActivity.SUBCAT_EXTRA, title);
                                 editIntent.putExtra(DataItemActivity.CAT_TITLE_EXTRA, catTitle);
+                                editIntent.putExtra(DataItemActivityFragment.TABLE_NAME_EXTRA, tableName);
                                 startActivity(editIntent);
+
                             }
                         });
                 // Creating the alertDialog

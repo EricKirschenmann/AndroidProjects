@@ -51,6 +51,9 @@
     <string name="connect_input_txt">Username:</string>
     <string name="connect_button">Connect</string>
 
+    <!--strings for SingleItemEditActivity-->
+    <string name="save_button">Save</string>
+
     <!--strings for Sorting -->
     <string name="action_sort">Sort</string>
     <string name="action_sort_val">Sort by name</string>

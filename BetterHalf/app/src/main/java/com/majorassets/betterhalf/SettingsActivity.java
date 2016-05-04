@@ -33,7 +33,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         Intent intent;
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_home) {
+        if (id == R.id.action_home)
+        {
             intent = new Intent(SettingsActivity.this, HomeActivity.class);
             startActivity(intent);
             return true;

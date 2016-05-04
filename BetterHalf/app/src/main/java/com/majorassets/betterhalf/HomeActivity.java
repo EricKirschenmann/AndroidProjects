@@ -107,12 +107,20 @@ public class HomeActivity extends AppCompatActivity
 		Map<String, Map<String, String>> firebaseMap = new HashMap<>();
 		Map<String, String> internalMap;
 
-		if(appUserData != null)
+		User operationalUser = null;
+
+		//write to firebase differently if the user is connected
+		if(!appUser.isConnected())
+			operationalUser = appUser;
+		else
+			operationalUser = appUser.getSignificantOther();
+
+		if(operationalUser.getUsername() != null)
 		{
-			for (Map.Entry entry : appUserData.entrySet())
+			for (Map.Entry entry : operationalUser.getDataItems().entrySet())
 			{
 				String sub = SubcategoryType.getFirebaseStringFromType((SubcategoryType) entry.getKey());
-				subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(), sub);
+				subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(operationalUser.getUsername(), sub);
 
 				List<BaseLikeableItem> items = (List<BaseLikeableItem>) entry.getValue();
 				for (BaseLikeableItem item : items)

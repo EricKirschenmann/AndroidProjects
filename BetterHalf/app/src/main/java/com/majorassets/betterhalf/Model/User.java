@@ -76,7 +76,10 @@ public class User
 
     public String getUsername()
     {
-        return LoginHelperActivity.generateUsername(email);
+        if(email != null)
+            return LoginHelperActivity.generateUsername(email);
+        else
+            return null;
     }
 
     public void setUsername(String username)
