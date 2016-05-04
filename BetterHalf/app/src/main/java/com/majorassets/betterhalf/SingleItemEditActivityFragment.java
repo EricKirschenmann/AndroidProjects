@@ -81,7 +81,8 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         View view =  inflater.inflate(R.layout.fragment_single_item_edit, container, false);
         Firebase.setAndroidContext(getContext());
 
@@ -91,7 +92,8 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         return view;
     }
 
-    private void initializeComponents(View view) {
+    private void initializeComponents(View view)
+    {
         appUser = GlobalResources.AppUser;
         userDataMap = appUser.getDataItemRepository().getDataItems();
 
@@ -120,8 +122,10 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         }
     }
 
-    private void setSpinner() {
-        if(category != null) {
+    private void setSpinner()
+    {
+        if(category != null)
+        {
             if (category.equals("Books"))
             {
                 adapter = ArrayAdapter.createFromResource(getContext(),
@@ -190,95 +194,17 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             } else if (category.equals("Phobias")) {
                 adapter = ArrayAdapter.createFromResource(getContext(),
                         R.array.phobias_array, android.R.layout.simple_spinner_dropdown_item);
-            } else {
+            } else
+            {
                 mSpinner.setVisibility(View.INVISIBLE);
                 mItemLabel.setVisibility(View.VISIBLE);
             }
 
             //set the adapter if it is visible and created
-            if (adapter != null) {
-                if (mSpinner.getVisibility() == View.VISIBLE && mItemLabel.getVisibility() == View.INVISIBLE) {
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    mSpinner.setAdapter(adapter);
-                    mSpinner.setOnItemSelectedListener(this);
-                }
-            }
-        if(category != null) {
-            if (category.equals("Books")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.books_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Games")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.games_array, android.R.layout.simple_spinner_dropdown_item);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Movies")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.movies_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Music")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.music_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Theater")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.theater_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("TV Shows")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.tvshow_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Accessories")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.accessories_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Clothing")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.clothing_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Jewelry")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.jewelry_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Shoes")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.shoes_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Drinks")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.drinks_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Entrees")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.entrees_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Restaurants")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.restaurants_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Sides")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.sides_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Snacks")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.snacks_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Indoor Hobbies")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.indoor_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Outdoor Hobbies")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.outdoor_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Sports Teams")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.sports_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Allergies")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.allergies_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Illnesses")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.illnesses_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Medications")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.medications_array, android.R.layout.simple_spinner_dropdown_item);
-            } else if (category.equals("Phobias")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.phobias_array, android.R.layout.simple_spinner_dropdown_item);
-            } else {
-                mSpinner.setVisibility(View.INVISIBLE);
-                mItemLabel.setVisibility(View.VISIBLE);
-            }
-
-            //set the adapter if it is visible and created
-            if (adapter != null) {
-                if (mSpinner.getVisibility() == View.VISIBLE && mItemLabel.getVisibility() == View.INVISIBLE) {
+            if (adapter != null)
+            {
+                if (mSpinner.getVisibility() == View.VISIBLE && mItemLabel.getVisibility() == View.INVISIBLE)
+                {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     mSpinner.setAdapter(adapter);
                     mSpinner.setOnItemSelectedListener(this);
@@ -287,7 +213,8 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         }
     }
 
-    private void createEvents() {
+    private void createEvents()
+    {
         mItemLabel.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -332,7 +259,7 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             label = mItemLabel.getText().toString();
         else if(mSpinner.getSelectedItem() == null)
             label = "";
-        else {
+        else
             label = mSpinner.getSelectedItem().toString();
 
         String value = mItemValue.getText().toString();

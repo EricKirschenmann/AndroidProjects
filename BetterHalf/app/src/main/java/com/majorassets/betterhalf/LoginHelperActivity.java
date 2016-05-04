@@ -160,8 +160,10 @@ public class LoginHelperActivity extends AppCompatActivity
      */
     public static String generateUsername(String email)
     {
-        String emailProvider = email.substring(email.indexOf('@') + 1, email.indexOf('.')); //e.g. yahoo, gmail
+        String emailProvider = email.substring(email.indexOf('@') + 1, email.lastIndexOf('.')); //e.g. yahoo, gmail
         email = email.substring(0, email.indexOf('@'));
+
+        email = email.replace(".", "");
 
         return email + emailProvider;
     }
