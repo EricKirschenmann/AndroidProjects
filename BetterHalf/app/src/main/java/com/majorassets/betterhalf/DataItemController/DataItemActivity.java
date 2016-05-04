@@ -59,6 +59,27 @@ public class DataItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        //get and set the title
+        mTitle = getIntent().getStringExtra(HomeActivityFragment.TITLE_EXTRA);
+        setTitle(mTitle);
+
+        //Set theme per activity based on the category
+        if(mTitle.equals("Entertainment")) {
+            setTheme(R.style.EntertainmentTheme);
+        }
+        else if(mTitle.equals("Fashion")) {
+            setTheme(R.style.FashionTheme);
+        }
+        else if(mTitle.equals("Food")) {
+            setTheme(R.style.FoodTheme);
+        }
+        else if(mTitle.equals("Hobby")) {
+            setTheme(R.style.HobbyTheme);
+        }
+        else if(mTitle.equals("Medical")) {
+            setTheme(R.style.MedicalTheme);
+        }
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_item);
@@ -74,6 +95,7 @@ public class DataItemActivity extends AppCompatActivity {
         ref = firebaseDB.getFirebaseInstance();
 
         Firebase.setAndroidContext(this);
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -144,6 +166,11 @@ public class DataItemActivity extends AppCompatActivity {
             ref.unauth(); //un-authenticate a user from firebase
             //return to login screen
             intent = new Intent(DataItemActivity.this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.action_home) {
+            intent = new Intent(DataItemActivity.this, HomeActivity.class);
             startActivity(intent);
             return true;
         }

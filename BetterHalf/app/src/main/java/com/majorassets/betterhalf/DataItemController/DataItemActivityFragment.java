@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -119,7 +118,6 @@ public class DataItemActivityFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, final View view, final int position, long l) {
 
-
                 final String title = mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE)-1).toString();
                 final SubcategoryType type = SubcategoryType.getTypeFromTitle(title.replace(" ", ""));
                 final BaseLikeableItem item = data.get(type).get(position);
@@ -127,7 +125,7 @@ public class DataItemActivityFragment extends Fragment {
                 final String tableName = SubcategoryType.getDisplayableStringsFromType(type, true);
 
                 final SQLiteItemsDAL itemsDAL = dal;
-
+                final String catTitle = getActivity().getTitle().toString();
 
                 AlertDialog.Builder bobTheBuilder = new AlertDialog.Builder(getActivity());
                 bobTheBuilder.setMessage(R.string.dialog_delete_item)
@@ -150,6 +148,9 @@ public class DataItemActivityFragment extends Fragment {
                                 //Edit here
                                 Intent editIntent = new Intent(getContext(), SingleItemEditActivity.class);
                                 editIntent.putExtra(EDIT, item.getValue());
+                                editIntent.putExtra(DataItemActivity.SUBCAT_EXTRA, title);
+                                editIntent.putExtra(DataItemActivity.CAT_TITLE_EXTRA, catTitle);
+                                startActivity(editIntent);
                             }
                         });
                 // Creating the alertDialog

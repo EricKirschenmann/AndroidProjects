@@ -24,4 +24,34 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="EntertainmentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorEntertainment</item>
+        <item name="colorPrimaryDark">@color/colorEntertainment_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="FashionTheme" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/colorFashion</item>
+        <item name="colorPrimaryDark">@color/colorFashion_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="FoodTheme" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/colorFood</item>
+        <item name="colorPrimaryDark">@color/colorFood_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="HobbyTheme" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/colorHobby</item>
+        <item name="colorPrimaryDark">@color/colorHobby_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MedicalTheme" parent="AppTheme.NoActionBar">
+        <item name="colorPrimary">@color/colorMedical</item>
+        <item name="colorPrimaryDark">@color/colorMedical_dark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
 </resources>
