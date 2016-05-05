@@ -54,9 +54,4 @@
                     android:text="@string/save_button"/>
             </RelativeLayout>
 
-    <!--Spinner
-        android:id="@+id/key_select"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/-->
-
 </LinearLayout>
