@@ -58,11 +58,19 @@ public class UserMapHelper
                 for (BaseLikeableItem likeableItem : subCatList)
                 {
                     if(likeableItem.getID().equals(item.getID()))
+                    {
                         subCatList.remove(likeableItem);
+                        break;
+                    }
                 }
-
-                userDataMap.put(type, subCatList); //update the list in the map
             }
+            else
+            {
+                subCatList = new ArrayList<>();
+                subCatList.add(item);
+            }
+
+            userDataMap.put(type, subCatList); //update the list in the map
         }
         catch(Exception e)
         {
@@ -88,6 +96,7 @@ public class UserMapHelper
                     {
                         subCatList.remove(likeableItem);
                         subCatList.add(item); //replace the item
+                        return;
                     }
                 }
             }
