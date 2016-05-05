@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -80,6 +81,9 @@ public class ConnectionActivityFragment extends Fragment {
                 userRef = db.getUserInstance(username);
 
                 new ConnectAccountsTask().execute();
+
+                Toast toast = Toast.makeText(getContext(), "Request sent!", Toast.LENGTH_LONG);
+                toast.show();
             }
         });
 
@@ -100,6 +104,9 @@ public class ConnectionActivityFragment extends Fragment {
 
                 userDAL.removeConnections(appUser);
                 userDAL.removeConnections(appUser.getSignificantOther());
+
+                Toast toast = Toast.makeText(getContext(), "Disconnect successful", Toast.LENGTH_LONG);
+                toast.show();
             }
         });
     }
