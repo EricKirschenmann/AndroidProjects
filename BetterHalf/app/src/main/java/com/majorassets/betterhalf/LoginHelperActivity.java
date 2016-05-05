@@ -21,7 +21,11 @@ import com.majorassets.betterhalf.Model.User;
 import java.util.HashMap;
 import java.util.List;
 
-
+/**
+ * The start up activity - contains logic that checks if a user was previously logged in
+ * If a user was logged in before, log in that user and start the home screen
+ * Otherwise, start the login screen
+ */
 public class LoginHelperActivity extends AppCompatActivity
 {
     private Firebase currentUserRef; //instance for the app user
@@ -62,11 +66,13 @@ public class LoginHelperActivity extends AppCompatActivity
             String username = appUser.getUsername();
             appUser.setUsername(username);
 
+            //retrieve the user Firebase instance e.g. "baseURL/users/username"
             currentUserRef = firebaseDB.getUserInstance(username);
 
             //retrieve user's data if they are not connected
             if (!appUser.isConnected())
                 readUserDataFromSQLite(appUser);
+            //other retrieve the user's significant other's data
             else
             {
                 assignSignficantOther(username);
@@ -126,27 +132,52 @@ public class LoginHelperActivity extends AppCompatActivity
 
     public void readUserDataFromSQLite(User user)
     {
-        if(user.getEmail() != null)
+        try
         {
-            try
+            if (user.getDataItems() == null)
             {
-                if (user.getDataItems() == null)
-                {
-                    user.setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
-                }
-
-                itemsDAL.getAllUserEntertainmentItems(user.getID(), user.getDataItems());
-                itemsDAL.getAllUserFashionItems(user.getID(), user.getDataItems());
-                itemsDAL.getAllUserFoodItems(user.getID(), user.getDataItems());
-                itemsDAL.getAllUserHobbyItems(user.getID(), user.getDataItems());
-                itemsDAL.getAllUserMedicalItems(user.getID(), user.getDataItems());
-            } catch (Exception e)
-            {
-                Log.e("Error", e.getMessage());
+                user.setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
             }
+
+            itemsDAL.getAllUserEntertainmentItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserFashionItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserFoodItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserHobbyItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserMedicalItems(user.getID(), user.getDataItems());
+        } catch (Exception e)
+        {
+            Log.e("Error", e.getMessage());
         }
     }
 
+    /**
+     * Using the "connection" structure in Firebase, obtain the user's SO datasnapshot (the on the wish to connect with)
+     * @param username - the current user's username
+     */
+    private void assignSignficantOther(String username)
+    {
+        currentUserRef = firebaseDB.getUserInstance(username);
+        currentUserRef.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                String significantOther = dataSnapshot.child("connection").child("user").getValue().toString();
+                setUpSignificantOther(significantOther);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError)
+            {
+
+            }
+        });
+    }
+
+    /**
+     * Set up the SO object with it's username and email to avoid null pointers later...
+     * @param significantOther - username of SO
+     */
     private void setUpSignificantOther(String significantOther)
     {
         soUserRef = firebaseDB.getUserInstance(significantOther);
@@ -168,26 +199,9 @@ public class LoginHelperActivity extends AppCompatActivity
         });
     }
 
-    private void assignSignficantOther(String username)
-    {
-        currentUserRef = firebaseDB.getUserInstance(username);
-        currentUserRef.addListenerForSingleValueEvent(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                String significantOther = dataSnapshot.child("connection").child("user").getValue().toString();
-                setUpSignificantOther(significantOther);
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError)
-            {
-
-            }
-        });
-    }
-
+    /**
+     * Launch the home screen
+     */
     private void startHomeActivity()
     {
         Intent homeScreen = new Intent(LoginHelperActivity.this, HomeActivity.class);
@@ -196,6 +210,9 @@ public class LoginHelperActivity extends AppCompatActivity
         finish();
     }
 
+    /**
+     * Launch the login screen
+     */
     private void startLoginActivity()
     {
         Intent loginScreen = new Intent(LoginHelperActivity.this, LoginActivity.class);

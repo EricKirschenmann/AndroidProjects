@@ -83,8 +83,8 @@ public class HomeActivity extends AppCompatActivity
 		{
 			case R.id.action_settings:
 				intent = new Intent(HomeActivity.this, SettingsActivity.class);
-			startActivity(intent);
-			return true;
+				startActivity(intent);
+				return true;
 			case R.id.action_logout:
 				//this user is is officially logged out - was NOT logged on last
 				appUser.setLoggedOnLast(false);

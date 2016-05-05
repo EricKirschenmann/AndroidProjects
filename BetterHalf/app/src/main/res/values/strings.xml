@@ -44,6 +44,7 @@
     <string name="first_name">First Name:</string>
     <string name="last_name">Last Name</string>
     <string name="signed_in_as">Signed in as </string>
+    <string name="connected_with">Connected with </string>
 
     <!--strings for ConnectionActivity-->
     <string name="title_activity_connection">Connecting Accounts</string>

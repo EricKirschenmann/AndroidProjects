@@ -199,7 +199,7 @@ public class ConnectionActivityFragment extends Fragment {
 
                         //appUser.setSignificantOther(SO);
                         String cEmail = SO.getEmail();
-                        String cUsername = LoginHelperActivity.generateUsername(cEmail);
+                        String cUsername = SO.getUsername();
                         userRef.child("connection").child("status").setValue("pending");
                         userRef.child("connection").child("user").setValue(appUser.getUsername());
                         userRef = db.getUserInstance(appUser.getUsername());

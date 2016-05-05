@@ -31,6 +31,7 @@ public class SettingsActivityFragment extends Fragment
     private EditText mFirstNameEdit;
     private EditText mLastNameEdit;
     private TextView mSignedInAs;
+    private TextView mConnectedWith;
 
     private SQLiteProvider db;
     private SQLiteUserDAL dal;
@@ -67,9 +68,21 @@ public class SettingsActivityFragment extends Fragment
         mFirstNameEdit = (EditText) view.findViewById(R.id.first_name_edit);
         mLastNameEdit = (EditText) view.findViewById(R.id.last_name_edit);
         mSignedInAs = (TextView) view.findViewById(R.id.signed_in_as);
+        mConnectedWith = (TextView) view.findViewById(R.id.connected_with);
 
-        String signedInAs = mSignedInAs.getText() + " " + GlobalResources.AppUser.getEmail();
+        String signedInAs = mSignedInAs.getText() + " " + appUser.getEmail();
         mSignedInAs.setText(signedInAs);
+
+        //default to invisible
+        mConnectedWith.setVisibility(View.INVISIBLE);
+
+        if(appUser.isConnected())
+        {
+            mConnectedWith.setVisibility(View.VISIBLE);
+
+            String connectedWith = mConnectedWith.getText() + " " + appUser.getSignificantOther().getEmail();
+            mConnectedWith.setText(connectedWith);
+        }
     }
 
     private void createEvents()
@@ -151,7 +164,6 @@ public class SettingsActivityFragment extends Fragment
                 GlobalResources.AppUser.setFirstName(first);
                 GlobalResources.AppUser.setLastName(last);
 
-                //TODO: FIXED - RYAN - update user structure in Firebase
                 String username = GlobalResources.AppUser.getUsername();
                 Firebase infoRef = usersRef.child(username).child("info");
                 infoRef.child("firstName").setValue(first);

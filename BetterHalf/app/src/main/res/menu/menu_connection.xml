@@ -2,15 +2,23 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.majorassets.betterhalf.ConnectionActivity">
+
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:orderInCategory="1"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
 
     <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="2"
+        android:title="@string/action_logout"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/action_home"
-        android:title="@string/action_home"
+        android:orderInCategory="3"
+        android:title="@string/action_logout"
         android:icon="@mipmap/ic_home"
         app:showAsAction="ifRoom"/>
 </menu>
