@@ -44,11 +44,9 @@ import com.majorassets.betterhalf.Model.Medical.AllergiesItem;
 import com.majorassets.betterhalf.Model.Medical.IllnessesItem;
 import com.majorassets.betterhalf.Model.Medical.MedicalItem;
 import com.majorassets.betterhalf.Model.Medical.PhobiasItem;
-import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -129,11 +127,17 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             BaseLikeableItem item = (BaseLikeableItem) intent.getSerializableExtra(DataItemActivityFragment.ITEM_EXTRA);
 
             mItemValue.setText(item.getValue());
-            for(int i = 0; i < mSpinner.getAdapter().getCount(); i++) {
-                if(mSpinner.getItemAtPosition(i).equals(item.getLabel())) {
-                    mSpinner.setSelection(i);
-                    break;
+
+            if(mSpinner.getVisibility() == View.VISIBLE) {
+                for (int i = 0; i < mSpinner.getAdapter().getCount(); i++) {
+                    if (mSpinner.getItemAtPosition(i).equals(item.getLabel())) {
+                        mSpinner.setSelection(i);
+                        break;
+                    }
                 }
+            } else if(mSpinner.getVisibility() == View.INVISIBLE && mItemLabel.getVisibility() == View.VISIBLE) {
+                mItemLabel.setText(item.getLabel());
+                mItemLabel.setEnabled(false);
             }
 
             mFavorite.setChecked(item.isFavorite());
@@ -181,29 +185,41 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
                 adapter = ArrayAdapter.createFromResource(getContext(),
                         R.array.drinks_array, android.R.layout.simple_spinner_dropdown_item);
             } else if (category.equals("Entrees")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.entrees_array, android.R.layout.simple_spinner_dropdown_item);
+                key = "Entree";
+                mSpinner.setVisibility(View.INVISIBLE);
+//                adapter = ArrayAdapter.createFromResource(getContext(),
+//                        R.array.entrees_array, android.R.layout.simple_spinner_dropdown_item);
             } else if (category.equals("Restaurants")) {
                 adapter = ArrayAdapter.createFromResource(getContext(),
                         R.array.restaurants_array, android.R.layout.simple_spinner_dropdown_item);
             } else if (category.equals("Sides")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.sides_array, android.R.layout.simple_spinner_dropdown_item);
+                key = "Side";
+                mSpinner.setVisibility(View.INVISIBLE);
+//                adapter = ArrayAdapter.createFromResource(getContext(),
+//                        R.array.sides_array, android.R.layout.simple_spinner_dropdown_item);
             } else if (category.equals("Snacks")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.snacks_array, android.R.layout.simple_spinner_dropdown_item);
+                key = "Snack";
+                mSpinner.setVisibility(View.INVISIBLE);
+//                adapter = ArrayAdapter.createFromResource(getContext(),
+//                        R.array.snacks_array, android.R.layout.simple_spinner_dropdown_item);
             } else if (category.equals("Indoor Hobbies")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.indoor_array, android.R.layout.simple_spinner_dropdown_item);
+                key = "Indoor Hobby";
+                mSpinner.setVisibility(View.INVISIBLE);
+//                adapter = ArrayAdapter.createFromResource(getContext(),
+//                        R.array.indoor_array, android.R.layout.simple_spinner_dropdown_item);
             } else if (category.equals("Outdoor Hobbies")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.outdoor_array, android.R.layout.simple_spinner_dropdown_item);
+                key = "Outdoor Hobby";
+                mSpinner.setVisibility(View.INVISIBLE);
+//                adapter = ArrayAdapter.createFromResource(getContext(),
+//                        R.array.outdoor_array, android.R.layout.simple_spinner_dropdown_item);
             } else if (category.equals("Sports Teams")) {
                 adapter = ArrayAdapter.createFromResource(getContext(),
                         R.array.sports_array, android.R.layout.simple_spinner_dropdown_item);
             } else if (category.equals("Allergies")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.allergies_array, android.R.layout.simple_spinner_dropdown_item);
+                key = "Allergy";
+                mSpinner.setVisibility(View.INVISIBLE);
+//                adapter = ArrayAdapter.createFromResource(getContext(),
+//                        R.array.allergies_array, android.R.layout.simple_spinner_dropdown_item);
             } else if (category.equals("Illnesses")) {
                 adapter = ArrayAdapter.createFromResource(getContext(),
                         R.array.illnesses_array, android.R.layout.simple_spinner_dropdown_item);
@@ -211,22 +227,27 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
                 adapter = ArrayAdapter.createFromResource(getContext(),
                         R.array.medications_array, android.R.layout.simple_spinner_dropdown_item);
             } else if (category.equals("Phobias")) {
-                adapter = ArrayAdapter.createFromResource(getContext(),
-                        R.array.phobias_array, android.R.layout.simple_spinner_dropdown_item);
-            } else
-            {
+                key = "Phobia";
+                mSpinner.setVisibility(View.INVISIBLE);
+//                adapter = ArrayAdapter.createFromResource(getContext(),
+//                        R.array.phobias_array, android.R.layout.simple_spinner_dropdown_item);
+            } else {
                 mSpinner.setVisibility(View.INVISIBLE);
                 mItemLabel.setVisibility(View.VISIBLE);
             }
 
             //set the adapter if it is visible and created
-            if (adapter != null)
-            {
-                if (mSpinner.getVisibility() == View.VISIBLE && mItemLabel.getVisibility() == View.INVISIBLE)
-                {
+            if (adapter != null) {
+                if (mSpinner.getVisibility() == View.VISIBLE && mItemLabel.getVisibility() == View.INVISIBLE) {
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     mSpinner.setAdapter(adapter);
                     mSpinner.setOnItemSelectedListener(this);
+                }
+            } else if(adapter == null) {
+                if(mSpinner.getVisibility() == View.INVISIBLE && mItemLabel.getVisibility() == View.INVISIBLE) {
+                    mItemLabel.setText(key);
+                    mItemLabel.setEnabled(false);
+                    mItemLabel.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -276,8 +297,8 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         String label;
         if(mItemLabel.getVisibility() == View.VISIBLE)
             label = mItemLabel.getText().toString();
-        else if(mSpinner.getSelectedItem() == null)
-            label = "temp";
+        else if(mSpinner.getVisibility() == View.INVISIBLE && mItemLabel.getVisibility() == View.VISIBLE)
+            label = key;
         else
             label = mSpinner.getSelectedItem().toString();
 
@@ -382,13 +403,16 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
                 break;
         }
 
-        item.setIsFavorite(isFavorite);
+        //make sure the item is created before adding
+        if(item != null) {
+            item.setIsFavorite(isFavorite);
 
-        //write to SQLite differently if the user is connected
-        if(!appUser.isConnected())
-            item.setUserID(appUser.getID()); //create relationship between user and data tables
-        else
-            item.setUserID(appUser.getSignificantOther().getID());
+            //write to SQLite differently if the user is connected
+            if (!appUser.isConnected())
+                item.setUserID(appUser.getID()); //create relationship between user and data tables
+            else
+                item.setUserID(appUser.getSignificantOther().getID());
+        }
 
         //option to update or add new item
         Intent intent = getActivity().getIntent();
@@ -427,8 +451,9 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
                 UserMapHelper.addItem(appUser.getSignificantOther(), type, item);
         }
 
-
-        item.setID(String.valueOf(dal.getItemID(item, table)));
+        if(item != null) {
+            item.setID(String.valueOf(dal.getItemID(item, table)));
+        }
 
 
     }

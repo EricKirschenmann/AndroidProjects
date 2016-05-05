@@ -5,6 +5,7 @@
     <string-array name="books_array">
         <item>Title</item>
         <item>Author</item>
+        <item>Series</item>
         <item>Genre</item>
     </string-array>
 
@@ -43,14 +44,18 @@
     <!--string arrays for Fashion category-->
     <string-array name="accessories_array">
         <item>Brand</item>
+        <item>Type</item>
     </string-array>
 
     <string-array name="clothing_array">
         <item>Brand</item>
+        <item>Size</item>
     </string-array>
 
     <string-array name="jewelry_array">
         <item>Brand</item>
+        <item>Type</item>
+        <item>Size</item>
     </string-array>
 
     <string-array name="shoes_array">
@@ -92,6 +97,7 @@
 
     <string-array name="sports_array">
         <item>Baseball</item>
+        <item>Basketball</item>
         <item>Football</item>
         <item>Soccer</item>
     </string-array>

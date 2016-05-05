@@ -33,7 +33,6 @@
         android:paddingTop="24dp"
         android:paddingBottom="24dp"
         android:paddingRight="16dp"
-        android:tint="@color/colorAccent"
-        android:src="@drawable/ic_star_black_24dp" />
+        android:src="@drawable/ic_star_gold_24px" />
 
 </RelativeLayout>

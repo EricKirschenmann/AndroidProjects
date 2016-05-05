@@ -74,8 +74,7 @@ public class DataItemArrayAdapter extends BaseAdapter {
         holder.label.setText(objects.get(i).getValue());
 
         if(!objects.get(i).isFavorite()) {
-            holder.star.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_star_border_black_24dp));
-            holder.star.setColorFilter(R.color.secondary_text);
+            holder.star.setImageDrawable(view.getResources().getDrawable(R.drawable.ic_star_border_gray_24px));
         }
 
         return view;
