@@ -1,11 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="titleTextColor">#FFFFFF</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -13,9 +14,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:colorBackground">#FFFFFF</item>
+        <item name="android:textColor">#000000</item>
+    </style>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+
+    </style>
 
     <style name="CustomTabStyle" parent="TextAppearance.Design.Tab" >
         <item name="android:textSize">14sp</item>
@@ -24,34 +30,39 @@
         <item name="android:textAlignment">center</item>
     </style>
 
-    <style name="EntertainmentTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="EntertainmentTheme" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/colorEntertainment</item>
         <item name="colorPrimaryDark">@color/colorEntertainment_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="titleTextColor">#FFFFFF</item>
     </style>
 
     <style name="FashionTheme" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/colorFashion</item>
         <item name="colorPrimaryDark">@color/colorFashion_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="titleTextColor">#FFFFFF</item>
     </style>
 
     <style name="FoodTheme" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/colorFood</item>
         <item name="colorPrimaryDark">@color/colorFood_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="titleTextColor">#FFFFFF</item>
     </style>
 
     <style name="HobbyTheme" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/colorHobby</item>
         <item name="colorPrimaryDark">@color/colorHobby_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="titleTextColor">#FFFFFF</item>
     </style>
 
     <style name="MedicalTheme" parent="AppTheme.NoActionBar">
         <item name="colorPrimary">@color/colorMedical</item>
         <item name="colorPrimaryDark">@color/colorMedical_dark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="titleTextColor">#FFFFFF</item>
     </style>
 
 </resources>
