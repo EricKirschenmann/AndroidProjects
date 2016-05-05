@@ -40,6 +40,15 @@ public class SQLiteProvider
         return sSQLiteProvider;
     }
 
+    //singleton implementation
+    public static SQLiteProvider getSQLiteProvider()
+    {
+        if(sSQLiteProvider == null)
+            sSQLiteProvider = new SQLiteProvider(null);
+
+        return sSQLiteProvider;
+    }
+
     public static ContentValues getUserContentValues(User user)
     {
         ContentValues values = new ContentValues();
@@ -57,11 +66,7 @@ public class SQLiteProvider
     public static ContentValues removeConnections(User user)
     {
         ContentValues values = new ContentValues();
-        values.put(UserDBTable.Cols.UUID, user.getID().toString());
         values.putNull(UserDBTable.Cols.SOID);
-        values.put(UserDBTable.Cols.EMAIL, user.getEmail());
-        values.put(UserDBTable.Cols.PASSWORD, user.getPassword());
-        values.put(UserDBTable.Cols.LOGGED_ON_LAST, user.isLoggedOnLast());
         return values;
     }
 

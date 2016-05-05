@@ -114,9 +114,15 @@ public class HomeActivity extends AppCompatActivity
 
 		//write to firebase differently if the user is connected
 		if(!appUser.isConnected())
+		{
 			operationalUser = appUser;
+			if (operationalUser.getEmail() != null)
+				operationalUser.setUsername(operationalUser.getUsername());
+		}
 		else
 			operationalUser = appUser.getSignificantOther();
+
+
 
 		if(operationalUser.getUsername() != null)
 		{

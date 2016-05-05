@@ -1,5 +1,6 @@
 package com.majorassets.betterhalf;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -105,8 +106,14 @@ public class ConnectionActivityFragment extends Fragment {
                 userDAL.removeConnections(appUser);
                 userDAL.removeConnections(appUser.getSignificantOther());
 
+                appUser.setSignificantOther(null);
+
                 Toast toast = Toast.makeText(getContext(), "Disconnect successful", Toast.LENGTH_LONG);
                 toast.show();
+
+                //reload app
+                Intent intent = new Intent(getContext(), LoginHelperActivity.class);
+                startActivity(intent);
             }
         });
     }

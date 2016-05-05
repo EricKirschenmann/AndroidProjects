@@ -87,6 +87,8 @@ public class DataItemActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Firebase.setAndroidContext(this);
+
         appUser = GlobalResources.AppUser;
         sqliteDB = SQLiteProvider.getSQLiteProvider(this);
         userDAL = new SQLiteUserDAL(sqliteDB.getDatabase());

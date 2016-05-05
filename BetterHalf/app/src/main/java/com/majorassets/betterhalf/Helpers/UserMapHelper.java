@@ -2,6 +2,8 @@ package com.majorassets.betterhalf.Helpers;
 
 import android.util.Log;
 
+import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.GlobalResources;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.Subcategory;
@@ -84,21 +86,28 @@ public class UserMapHelper
     {
         Map<SubcategoryType, List<BaseLikeableItem>> userDataMap = appUser.getDataItems();
 
+        readUserDataFromSQLite(appUser);
+
         try
         {
             List<BaseLikeableItem> subCatList = userDataMap.get(type);
 
-            if(!subCatList.isEmpty())
+            if(subCatList != null)
             {
-                for (BaseLikeableItem likeableItem : subCatList)
+                if (!subCatList.isEmpty())
                 {
-                    if(likeableItem.getID().equals(item.getID()))
+                    for (BaseLikeableItem likeableItem : subCatList)
                     {
-                        subCatList.remove(likeableItem);
-                        subCatList.add(item); //replace the item
-                        return;
+                        if (likeableItem.getID().equals(item.getID()))
+                        {
+                            subCatList.remove(likeableItem);
+                            subCatList.add(item); //replace the item
+                            return;
+                        }
                     }
                 }
+                else
+                    subCatList.add(item);
             }
             else
             {
@@ -111,6 +120,29 @@ public class UserMapHelper
         catch(Exception e)
         {
             Log.e("ERROR", e.getMessage());
+        }
+    }
+
+    public static void readUserDataFromSQLite(User user)
+    {
+        SQLiteProvider db = SQLiteProvider.getSQLiteProvider();
+        SQLiteItemsDAL itemsDAL = new SQLiteItemsDAL(db.getDatabase());
+
+        try
+        {
+            if (user.getDataItems() == null)
+            {
+                user.setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
+            }
+
+            itemsDAL.getAllUserEntertainmentItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserFashionItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserFoodItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserHobbyItems(user.getID(), user.getDataItems());
+            itemsDAL.getAllUserMedicalItems(user.getID(), user.getDataItems());
+        } catch (Exception e)
+        {
+            Log.e("Error", e.getMessage());
         }
     }
 }
