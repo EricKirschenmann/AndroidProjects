@@ -54,6 +54,17 @@ public class SQLiteProvider
         return values;
     }
 
+    public static ContentValues removeConnections(User user)
+    {
+        ContentValues values = new ContentValues();
+        values.put(UserDBTable.Cols.UUID, user.getID().toString());
+        values.putNull(UserDBTable.Cols.SOID);
+        values.put(UserDBTable.Cols.EMAIL, user.getEmail());
+        values.put(UserDBTable.Cols.PASSWORD, user.getPassword());
+        values.put(UserDBTable.Cols.LOGGED_ON_LAST, user.isLoggedOnLast());
+        return values;
+    }
+
     /*
             colLabel = the label from the schema of the item
                 ex: BooksTable.Cols.LABEL

@@ -16,6 +16,8 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.User;
 
@@ -33,6 +35,8 @@ public class ConnectionActivityFragment extends Fragment {
 
     private FirebaseProvider db;
     private Firebase userRef;
+    private SQLiteProvider sqliteDB;
+    private SQLiteUserDAL userDAL;
 
     private User appUser;
     private User SO;
@@ -64,6 +68,8 @@ public class ConnectionActivityFragment extends Fragment {
         disconnectButton = (Button) view.findViewById(R.id.disconnect_btn);
         disconnectText = (TextView) view.findViewById(R.id.disconnect_txt);
 
+        sqliteDB = SQLiteProvider.getSQLiteProvider(getContext());
+        userDAL = new SQLiteUserDAL(sqliteDB.getDatabase());
     }
 
     private void createEvents() {
@@ -91,12 +97,15 @@ public class ConnectionActivityFragment extends Fragment {
                 userRef = db.getUserInstance(username);
                 //disconnectFromUser(v);
                 new DisconnectAccountsTask().execute();
+
+                userDAL.removeConnections(appUser);
+                userDAL.removeConnections(appUser.getSignificantOther());
             }
         });
     }
 
-    private class DisconnectAccountsTask extends AsyncTask<Void, Void, Void> {
-
+    private class DisconnectAccountsTask extends AsyncTask<Void, Void, Void>
+    {
         @Override
         protected Void doInBackground(Void... params)
         {

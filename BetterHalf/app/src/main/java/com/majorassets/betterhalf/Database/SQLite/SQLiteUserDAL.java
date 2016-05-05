@@ -47,6 +47,14 @@ public class SQLiteUserDAL implements ISQLiteUserDAL
         db.update(UserDBTable.NAME, values, UserDBTable.Cols.UUID + " = ?", new String[] {userID});
     }
 
+    public void removeConnections(User user)
+    {
+        String userID = user.getID().toString();
+        ContentValues values = SQLiteProvider.removeConnections(user);
+
+        db.update(UserDBTable.NAME, values, UserDBTable.Cols.UUID + " = ?", new String[] {userID});
+    }
+
     @Override
     public User deleteUser(User user)
     {
