@@ -103,18 +103,18 @@ public class SQLiteItemsDAL implements ISQLiteItemsDAL {
     }
 
     // Change an existing item
-    public void updateItem(BaseLikeableItem item, String tableName, String colUUID){
+    public void updateItem(BaseLikeableItem item, String tableName){
         String itemID = item.getID();
         ContentValues values = SQLiteProvider.getDataContentValues(item);
 
-        db.update(tableName, values, colUUID + " = ?", new String[] {itemID});
+        db.update(tableName, values, DataDBSchema.BaseTable.Cols.UUID + " = ?", new String[] {itemID});
     }
 
     // Remove an existing item
-    public BaseDataItem deleteItem(BaseLikeableItem item, String tableName, String colUUID){
+    public BaseDataItem deleteItem(BaseLikeableItem item, String tableName){
         String itemID = item.getID();
 
-        db.delete(tableName, colUUID + "= ?", new String[]{itemID});
+        db.delete(tableName, DataDBSchema.BaseTable.Cols.UUID + "= ?", new String[]{itemID});
 
         return item;
     }

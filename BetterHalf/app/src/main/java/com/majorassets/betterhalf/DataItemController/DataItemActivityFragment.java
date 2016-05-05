@@ -137,7 +137,7 @@ public class DataItemActivityFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Delete Item here
                                 //Call SQLite delete fn
-                                itemsDAL.deleteItem(item, tableName, "uuid");
+                                itemsDAL.deleteItem(item, tableName);
 
                                 if(!appUser.isConnected())
                                     UserMapHelper.deleteItem(appUser, type, item);

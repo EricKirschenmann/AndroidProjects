@@ -17,8 +17,8 @@ public interface ISQLiteItemsDAL
     int getItemID(BaseLikeableItem item, String tableName);
     void addItem(BaseLikeableItem item, String tableName);
     void addItem(BaseDataItem item, String tableName);
-    void updateItem(BaseLikeableItem item, String tableName, String colUUID);
-    BaseDataItem deleteItem(BaseLikeableItem item, String tableName, String colUUID);
+    void updateItem(BaseLikeableItem item, String tableName);
+    BaseDataItem deleteItem(BaseLikeableItem item, String tableName);
 
     List<BaseLikeableItem> getEntertainmentItems(String tableName, UUID userId);
     List<BaseLikeableItem> getFashionItems(String tableName, UUID userId);

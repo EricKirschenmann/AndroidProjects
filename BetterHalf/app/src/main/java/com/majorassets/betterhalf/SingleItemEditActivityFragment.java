@@ -395,23 +395,41 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
         if(intent.hasExtra(DataItemActivityFragment.ITEM_EXTRA))
         {
             BaseLikeableItem updateItem = (BaseLikeableItem) intent.getSerializableExtra(DataItemActivityFragment.ITEM_EXTRA);
+
+            //set up the updated item
             updateItem.setValue(mItemValue.getText().toString());
-            updateItem.setLabel(mSpinner.getSelectedItem().toString());
+            if(mItemLabel.getVisibility() == View.VISIBLE)
+                updateItem.setLabel(mItemLabel.getText().toString());
+            else if (mSpinner.getSelectedItem() == null)
+                updateItem.setLabel("temp");
+            else
+                updateItem.setLabel(mSpinner.getSelectedItem().toString());
+
             updateItem.setIsFavorite(mFavorite.isChecked());
+
             String tableName = intent.getStringExtra(DataItemActivityFragment.TABLE_NAME_EXTRA);
-            dal.updateItem(updateItem, tableName, "uuid");
+
+            dal.updateItem(updateItem, tableName);
+
+            if(!appUser.isConnected())
+                UserMapHelper.updateItem(appUser, type, updateItem);
+            else
+                UserMapHelper.updateItem(appUser.getSignificantOther(), type, updateItem);
         }
-        else {
+        else
+        {
             dal.addItem(item, table);
+
+            if(!appUser.isConnected())
+                UserMapHelper.addItem(appUser, type, item);
+            else
+                UserMapHelper.addItem(appUser.getSignificantOther(), type, item);
         }
 
 
         item.setID(String.valueOf(dal.getItemID(item, table)));
 
-        if(!appUser.isConnected())
-            UserMapHelper.addItem(appUser, type, item);
-        else
-            UserMapHelper.addItem(appUser.getSignificantOther(), type, item);
+
     }
 
     @Override

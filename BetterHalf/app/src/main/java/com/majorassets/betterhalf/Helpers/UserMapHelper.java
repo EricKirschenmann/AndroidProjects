@@ -71,4 +71,32 @@ public class UserMapHelper
 
         return item; //return the deleted item
     }
+
+    public static void updateItem(User appUser, SubcategoryType type, BaseLikeableItem item)
+    {
+        Map<SubcategoryType, List<BaseLikeableItem>> userDataMap = appUser.getDataItems();
+
+        try
+        {
+            List<BaseLikeableItem> subCatList = userDataMap.get(type);
+
+            if(!subCatList.isEmpty())
+            {
+                for (BaseLikeableItem likeableItem : subCatList)
+                {
+                    if(likeableItem.getID().equals(item.getID()))
+                    {
+                        subCatList.remove(likeableItem);
+                        subCatList.add(item); //replace the item
+                    }
+                }
+
+                userDataMap.put(type, subCatList); //update the list in the map
+            }
+        }
+        catch(Exception e)
+        {
+            Log.e("ERROR", e.getMessage());
+        }
+    }
 }
