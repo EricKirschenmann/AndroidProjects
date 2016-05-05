@@ -119,9 +119,7 @@ public class HomeActivityFragment extends Fragment
 		userDAL = new SQLiteUserDAL(sqliteDB.getDatabase());
 		itemsDAL = new SQLiteItemsDAL(sqliteDB.getDatabase());
 
-		//right now have to call this 5 times - TODO: make dynamic
-		//String mainCategory = mEntertainmentButton.getText().toString().toLowerCase();
-
+		GlobalResources.Subcategories.clear();
 		for(String mainCategory : GlobalResources.MainCategories)
 			getSubcategoryData(db.getSubcategoryInstance(mainCategory));
 	}
@@ -415,9 +413,14 @@ public class HomeActivityFragment extends Fragment
 
 							for (DataSnapshot attribute : id.getChildren())
 							{
-								item.setLabel(attribute.getKey());
-								item.setValue(attribute.getValue().toString());
-								item.setUserID(appUser.getSignificantOther().getID());
+								if(attribute.getKey().equals("favorite"))
+									item.setIsFavorite((boolean)attribute.getValue());
+								else
+								{
+									item.setLabel(attribute.getKey());
+									item.setValue(attribute.getValue().toString());
+									item.setUserID(appUser.getSignificantOther().getID());
+								}
 							}
 
 							//write data to SQLite

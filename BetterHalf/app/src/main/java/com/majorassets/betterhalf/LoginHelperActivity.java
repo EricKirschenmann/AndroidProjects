@@ -75,23 +75,8 @@ public class LoginHelperActivity extends AppCompatActivity
                 readUserDataFromSQLite(appUser);
             else
             {
+                assignSignficantOther(username);
                 readUserDataFromSQLite(appUser.getSignificantOther());
-
-                currentUserRef.addListenerForSingleValueEvent(new ValueEventListener()
-                {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot)
-                    {
-                        String significantOther = dataSnapshot.child("connection").child("user").getValue().toString();
-                        setUpSignificantOther(significantOther);
-                    }
-
-                    @Override
-                    public void onCancelled(FirebaseError firebaseError)
-                    {
-
-                    }
-                });
             }
 
 
@@ -147,26 +132,28 @@ public class LoginHelperActivity extends AppCompatActivity
 
     public void readUserDataFromSQLite(User user)
     {
-        try
+        if(user.getEmail() != null)
         {
-            if (user.getDataItems() == null)
+            try
             {
-                user.setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
-            }
+                if (user.getDataItems() == null)
+                {
+                    user.setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
+                }
 
-            itemsDAL.getAllUserEntertainmentItems(user.getID(), user.getDataItems());
-            itemsDAL.getAllUserFashionItems(user.getID(), user.getDataItems());
-            itemsDAL.getAllUserFoodItems(user.getID(), user.getDataItems());
-            itemsDAL.getAllUserHobbyItems(user.getID(), user.getDataItems());
-            itemsDAL.getAllUserMedicalItems(user.getID(), user.getDataItems());
-        }
-        catch (Exception e)
-        {
-            Log.e("Error", e.getMessage());
+                itemsDAL.getAllUserEntertainmentItems(user.getID(), user.getDataItems());
+                itemsDAL.getAllUserFashionItems(user.getID(), user.getDataItems());
+                itemsDAL.getAllUserFoodItems(user.getID(), user.getDataItems());
+                itemsDAL.getAllUserHobbyItems(user.getID(), user.getDataItems());
+                itemsDAL.getAllUserMedicalItems(user.getID(), user.getDataItems());
+            } catch (Exception e)
+            {
+                Log.e("Error", e.getMessage());
+            }
         }
     }
 
-    private void setUpSignificantOther(final String significantOther)
+    private void setUpSignificantOther(String significantOther)
     {
         soUserRef = firebaseDB.getUserInstance(significantOther);
         soUserRef.addListenerForSingleValueEvent(new ValueEventListener()
@@ -177,6 +164,26 @@ public class LoginHelperActivity extends AppCompatActivity
                 User SO = appUser.getSignificantOther();
                 SO.setUsername(dataSnapshot.getKey());
                 SO.setEmail(dataSnapshot.child("info").child("email").getValue().toString());
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError)
+            {
+
+            }
+        });
+    }
+
+    private void assignSignficantOther(String username)
+    {
+        currentUserRef = firebaseDB.getUserInstance(username);
+        currentUserRef.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                String significantOther = dataSnapshot.child("connection").child("user").getValue().toString();
+                setUpSignificantOther(significantOther);
             }
 
             @Override

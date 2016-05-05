@@ -9,7 +9,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
@@ -127,6 +130,7 @@ public class HomeActivity extends AppCompatActivity
 				{
 					internalMap = new HashMap<>();
 					internalMap.put(item.getLabel(), item.getValue());
+					internalMap.put("favorite", String.valueOf(item.isFavorite()));
 					firebaseMap.put(item.getID(), internalMap);
 				}
 
@@ -135,5 +139,51 @@ public class HomeActivity extends AppCompatActivity
 				firebaseMap.clear();
 			}
 		}
+		else
+		{
+			assignSignficantOther(appUser.getUsername());
+		}
+	}
+
+	//copied from LoginHelperActivity
+	private void assignSignficantOther(String username)
+	{
+		Firebase currentUserRef = firebaseDB.getUserInstance(username);
+		currentUserRef.addListenerForSingleValueEvent(new ValueEventListener()
+		{
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				String significantOther = dataSnapshot.child("connection").child("user").getValue().toString();
+				setUpSignificantOther(significantOther);
+			}
+
+			@Override
+			public void onCancelled(FirebaseError firebaseError)
+			{
+
+			}
+		});
+	}
+
+	private void setUpSignificantOther(String significantOther)
+	{
+		Firebase soUserRef = firebaseDB.getUserInstance(significantOther);
+		soUserRef.addListenerForSingleValueEvent(new ValueEventListener()
+		{
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				User SO = appUser.getSignificantOther();
+				SO.setUsername(dataSnapshot.getKey());
+				SO.setEmail(dataSnapshot.child("info").child("email").getValue().toString());
+			}
+
+			@Override
+			public void onCancelled(FirebaseError firebaseError)
+			{
+
+			}
+		});
 	}
 }

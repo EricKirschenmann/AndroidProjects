@@ -90,9 +90,14 @@ public class UserMapHelper
                         subCatList.add(item); //replace the item
                     }
                 }
-
-                userDataMap.put(type, subCatList); //update the list in the map
             }
+            else
+            {
+                subCatList = new ArrayList<>();
+                subCatList.add(item);
+            }
+
+            userDataMap.put(type, subCatList); //update the list in the map
         }
         catch(Exception e)
         {

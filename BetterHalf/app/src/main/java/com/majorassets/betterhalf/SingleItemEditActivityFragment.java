@@ -398,6 +398,8 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
 
             //set up the updated item
             updateItem.setValue(mItemValue.getText().toString());
+            updateItem.setIsFavorite(mFavorite.isChecked());
+
             if(mItemLabel.getVisibility() == View.VISIBLE)
                 updateItem.setLabel(mItemLabel.getText().toString());
             else if (mSpinner.getSelectedItem() == null)
@@ -405,10 +407,9 @@ public class SingleItemEditActivityFragment extends Fragment implements AdapterV
             else
                 updateItem.setLabel(mSpinner.getSelectedItem().toString());
 
-            updateItem.setIsFavorite(mFavorite.isChecked());
-
             String tableName = intent.getStringExtra(DataItemActivityFragment.TABLE_NAME_EXTRA);
 
+            //update in sqlite
             dal.updateItem(updateItem, tableName);
 
             if(!appUser.isConnected())
