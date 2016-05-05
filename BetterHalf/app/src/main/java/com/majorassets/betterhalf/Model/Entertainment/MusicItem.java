@@ -7,6 +7,7 @@ import com.majorassets.betterhalf.Model.BaseLikeableItem;
  */
 public class MusicItem extends EntertainmentItem
 {
+	public MusicItem(String id) { super(id);}
 	public MusicItem(String label, String value) {
 		super(label, value);
 	}

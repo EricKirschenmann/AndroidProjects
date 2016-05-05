@@ -25,6 +25,7 @@ public class UserCursorWrapper extends CursorWrapper
     public User getUser()
     {
         String userID = getString(getColumnIndex(UserDBTable.Cols.UUID));
+        String soID = getString(getColumnIndex(UserDBTable.Cols.SOID));
         String email = getString(getColumnIndex(UserDBTable.Cols.EMAIL));
         String password = getString(getColumnIndex(UserDBTable.Cols.PASSWORD));
         String loggedOnLastStr = getString(getColumnIndex(UserDBTable.Cols.LOGGED_ON_LAST));
@@ -35,6 +36,16 @@ public class UserCursorWrapper extends CursorWrapper
         user.setEmail(email);
         user.setPassword(password);
         user.setLoggedOnLast(loggedOnLast);
+
+        //try to set the user's significant other user object
+        User significantOther;
+        if(soID != null)
+        {
+            significantOther = new User(UUID.fromString(soID));
+            user.setSignificantOther(significantOther);
+        }
+
+
 
         return user;
     }

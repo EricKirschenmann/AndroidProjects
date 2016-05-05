@@ -1,5 +1,6 @@
 package com.majorassets.betterhalf.Model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -10,7 +11,7 @@ import java.util.UUID;
  * For example, a label may be "Star Wars" with a value of "Empire Strikes Back"
  * signifying a user favorite (or least favorite) Star Wars movie or soundtrack
  */
-public abstract class BaseDataItem implements IDataItem
+public abstract class BaseDataItem implements Serializable
 {
 	protected String mID;
 	protected UUID mUserID;
@@ -19,6 +20,11 @@ public abstract class BaseDataItem implements IDataItem
 
 	//DEFAULT CONSTRUCTOR
 	public BaseDataItem() {}
+
+	public BaseDataItem(String id)
+	{
+		mID = id;
+	}
 
 	//OVERLOADED CONSTRUCTOR
 	public BaseDataItem(String label, String value) {

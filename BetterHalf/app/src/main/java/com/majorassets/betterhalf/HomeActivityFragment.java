@@ -17,15 +17,40 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
-import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
-import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
+import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
+import com.majorassets.betterhalf.Model.Entertainment.BookItem;
+import com.majorassets.betterhalf.Model.Entertainment.GameItem;
+import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
+import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
+import com.majorassets.betterhalf.Model.Entertainment.TVShowItem;
+import com.majorassets.betterhalf.Model.Entertainment.TheaterItem;
+import com.majorassets.betterhalf.Model.Fashion.AccessoriesItem;
+import com.majorassets.betterhalf.Model.Fashion.ClothingItem;
+import com.majorassets.betterhalf.Model.Fashion.JewelryItem;
+import com.majorassets.betterhalf.Model.Fashion.ShoesItem;
+import com.majorassets.betterhalf.Model.Food.DrinksItem;
+import com.majorassets.betterhalf.Model.Food.EntreesItem;
+import com.majorassets.betterhalf.Model.Food.RestaurantsItem;
+import com.majorassets.betterhalf.Model.Food.SidesItem;
+import com.majorassets.betterhalf.Model.Food.SnacksItem;
+import com.majorassets.betterhalf.Model.Hobbies.IndoorItem;
+import com.majorassets.betterhalf.Model.Hobbies.OutdoorItem;
+import com.majorassets.betterhalf.Model.Hobbies.SportsItem;
 import com.majorassets.betterhalf.Model.MainCategoryType;
+import com.majorassets.betterhalf.Model.Medical.AllergiesItem;
+import com.majorassets.betterhalf.Model.Medical.IllnessesItem;
+import com.majorassets.betterhalf.Model.Medical.MedicalItem;
+import com.majorassets.betterhalf.Model.Medical.PhobiasItem;
 import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -47,12 +72,17 @@ public class HomeActivityFragment extends Fragment
 	private CardView mHobbyCardView;
 	private CardView mMedicalCardView;
 
-	private Map<SubcategoryType, List<BaseLikeableItem>> userDataItems;
 	private FirebaseProvider db;
-	private Firebase mRootRef;
+
+	private SQLiteProvider sqliteDB;
+	private SQLiteUserDAL userDAL;
+	private SQLiteItemsDAL itemsDAL;
+
+	private FirebaseProvider firebaseDB;
+	private Firebase currentUserRef; //instance for the app user
+	private Firebase soUserRef; //instance for the significant other
 
 	private User appUser;
-	private User SO;
 
 	public static final String TITLE_EXTRA = "com.majorassets.betterhalf.title";
 
@@ -82,8 +112,12 @@ public class HomeActivityFragment extends Fragment
 		mHobbyCardView = (CardView) view.findViewById(R.id.hobby_card_view);
 		mMedicalCardView = (CardView) view.findViewById(R.id.medical_card_view);
 
-		userDataItems = DataItemRepository.getDataItemRepository().getDataItems();
 		db = FirebaseProvider.getDataProvider();
+
+		firebaseDB = FirebaseProvider.getDataProvider();
+		sqliteDB = SQLiteProvider.getSQLiteProvider(getContext());
+		userDAL = new SQLiteUserDAL(sqliteDB.getDatabase());
+		itemsDAL = new SQLiteItemsDAL(sqliteDB.getDatabase());
 
 		//right now have to call this 5 times - TODO: make dynamic
 		//String mainCategory = mEntertainmentButton.getText().toString().toLowerCase();
@@ -182,9 +216,9 @@ public class HomeActivityFragment extends Fragment
 
 			@Override
 			public void onCancelled(FirebaseError firebaseError)
-			{
+		{
 
-			}
+		}
 		});
 	}
 
@@ -196,93 +230,55 @@ public class HomeActivityFragment extends Fragment
 	}
 
 	//Check if a request to connect has been made
-	public void checkConnectionRequest() {
+	public void checkConnectionRequest()
+	{
 		//Instantiate necessary resources
-		final FirebaseProvider db = FirebaseProvider.getDataProvider();
-		final User appUser = GlobalResources.AppUser;
-		final Firebase thisUserRef = db.getUserInstance(appUser.getUsername());
+		appUser = GlobalResources.AppUser;
+		final Firebase currentUserRef = firebaseDB.getUserInstance(appUser.getUsername());
 
-		thisUserRef.addListenerForSingleValueEvent(new ValueEventListener() {
+		currentUserRef.addListenerForSingleValueEvent(new ValueEventListener()
+		{
 
 			@Override
-			public void onDataChange(DataSnapshot dataSnapshot) {
-				//If dataSnapshot.child("connection") != NULL
-				if(dataSnapshot.child("connection").getValue() != null) {
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				if(dataSnapshot.child("connection").getValue() != null)
+				{
+					final String userRequesting = dataSnapshot.child("connection").child("user").getValue().toString();
+					final Firebase soUserRef = firebaseDB.getUserInstance(userRequesting);
+
 					String statusString = dataSnapshot.child("connection").child("status").getValue().toString();
-
-					if (statusString.equals("pending")) {
-						String userRequesting = dataSnapshot.child("connection").child("user").getValue().toString();
-						final Firebase userRequestingRef = db.getUserInstance(userRequesting);
-
+					if (statusString.equals("pending"))
+					{
 						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 						builder.setMessage("Connect with " + userRequesting + "?")
-								.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int id) {
-										thisUserRef.child("connection").child("status").setValue("connected");
-										userRequestingRef.child("connection").child("status").setValue("connected");
-										//set SO user and info
+								.setPositiveButton("Connect", new DialogInterface.OnClickListener()
+								{
+									public void onClick(DialogInterface dialog, int id)
+									{
+										currentUserRef.child("connection").child("status").setValue("connected");
+										soUserRef.child("connection").child("status").setValue("connected");
 
-										userRequestingRef.addListenerForSingleValueEvent(new ValueEventListener()
-										{
-											User SO = new User();
-											@Override
-											public void onDataChange(DataSnapshot dataSnapshot)
-											{
-												SO.setUsername(dataSnapshot.getKey());
-												appUser.setSignificantOther(SO);
-
-												for (DataSnapshot childThis: dataSnapshot.getChildren()) {
-													String child = childThis.getKey();
-													if (child == "info") {
-														String infoChildKey;
-														Object infoChildValue;
-														Iterable<DataSnapshot> infoChildren = childThis.getChildren();
-														for (DataSnapshot infoChild : infoChildren) {
-															infoChildKey = infoChild.getKey();
-															infoChildValue = infoChild.getValue();
-
-															switch (infoChildKey) {
-																case FirebaseStructure.EMAIL:
-																	SO.setEmail(infoChildValue.toString());
-																	break;
-																case FirebaseStructure.FIRSTNAME:
-																	SO.setFirstName(infoChildValue.toString());
-																	break;
-																case FirebaseStructure.LASTNAME:
-																	SO.setLastName(infoChildValue.toString());
-																	break;
-																case FirebaseStructure.ID:
-																	SO.setID(UUID.fromString(infoChildValue.toString()));
-																	break;
-																default:
-																	break;
-															}
-														}
-													}
-													else if(child == "data"){
-
-													}
-												}
-											}
-											@Override
-											public void onCancelled(FirebaseError firebaseError)
-											{
-
-											}
-										});
+										assignUserToSO(soUserRef, userRequesting);
+										readSODataFromFirebase(userRequesting);
 									}
 								})
-								.setNegativeButton("Ignore", new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int id) {
-										thisUserRef.child("connection").removeValue();
-										userRequestingRef.child("connection").removeValue();
+								.setNegativeButton("Ignore", new DialogInterface.OnClickListener()
+								{
+									public void onClick(DialogInterface dialog, int id)
+									{
+										currentUserRef.removeValue();
+										soUserRef.removeValue();
 									}
 								});
 
 						AlertDialog dialog = builder.create();
 						dialog.show();
-					} else {
-						//Fill with SO data?
+					}
+					else if (statusString.equals("connected"))
+					{
+						if(!appUser.isConnected())
+							assignUserToSO(soUserRef, userRequesting);
 					}
 				}
 			}
@@ -293,5 +289,155 @@ public class HomeActivityFragment extends Fragment
 			}
 		});
 
+	}
+
+	private void assignUserToSO(Firebase soRef, final String soUsername)
+	{
+		soRef.addListenerForSingleValueEvent(new ValueEventListener()
+		{
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				UUID soID = UUID.fromString((String)dataSnapshot.child("info").child("id").getValue());
+				String email = (String)dataSnapshot.child("info").child("email").getValue();
+
+				User SO = new User(soID);
+				SO.setUsername(soUsername);
+				SO.setEmail(email);
+
+				appUser.setSignificantOther(SO);
+
+				userDAL.updateUser(appUser);
+			}
+
+			@Override
+			public void onCancelled(FirebaseError firebaseError)
+			{
+
+			}
+		});
+	}
+
+	private void readSODataFromFirebase(final String username)
+	{
+		Firebase soDataRef = firebaseDB.getUserDataInstance(username);
+		soDataRef.addListenerForSingleValueEvent(new ValueEventListener()
+		{
+			@Override
+			public void onDataChange(DataSnapshot dataSnapshot)
+			{
+				if(appUser.getSignificantOther() != null)
+				{
+					SubcategoryType type;
+					for (DataSnapshot subCategory : dataSnapshot.getChildren())
+					{
+						type = SubcategoryType.getTypeFromString(subCategory.getKey());
+						Map<SubcategoryType, List<BaseLikeableItem>> map = appUser.getSignificantOther().getDataItems();
+						List<BaseLikeableItem> innerList = new ArrayList<>();
+
+						for (DataSnapshot id : subCategory.getChildren())
+						{
+							BaseLikeableItem item = null;
+							switch (type)
+							{
+								//ENTERTAINMENT
+								case BOOK:
+									item = new BookItem(id.getKey());
+									break;
+								case MOVIE:
+									item = new MovieItem(id.getKey());
+									break;
+								case MUSIC:
+									item = new MusicItem(id.getKey());
+									break;
+								case THEATER:
+									item = new GameItem(id.getKey());
+									break;
+								case TV_SHOW:
+									item = new TVShowItem(id.getKey());
+									break;
+								case GAME:
+									item = new TheaterItem(id.getKey());
+									break;
+								//FASHION
+								case CLOTHING:
+									item = new ClothingItem(id.getKey());
+									break;
+								case JEWELRY:
+									item = new JewelryItem(id.getKey());
+									break;
+								case SHOE:
+									item = new ShoesItem(id.getKey());
+									break;
+								case ACCESSORY:
+									item = new AccessoriesItem(id.getKey());
+									break;
+								//FOOD
+								case RESTAURANT:
+									item = new RestaurantsItem(id.getKey());
+									break;
+								case ENTREE:
+									item = new EntreesItem(id.getKey());
+									break;
+								case SIDE:
+									item = new SidesItem(id.getKey());
+									break;
+								case SNACK:
+									item = new SnacksItem(id.getKey());
+									break;
+								case DRINK:
+									item = new DrinksItem(id.getKey());
+									break;
+								//HOBBY
+								case INDOOR:
+									item = new IndoorItem(id.getKey());
+									break;
+								case OUTDOOR:
+									item = new OutdoorItem(id.getKey());
+									break;
+								case SPORT:
+									item = new SportsItem(id.getKey());
+									break;
+								//MEDICAL
+								case ILLNESS:
+									item = new IllnessesItem(id.getKey());
+									break;
+								case PHOBIA:
+									item = new PhobiasItem(id.getKey());
+									break;
+								case MEDICATION:
+									item = new MedicalItem(id.getKey());
+									break;
+								case ALLERGY:
+									item = new AllergiesItem(id.getKey());
+									break;
+							}
+
+							for (DataSnapshot attribute : id.getChildren())
+							{
+								item.setLabel(attribute.getKey());
+								item.setValue(attribute.getValue().toString());
+								item.setUserID(appUser.getSignificantOther().getID());
+							}
+
+							//write data to SQLite
+							itemsDAL.addItem(item, SubcategoryType.getDisplayableStringsFromType(type, true));
+
+							innerList.add(item);
+						}
+
+						map.put(type, innerList);
+						appUser.getSignificantOther().setDataItems(map);
+					}
+				}
+
+			}
+
+			@Override
+			public void onCancelled(FirebaseError firebaseError)
+			{
+
+			}
+		});
 	}
 }

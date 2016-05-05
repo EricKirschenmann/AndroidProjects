@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.firebase.client.Firebase;
@@ -19,9 +18,9 @@ import com.majorassets.betterhalf.Database.SQLite.DataDBSchema;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteItemsDAL;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.GlobalResources;
+import com.majorassets.betterhalf.Helpers.UserMapHelper;
 import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
-import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 import com.majorassets.betterhalf.R;
@@ -54,12 +53,13 @@ public class DataItemActivityFragment extends Fragment {
     private DataItemArrayAdapter mDataItemArrayAdapter;
     private DataItemPagerAdapter mDataItemPagerAdapter;
 
-
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
     private static final String ARG_PAGE = "com.majorassets.betterhalf.page";
+    public static final String TABLE_NAME_EXTRA = "com.majorassets.betterhalf.tablenameextra";
+    public static final String ITEM_EXTRA = "com.majorassets.betterhalf.labelextra";
 
     /**
      * Argument when a user wishes to edit a specific item. The current data is passed forward to
@@ -121,15 +121,14 @@ public class DataItemActivityFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, final View view, final int position, long l) {
 
-
                 final String title = mDataItemPagerAdapter.getPageTitle(args.getInt(DataItemActivityFragment.ARG_PAGE)-1).toString();
                 final SubcategoryType type = SubcategoryType.getTypeFromTitle(title.replace(" ", ""));
-                final BaseDataItem item = data.get(type).get(position);
+                final BaseLikeableItem item = data.get(type).get(position);
 
                 final String tableName = SubcategoryType.getDisplayableStringsFromType(type, true);
 
                 final SQLiteItemsDAL itemsDAL = dal;
-
+                final String catTitle = getActivity().getTitle().toString();
 
                 AlertDialog.Builder bobTheBuilder = new AlertDialog.Builder(getActivity());
                 bobTheBuilder.setMessage(R.string.dialog_delete_item)
@@ -138,7 +137,12 @@ public class DataItemActivityFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Delete Item here
                                 //Call SQLite delete fn
-                                itemsDAL.deleteItem(item, tableName, "uuid");
+                                itemsDAL.deleteItem(item, tableName);
+
+                                if(!appUser.isConnected())
+                                    UserMapHelper.deleteItem(appUser, type, item);
+                                else
+                                    UserMapHelper.deleteItem(appUser.getSignificantOther(), type, item);
 
                                 //refresh data within the listview without restarting the activity
                                 readDataFromSQLite();
@@ -149,7 +153,12 @@ public class DataItemActivityFragment extends Fragment {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Edit here
                                 Intent editIntent = new Intent(getContext(), SingleItemEditActivity.class);
-                                editIntent.putExtra(EDIT, item.getValue());
+                                editIntent.putExtra(ITEM_EXTRA, item);
+                                editIntent.putExtra(DataItemActivity.SUBCAT_EXTRA, title);
+                                editIntent.putExtra(DataItemActivity.CAT_TITLE_EXTRA, catTitle);
+                                editIntent.putExtra(DataItemActivityFragment.TABLE_NAME_EXTRA, tableName);
+                                startActivity(editIntent);
+
                             }
                         });
                 // Creating the alertDialog
@@ -166,18 +175,19 @@ public class DataItemActivityFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
         readDataFromSQLite();
     }
 
-    private void readDataFromSQLite() {
+    private void readDataFromSQLite(UUID ID) {
         List<BaseLikeableItem> items;
 
         int position = args.getInt(ARG_PAGE)-1;
         String table = mDataItemPagerAdapter.getPageTitle(position).toString().replace(" ", "");
 
-        items = getItems(table);
+        items = getItems(table, ID);
 
         SubcategoryType type = SubcategoryType.getTypeFromTitle(table);
         data.put(type, items);
@@ -185,41 +195,52 @@ public class DataItemActivityFragment extends Fragment {
         updateDisplay(items);
     }
 
-    private List<BaseLikeableItem> getItems(String table) {
+    //helper method to prevent having to repeat if/else statement everywhere
+    private void readDataFromSQLite()
+    {
+        //if appUser is connected read data for SO
+        if(appUser.isConnected())
+            readDataFromSQLite(appUser.getSignificantOther().getID());
+        else
+            readDataFromSQLite(appUser.getID());
+    }
+
+    private List<BaseLikeableItem> getItems(String table, UUID ID) {
         List<BaseLikeableItem> items = null;
 
-        switch (table) {
+        switch (table)
+        {
             case DataDBSchema.MoviesTable.NAME:
             case DataDBSchema.MusicTable.NAME:
             case DataDBSchema.GamesTable.NAME:
             case DataDBSchema.BooksTable.NAME:
             case DataDBSchema.TheaterTable.NAME:
             case DataDBSchema.TVShowsTable.NAME:
-                items = dal.getEntertainmentItems(table, appUser.getID());
+                items = dal.getEntertainmentItems(table, ID);
                 break;
             case DataDBSchema.AccessoriesTable.NAME:
             case DataDBSchema.ClothingTable.NAME:
             case DataDBSchema.JewelryTable.NAME:
             case DataDBSchema.ShoesTable.NAME:
-                items = dal.getFashionItems(table, appUser.getID());
+                items = dal.getFashionItems(table, ID);
                 break;
             case DataDBSchema.DrinksTable.NAME:
             case DataDBSchema.EntreesTable.NAME:
             case DataDBSchema.RestaurantsTable.NAME:
             case DataDBSchema.SidesTable.NAME:
             case DataDBSchema.SnacksTable.NAME:
-                items = dal.getFoodItems(table, appUser.getID());
+                items = dal.getFoodItems(table, ID);
                 break;
             case DataDBSchema.IndoorTable.NAME:
             case DataDBSchema.OutdoorTable.NAME:
             case DataDBSchema.SportsTable.NAME:
-                items = dal.getHobbyItems(table, appUser.getID());
+                items = dal.getHobbyItems(table, ID);
                 break;
             case DataDBSchema.AllergiesTable.NAME:
             case DataDBSchema.IllnessesTable.NAME:
             case DataDBSchema.PhobiasTable.NAME:
             case DataDBSchema.MedicationTable.NAME:
-                items = dal.getMedicalItems(table, appUser.getID());
+                items = dal.getMedicalItems(table, ID);
                 break;
             default:
                 return null;
@@ -242,6 +263,5 @@ public class DataItemActivityFragment extends Fragment {
             startActivity(intent);
         }
     }
-
-
 }
+

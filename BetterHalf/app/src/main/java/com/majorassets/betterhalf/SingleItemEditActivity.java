@@ -15,6 +15,25 @@ public class SingleItemEditActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+        if(getIntent().hasExtra(DataItemActivity.CAT_TITLE_EXTRA)) {
+            mTitle = getIntent().getStringExtra(DataItemActivity.CAT_TITLE_EXTRA);
+
+            //Set theme per activity based on the category
+            if (mTitle.equals("Entertainment")) {
+                setTheme(R.style.EntertainmentTheme);
+            } else if (mTitle.equals("Fashion")) {
+                setTheme(R.style.FashionTheme);
+            } else if (mTitle.equals("Food")) {
+                setTheme(R.style.FoodTheme);
+            } else if (mTitle.equals("Hobby")) {
+                setTheme(R.style.HobbyTheme);
+            } else if (mTitle.equals("Medical")) {
+                setTheme(R.style.MedicalTheme);
+            }
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_item_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -27,7 +46,13 @@ public class SingleItemEditActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        mTitle = getIntent().getStringExtra(DataItemActivity.SUBCAT_EXTRA);
+        //make sure intent has subcategory
+        if(getIntent().hasExtra(DataItemActivity.SUBCAT_EXTRA)) {
+            //get and set the title
+            mTitle = getIntent().getStringExtra(DataItemActivity.SUBCAT_EXTRA);
+        } else {
+            mTitle = "Invalid";
+        }
         setTitle(mTitle);
     }
 
@@ -41,9 +66,14 @@ public class SingleItemEditActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent;
-        switch(item.getItemId()) {
+        switch(item.getItemId())
+        {
             case R.id.action_home:
                 intent = new Intent(SingleItemEditActivity.this, HomeActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.action_settings:
+                intent = new Intent(SingleItemEditActivity.this, SettingsActivity.class);
                 startActivity(intent);
                 return true;
             default:

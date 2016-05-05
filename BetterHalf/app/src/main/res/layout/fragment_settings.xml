@@ -36,4 +36,11 @@
         android:layout_gravity="center"
         android:text="@string/save_account_button"/>
 
+    <TextView
+        android:id="@+id/signed_in_as"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:text="@string/signed_in_as"/>
+
 </LinearLayout>

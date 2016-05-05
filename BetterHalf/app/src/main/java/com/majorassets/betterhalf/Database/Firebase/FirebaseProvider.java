@@ -71,6 +71,12 @@ public class FirebaseProvider
         return userDataInstance;
     }
 
+    public Firebase getUserConnectionInstance(String username)
+    {
+        userDataInstance = new Firebase(FIREBASE_URL + "users/" + username + "/connection");
+        return userDataInstance;
+    }
+
     public Firebase getUserDataSubcategoryInstance(String username, String subcategory)
     {
         subcategoryInstance = new Firebase(FIREBASE_URL + "users/" + username + "/data/" + subcategory);

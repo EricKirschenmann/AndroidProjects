@@ -53,6 +53,7 @@ public class DataBaseHelper extends SQLiteOpenHelper
         String createUserTable = "CREATE TABLE " + UserDBTable.NAME + "(" +
                 "_id integer primary key autoincrement, " +
                 UserDBTable.Cols.UUID + ", " +
+                UserDBTable.Cols.SOID + ", " +
                 UserDBTable.Cols.EMAIL + ", " +
                 UserDBTable.Cols.PASSWORD + ", " +
                 UserDBTable.Cols.LOGGED_ON_LAST + ")";

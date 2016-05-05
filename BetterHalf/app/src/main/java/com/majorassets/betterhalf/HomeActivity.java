@@ -9,24 +9,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
-import com.majorassets.betterhalf.Model.Entertainment.BookItem;
-import com.majorassets.betterhalf.Model.Entertainment.GameItem;
-import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
-import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
-import com.majorassets.betterhalf.Model.Subcategory;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +31,6 @@ public class HomeActivity extends AppCompatActivity
 
 	private User appUser;
 	private Map<SubcategoryType, List<BaseLikeableItem>> appUserData;
-	private DataItemRepository userRepo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -62,10 +51,9 @@ public class HomeActivity extends AppCompatActivity
 		ref = firebaseDB.getFirebaseInstance();
 
 		appUser = GlobalResources.AppUser;
-		userRepo = appUser.getDataItemRepository();
-		appUserData = userRepo.getDataItems();
+		appUserData = appUser.getDataItems();
 
-		syncSQLiteToFirebase();
+		syncSQLiteToFirebase(); //for data only
 	}
 
 	@Override
@@ -92,8 +80,8 @@ public class HomeActivity extends AppCompatActivity
 		{
 			case R.id.action_settings:
 				intent = new Intent(HomeActivity.this, SettingsActivity.class);
-				startActivity(intent);
-				return true;
+			startActivity(intent);
+			return true;
 			case R.id.action_logout:
 				//this user is is officially logged out - was NOT logged on last
 				appUser.setLoggedOnLast(false);
@@ -119,22 +107,33 @@ public class HomeActivity extends AppCompatActivity
 		Map<String, Map<String, String>> firebaseMap = new HashMap<>();
 		Map<String, String> internalMap;
 
-		for (Map.Entry entry: appUserData.entrySet())
+		User operationalUser = null;
+
+		//write to firebase differently if the user is connected
+		if(!appUser.isConnected())
+			operationalUser = appUser;
+		else
+			operationalUser = appUser.getSignificantOther();
+
+		if(operationalUser.getUsername() != null)
 		{
-			String sub = SubcategoryType.getFirebaseStringFromType((SubcategoryType)entry.getKey());
-			subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(appUser.getUsername(), sub);
-
-			List<BaseLikeableItem> items = (List<BaseLikeableItem>) entry.getValue();
-			for (BaseLikeableItem item : items)
+			for (Map.Entry entry : operationalUser.getDataItems().entrySet())
 			{
-				internalMap = new HashMap<>();
-				internalMap.put(item.getLabel(), item.getValue());
-				firebaseMap.put(item.getID(), internalMap);
+				String sub = SubcategoryType.getFirebaseStringFromType((SubcategoryType) entry.getKey());
+				subcategoryInstance = firebaseDB.getUserDataSubcategoryInstance(operationalUser.getUsername(), sub);
+
+				List<BaseLikeableItem> items = (List<BaseLikeableItem>) entry.getValue();
+				for (BaseLikeableItem item : items)
+				{
+					internalMap = new HashMap<>();
+					internalMap.put(item.getLabel(), item.getValue());
+					firebaseMap.put(item.getID(), internalMap);
+				}
+
+				subcategoryInstance.setValue(firebaseMap);
+
+				firebaseMap.clear();
 			}
-
-			subcategoryInstance.setValue(firebaseMap);
-
-			firebaseMap.clear();
 		}
 	}
 }

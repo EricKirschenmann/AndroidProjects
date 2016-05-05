@@ -1,8 +1,8 @@
 package com.majorassets.betterhalf;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +15,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
@@ -23,6 +22,7 @@ import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
+
 
 import java.util.HashMap;
 import java.util.List;
@@ -68,8 +68,8 @@ public class LoginActivityFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_login, container, false);
 
         //setup
-        initializeUIComponents(view);
-        createAndControlEvents();
+        initializeComponents(view);
+        createEvents();
 
         //for Firebase
         Firebase.setAndroidContext(getContext().getApplicationContext());
@@ -85,7 +85,7 @@ public class LoginActivityFragment extends Fragment {
     }
 
     //wire up all the view components from the layout XMLs
-    private void initializeUIComponents(View view)
+    private void initializeComponents(View view)
     {
         mNewUserLbl = getResources().getString(R.string.newuser_txt);
         mExistingLbl = getResources().getString(R.string.existing_txt);
@@ -102,7 +102,7 @@ public class LoginActivityFragment extends Fragment {
     }
 
     //establish event listeners as anonymous inner classes
-    private void createAndControlEvents()
+    private void createEvents()
     {
         ////// SETTING ONCLICK LISTENERS ////////
         mEmailEdit.setOnClickListener(new View.OnClickListener()
@@ -110,7 +110,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mEmailEdit.setText("ranema89@gmail.com"); //temp for testing
+                mEmailEdit.setText("dgblanks@gmail.com"); //temp for testing
             }
         });
 
@@ -118,7 +118,7 @@ public class LoginActivityFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
-                mPasswordEdit.setText("pass"); //temp password for testing
+                mPasswordEdit.setText("test"); //temp password for testing
             }
         });
 
@@ -200,8 +200,7 @@ public class LoginActivityFragment extends Fragment {
                     appUser = new User(mEmail, mPassword);
                     appUser.setID(UUID.fromString(authData.getUid()));
                     appUser.setLoggedOnLast(true);
-                    appUser.setDataItemRepository(DataItemRepository.getDataItemRepository());
-                    appUser.getDataItemRepository().setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
+                    appUser.setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
 
                     GlobalResources.AppUser = appUser;
 
@@ -225,8 +224,9 @@ public class LoginActivityFragment extends Fragment {
         else
         {
             appUser.setLoggedOnLast(true);
-            appUser.setDataItemRepository(DataItemRepository.getDataItemRepository());
-            appUser.getDataItemRepository().setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
+            appUser.setDataItems(new HashMap<SubcategoryType, List<BaseLikeableItem>>());
+
+            dal.updateUser(appUser);
 
 
             userRef = firebaseDB.getUserInstance(mUsername);

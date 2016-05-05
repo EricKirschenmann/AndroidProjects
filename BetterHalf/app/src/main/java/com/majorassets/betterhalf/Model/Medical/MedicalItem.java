@@ -8,6 +8,7 @@ import com.majorassets.betterhalf.Model.BaseLikeableItem;
  */
 public class MedicalItem extends BaseLikeableItem
 {
+	public MedicalItem(String id) { super(id);}
 	public MedicalItem(String label, String value) {
 		super(label, value);
 	}

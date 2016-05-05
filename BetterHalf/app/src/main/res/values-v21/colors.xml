@@ -16,10 +16,22 @@
     <color name="medicalPrimary">#098276</color>
 
     <color name="colorEntertainment">#9E0000</color>
+    <color name="colorEntertainment_dark">#800000</color>
+
     <color name="colorFashion">#1D3557</color>
+    <color name="colorFashion_dark">#172B46</color>
+
+
     <color name="colorFood">#386580</color>
+    <color name="colorFood_dark">#2D5268</color>
+
     <color name="colorMedical">#70C288</color>
+    <color name="colorMedical_dark">#5B9D6E</color>
+
+
     <color name="colorHobby">#DB5600</color>
+    <color name="colorHobby_dark">#B14500</color>
+
 
     <color name="buttonBackground">#FFFFFF</color>
     <color name="generalBackground">#FFFFFF</color>
