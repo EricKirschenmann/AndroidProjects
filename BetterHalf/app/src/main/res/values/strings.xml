@@ -49,6 +49,8 @@
     <string name="connect_with_txt">Please enter the username of the user you would like to link accounts with:</string>
     <string name="connect_input_txt">Username:</string>
     <string name="connect_button">Connect</string>
+    <string name="disconnect_txt"></string>
+    <string name="disconnect_button">Disconnect</string>
 
     <!--strings for Sorting -->
     <string name="action_sort">Sort</string>

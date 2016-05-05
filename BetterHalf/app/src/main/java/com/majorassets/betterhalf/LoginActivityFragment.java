@@ -1,9 +1,8 @@
 package com.majorassets.betterhalf;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,15 +20,10 @@ import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteProvider;
 import com.majorassets.betterhalf.Database.SQLite.SQLiteUserDAL;
-import com.majorassets.betterhalf.Model.BaseDataItem;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
-import com.majorassets.betterhalf.Model.Entertainment.MovieItem;
-import com.majorassets.betterhalf.Model.Entertainment.MusicItem;
 import com.majorassets.betterhalf.Model.SubcategoryType;
 import com.majorassets.betterhalf.Model.User;
 
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +110,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mEmailEdit.setText("dgblanks@gmail.com"); //temp for testing
+                mEmailEdit.setText("ranema89@gmail.com"); //temp for testing
             }
         });
 
@@ -124,7 +118,7 @@ public class LoginActivityFragment extends Fragment {
         {
             @Override
             public void onClick(View v) {
-                mPasswordEdit.setText("test"); //temp password for testing
+                mPasswordEdit.setText("pass"); //temp password for testing
             }
         });
 

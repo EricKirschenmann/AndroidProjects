@@ -19,6 +19,7 @@ import com.firebase.client.ValueEventListener;
 import com.majorassets.betterhalf.DataItemController.DataItemActivity;
 import com.majorassets.betterhalf.Database.DataItemRepository;
 import com.majorassets.betterhalf.Database.Firebase.FirebaseProvider;
+import com.majorassets.betterhalf.Database.Firebase.FirebaseStructure;
 import com.majorassets.betterhalf.Model.BaseLikeableItem;
 import com.majorassets.betterhalf.Model.MainCategoryType;
 import com.majorassets.betterhalf.Model.Subcategory;
@@ -27,6 +28,7 @@ import com.majorassets.betterhalf.Model.User;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -50,6 +52,7 @@ public class HomeActivityFragment extends Fragment
 	private Firebase mRootRef;
 
 	private User appUser;
+	private User SO;
 
 	public static final String TITLE_EXTRA = "com.majorassets.betterhalf.title";
 
@@ -203,31 +206,84 @@ public class HomeActivityFragment extends Fragment
 
 			@Override
 			public void onDataChange(DataSnapshot dataSnapshot) {
-				String statusString = dataSnapshot.child("connection").child("status").getValue().toString();
-				if(statusString.equals("pending")){
-					String userRequesting = dataSnapshot.child("connection").child("user").getValue().toString();
-					final Firebase userRequestingRef = db.getUserInstance(userRequesting);
+				//If dataSnapshot.child("connection") != NULL
+				if(dataSnapshot.child("connection").getValue() != null) {
+					String statusString = dataSnapshot.child("connection").child("status").getValue().toString();
 
-					AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-					builder.setMessage("Connect with " + userRequesting + "?")
-							.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {
-									thisUserRef.child("connection").child("status").setValue("connected");
-									userRequestingRef.child("connection").child("status").setValue("connected");
-								}
-							})
-							.setNegativeButton("Ignore", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {
-									thisUserRef.child("connection").removeValue();
-									userRequestingRef.child("connection").removeValue();
-								}
-							});
+					if (statusString.equals("pending")) {
+						String userRequesting = dataSnapshot.child("connection").child("user").getValue().toString();
+						final Firebase userRequestingRef = db.getUserInstance(userRequesting);
 
-					AlertDialog dialog = builder.create();
-					dialog.show();
-				}
-				else{
-					//Fill with SO data?
+						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+						builder.setMessage("Connect with " + userRequesting + "?")
+								.setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										thisUserRef.child("connection").child("status").setValue("connected");
+										userRequestingRef.child("connection").child("status").setValue("connected");
+										//set SO user and info
+
+										userRequestingRef.addListenerForSingleValueEvent(new ValueEventListener()
+										{
+											User SO = new User();
+											@Override
+											public void onDataChange(DataSnapshot dataSnapshot)
+											{
+												SO.setUsername(dataSnapshot.getKey());
+												appUser.setSignificantOther(SO);
+
+												for (DataSnapshot childThis: dataSnapshot.getChildren()) {
+													String child = childThis.getKey();
+													if (child == "info") {
+														String infoChildKey;
+														Object infoChildValue;
+														Iterable<DataSnapshot> infoChildren = childThis.getChildren();
+														for (DataSnapshot infoChild : infoChildren) {
+															infoChildKey = infoChild.getKey();
+															infoChildValue = infoChild.getValue();
+
+															switch (infoChildKey) {
+																case FirebaseStructure.EMAIL:
+																	SO.setEmail(infoChildValue.toString());
+																	break;
+																case FirebaseStructure.FIRSTNAME:
+																	SO.setFirstName(infoChildValue.toString());
+																	break;
+																case FirebaseStructure.LASTNAME:
+																	SO.setLastName(infoChildValue.toString());
+																	break;
+																case FirebaseStructure.ID:
+																	SO.setID(UUID.fromString(infoChildValue.toString()));
+																	break;
+																default:
+																	break;
+															}
+														}
+													}
+													else if(child == "data"){
+
+													}
+												}
+											}
+											@Override
+											public void onCancelled(FirebaseError firebaseError)
+											{
+
+											}
+										});
+									}
+								})
+								.setNegativeButton("Ignore", new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										thisUserRef.child("connection").removeValue();
+										userRequestingRef.child("connection").removeValue();
+									}
+								});
+
+						AlertDialog dialog = builder.create();
+						dialog.show();
+					} else {
+						//Fill with SO data?
+					}
 				}
 			}
 

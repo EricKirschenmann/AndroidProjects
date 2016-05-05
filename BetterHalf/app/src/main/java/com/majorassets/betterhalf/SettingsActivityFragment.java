@@ -1,7 +1,10 @@
 package com.majorassets.betterhalf;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +32,7 @@ public class SettingsActivityFragment extends Fragment {
 
     private FirebaseProvider firebaseDB;
     private Firebase rootRef;
+    private Firebase userRef;
 
     private User appUser;
 
@@ -60,32 +64,51 @@ public class SettingsActivityFragment extends Fragment {
 
     private void createEvents() {
         //TODO: pop up "Are you sure?" dialog
-        mDeleteAccountButton.setOnClickListener(new View.OnClickListener()
-        {
+        mDeleteAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                //remove user from SQLite db
-                dal.deleteUser(appUser);
+            public void onClick(View v) {
+                //public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-                rootRef.removeUser(appUser.getEmail(), appUser.getPassword(), new Firebase.ResultHandler()
-                {
-                    @Override
-                    public void onSuccess()
-                    {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Delete your account?")
+                            .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Firebase userRef = firebaseDB.getUserInstance(appUser.getUsername());
+                                    userRef.removeValue();
+                                    //TODO - Logout
+                                    appUser.setLoggedOnLast(false);
+                                    userRef.unauth(); //un-authenticate a user from firebase
 
-                    }
+                                    //remove user from SQLite db
+                                    dal.deleteUser(appUser);
+                                    rootRef.removeUser(appUser.getEmail(), appUser.getPassword(), new Firebase.ResultHandler() {
+                                        @Override
+                                        public void onSuccess() {
+                                            //return to login screen
+                                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                                            startActivity(intent);
+                                        }
 
-                    @Override
-                    public void onError(FirebaseError firebaseError)
-                    {
+                                        @Override
+                                        public void onError(FirebaseError firebaseError) {
+                                        }
+                                    });
+                                }
+                            })
+                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
 
-                    }
-                });
+                                }
+                            });
 
-                //TODO: RYAN - remove structure and delete user in Firebase
-            }
+                    AlertDialog build = builder.create();
+                    build.show();
+
+                }
+            //}
+
         });
+
 
         mSaveChangesButton.setOnClickListener(new View.OnClickListener()
         {
