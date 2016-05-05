@@ -40,7 +40,16 @@
         android:id="@+id/signed_in_as"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="bottom"
+        android:gravity="center"
+        android:padding="50dp"
         android:text="@string/signed_in_as"/>
+
+    <TextView
+        android:id="@+id/connected_with"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="50dp"
+        android:text="@string/connected_with"/>
 
 </LinearLayout>

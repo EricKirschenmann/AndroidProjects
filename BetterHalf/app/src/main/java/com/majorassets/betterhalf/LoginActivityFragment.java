@@ -53,7 +53,6 @@ public class LoginActivityFragment extends Fragment {
     private User appUser;
     private String mEmail;
     private String mPassword;
-    private String mUsername;
 
     //labels
     private String mNewUserLbl;
@@ -169,8 +168,6 @@ public class LoginActivityFragment extends Fragment {
 
         mEmail = mEmailEdit.getText().toString();
         mPassword = mPasswordEdit.getText().toString();
-        //generated username based off email
-        mUsername = LoginHelperActivity.generateUsername(mEmail);
 
         //Attempt Login
         if(mLoginButton.getText().toString().equals(mLoginLbl))
@@ -229,7 +226,7 @@ public class LoginActivityFragment extends Fragment {
             dal.updateUser(appUser);
 
 
-            userRef = firebaseDB.getUserInstance(mUsername);
+            userRef = firebaseDB.getUserInstance(appUser.getUsername());
             userRef.addListenerForSingleValueEvent(new ValueEventListener()
             {
                 @Override
@@ -314,7 +311,7 @@ public class LoginActivityFragment extends Fragment {
         newUserDataMap.put(FirebaseStructure.ID, appUser.getID().toString());
         newUserInfoMap.put(FirebaseStructure.INFO, newUserDataMap);
 
-        String newUsername = LoginHelperActivity.generateUsername(mEmail);
+        String newUsername = user.getUsername();
         Firebase newUserRef = usersRef.child(newUsername);
         newUserRef.setValue(newUserInfoMap);
     }

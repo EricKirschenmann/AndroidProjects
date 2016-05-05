@@ -16,9 +16,9 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/action_connect"
+        android:id="@+id/action_home"
         android:orderInCategory="3"
         android:title="@string/action_logout"
-        android:icon="@mipmap/ic_connect"
+        android:icon="@mipmap/ic_home"
         app:showAsAction="ifRoom"/>
 </menu>
