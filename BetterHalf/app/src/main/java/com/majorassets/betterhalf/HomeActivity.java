@@ -51,6 +51,10 @@ public class HomeActivity extends AppCompatActivity
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
+		//Logo on action bar
+		//getSupportActionBar().setDisplayShowHomeEnabled(true);
+		//getSupportActionBar().setLogo(R.mipmap.ic_otterh00);
+
 		Firebase.setAndroidContext(this);
 
 		//data providers
