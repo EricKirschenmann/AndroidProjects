@@ -109,7 +109,7 @@ public class LoginActivityFragment extends Fragment {
             @Override
             public void onClick(View v)
             {
-                mEmailEdit.setText("dgblanks@gmail.com"); //temp for testing
+                mEmailEdit.setText("erickirschenmann11@apu.edu"); //temp for testing
             }
         });
 
